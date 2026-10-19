@@ -1,0 +1,1800 @@
+{
+  "club": "SITAS",
+  "tournaments": [
+    {
+      "tournament": {
+        "tournament_id": 1339117,
+        "season": "2026",
+        "category": "MAXI 30",
+        "edition": "CLAUSURA",
+        "manager_name": "Federación de Cestoball de Capital Federal"
+      },
+      "phases": [
+        {
+          "phase": {
+            "tournament_id": 1339117,
+            "phase_id": 3701724,
+            "name": "FASE REGULAR",
+            "is_active": true
+          },
+          "standings": [
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 1,
+              "club": {
+                "clupik_id": 15878716,
+                "name": "SOCIAL PARQUE"
+              },
+              "played": 11,
+              "won": 10,
+              "drawn": 0,
+              "lost": 1,
+              "points": 21,
+              "goals_for": 1148,
+              "goals_against": 756,
+              "goal_diff": 392
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 2,
+              "club": {
+                "clupik_id": 15878714,
+                "name": "HACOAJ"
+              },
+              "played": 11,
+              "won": 9,
+              "drawn": 0,
+              "lost": 2,
+              "points": 20,
+              "goals_for": 970,
+              "goals_against": 825,
+              "goal_diff": 145
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 3,
+              "club": {
+                "clupik_id": 15878713,
+                "name": "AVELLANEDA"
+              },
+              "played": 10,
+              "won": 9,
+              "drawn": 0,
+              "lost": 1,
+              "points": 19,
+              "goals_for": 820,
+              "goals_against": 542,
+              "goal_diff": 278
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 4,
+              "club": {
+                "clupik_id": 15878711,
+                "name": "SITAS"
+              },
+              "played": 10,
+              "won": 8,
+              "drawn": 0,
+              "lost": 2,
+              "points": 18,
+              "goals_for": 908,
+              "goals_against": 690,
+              "goal_diff": 218
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 5,
+              "club": {
+                "clupik_id": 15878710,
+                "name": "CIUDAD"
+              },
+              "played": 11,
+              "won": 6,
+              "drawn": 0,
+              "lost": 5,
+              "points": 17,
+              "goals_for": 994,
+              "goals_against": 912,
+              "goal_diff": 82
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 6,
+              "club": {
+                "clupik_id": 15878709,
+                "name": "GEVP"
+              },
+              "played": 11,
+              "won": 6,
+              "drawn": 0,
+              "lost": 5,
+              "points": 17,
+              "goals_for": 954,
+              "goals_against": 987,
+              "goal_diff": -33
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 7,
+              "club": {
+                "clupik_id": 15878712,
+                "name": "VELEZ"
+              },
+              "played": 11,
+              "won": 5,
+              "drawn": 0,
+              "lost": 6,
+              "points": 16,
+              "goals_for": 953,
+              "goals_against": 954,
+              "goal_diff": -1
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 8,
+              "club": {
+                "clupik_id": 15878719,
+                "name": "APV"
+              },
+              "played": 10,
+              "won": 4,
+              "drawn": 0,
+              "lost": 6,
+              "points": 14,
+              "goals_for": 876,
+              "goals_against": 778,
+              "goal_diff": 98
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 9,
+              "club": {
+                "clupik_id": 15878720,
+                "name": "SAN MARTIN"
+              },
+              "played": 11,
+              "won": 4,
+              "drawn": 0,
+              "lost": 7,
+              "points": 14,
+              "goals_for": 723,
+              "goals_against": 737,
+              "goal_diff": -14
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 10,
+              "club": {
+                "clupik_id": 15878718,
+                "name": "LANUS"
+              },
+              "played": 10,
+              "won": 2,
+              "drawn": 0,
+              "lost": 8,
+              "points": 12,
+              "goals_for": 558,
+              "goals_against": 788,
+              "goal_diff": -230
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 11,
+              "club": {
+                "clupik_id": 15878717,
+                "name": "VELEZ B"
+              },
+              "played": 11,
+              "won": 1,
+              "drawn": 0,
+              "lost": 10,
+              "points": 12,
+              "goals_for": 632,
+              "goals_against": 1037,
+              "goal_diff": -405
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "position": 12,
+              "club": {
+                "clupik_id": 15878715,
+                "name": "CIUDAD B"
+              },
+              "played": 11,
+              "won": 0,
+              "drawn": 0,
+              "lost": 11,
+              "points": 11,
+              "goals_for": 538,
+              "goals_against": 1068,
+              "goal_diff": -530
+            }
+          ],
+          "club_standing": {
+            "tournament_id": 1339117,
+            "phase_id": 3701724,
+            "phase_name": "FASE REGULAR",
+            "position": 4,
+            "club": {
+              "clupik_id": 15878711,
+              "name": "SITAS"
+            },
+            "played": 10,
+            "won": 8,
+            "drawn": 0,
+            "lost": 2,
+            "points": 18,
+            "goals_for": 908,
+            "goals_against": 690,
+            "goal_diff": 218
+          },
+          "matches": [
+            {
+              "clupik_id": 145103161,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-15 22:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 102,
+              "away_score": 46,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103163,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-16 23:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 91,
+              "away_score": 87,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103162,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-16 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "home_score": 70,
+              "away_score": 39,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103164,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-19 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 54,
+              "away_score": 82,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103166,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-19 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 108,
+              "away_score": 36,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103165,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-20 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 90,
+              "away_score": 67,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103168,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-06-23 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": 60,
+              "away_score": 40,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103167,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-06-23 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "home_score": 38,
+              "away_score": 78,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103172,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-06-24 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "home_score": 52,
+              "away_score": 68,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103169,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-06-26 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 50,
+              "away_score": 100,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103170,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-06-27 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "home_score": 109,
+              "away_score": 92,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103171,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "home_score": 116,
+              "away_score": 114,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103173,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-06-30 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 66,
+              "away_score": 90,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103178,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-07-01 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 58,
+              "away_score": 75,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103174,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-07-01 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "home_score": 104,
+              "away_score": 115,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103175,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-07-02 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "home_score": 72,
+              "away_score": 49,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103177,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-07-03 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 86,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103176,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-07-10 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 87,
+              "away_score": 46,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103179,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-13 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 76,
+              "away_score": 54,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103180,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-14 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": 90,
+              "away_score": 111,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103184,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-14 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 74,
+              "away_score": 60,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103181,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-15 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "home_score": 48,
+              "away_score": 102,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103182,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-15 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 69,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145561269,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-09-05 01:15:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "home_score": 100,
+              "away_score": 70,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103185,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-04 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 54,
+              "away_score": 125,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103186,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-04 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 78,
+              "away_score": 90,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103190,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-05 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "home_score": 117,
+              "away_score": 124,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103187,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-07 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 80,
+              "away_score": 50,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103189,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-08 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 64,
+              "away_score": 97,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103188,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-19 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "home_score": 105,
+              "away_score": 101,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103196,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-04 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "home_score": 48,
+              "away_score": 62,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103191,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-11 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 36,
+              "away_score": 100,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103192,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-11 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 88,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103193,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-12 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "home_score": 98,
+              "away_score": 82,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103194,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-15 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": 81,
+              "away_score": 98,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103195,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-15 02:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "home_score": 126,
+              "away_score": 57,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103197,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": "2026-08-21 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "home_score": 99,
+              "away_score": 79,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103198,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": "2026-08-25 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 58,
+              "away_score": 88,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103199,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": "2026-08-25 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": 76,
+              "away_score": 77,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103202,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": "2026-08-25 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 34,
+              "away_score": 112,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103200,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": "2026-08-29 01:15:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 106,
+              "away_score": 51,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103201,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "home_score": 2,
+              "away_score": 0,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103204,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-08-31 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 62,
+              "away_score": 74,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103203,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-08-31 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 102,
+              "away_score": 54,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103205,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-09-01 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 60,
+              "away_score": 88,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103208,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-09-01 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "home_score": 83,
+              "away_score": 70,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103206,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-09-02 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "home_score": 108,
+              "away_score": 100,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103207,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-09-05 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "home_score": 62,
+              "away_score": 48,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103209,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": "2026-09-08 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 76,
+              "away_score": 66,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103213,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": "2026-09-08 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "home_score": 54,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103211,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": "2026-09-09 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "home_score": 60,
+              "away_score": 119,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103212,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": "2026-09-10 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": 83,
+              "away_score": 92,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103210,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": "2026-09-12 01:15:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 80,
+              "away_score": 42,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103215,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": "2026-09-15 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 76,
+              "away_score": 120,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103219,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": "2026-09-15 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 101,
+              "away_score": 44,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103217,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": "2026-09-16 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "home_score": 81,
+              "away_score": 62,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103216,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": "2026-09-18 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "home_score": 118,
+              "away_score": 74,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103220,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": "2026-09-18 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 104,
+              "away_score": 85,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103218,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145103221,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-22 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "home_score": 38,
+              "away_score": 98,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103225,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-23 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": 69,
+              "away_score": 108,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103223,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-24 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "home_score": 80,
+              "away_score": 62,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103224,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-25 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 101,
+              "away_score": 76,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103222,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-26 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 72,
+              "away_score": 80,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103226,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-26 01:15:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "home_score": 117,
+              "away_score": 75,
+              "venue": null,
+              "played": true
+            }
+          ],
+          "club_matches": [
+            {
+              "clupik_id": 145103166,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": "2026-06-19 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 108,
+              "away_score": 36,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103169,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-06-26 00:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 50,
+              "away_score": 100,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103177,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-07-03 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 86,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103179,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-13 23:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 76,
+              "away_score": 54,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103182,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-07-15 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 69,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103187,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": "2026-08-07 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "LANUS"
+              },
+              "home_score": 80,
+              "away_score": 50,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103192,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": "2026-08-11 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 88,
+              "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103205,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 8",
+              "scheduled_at": "2026-09-01 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 60,
+              "away_score": 88,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103220,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 10",
+              "scheduled_at": "2026-09-18 01:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 104,
+              "away_score": 85,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145103222,
+              "tournament_id": 1339117,
+              "phase_id": 3701724,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 11",
+              "scheduled_at": "2026-09-26 00:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SAN MARTIN"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SITAS"
+              },
+              "home_score": 72,
+              "away_score": 80,
+              "venue": null,
+              "played": true
+            }
+          ]
+        },
+        {
+          "phase": {
+            "tournament_id": 1339117,
+            "phase_id": 3701721,
+            "name": "COPA DE ORO",
+            "is_active": false
+          },
+          "standings": [],
+          "club_standing": null,
+          "matches": [],
+          "club_matches": []
+        },
+        {
+          "phase": {
+            "tournament_id": 1339117,
+            "phase_id": 3701722,
+            "name": "COPA DE PLATA",
+            "is_active": false
+          },
+          "standings": [],
+          "club_standing": null,
+          "matches": [],
+          "club_matches": []
+        },
+        {
+          "phase": {
+            "tournament_id": 1339117,
+            "phase_id": 3701723,
+            "name": "COPA DE BRONCE",
+            "is_active": false
+          },
+          "standings": [],
+          "club_standing": null,
+          "matches": [],
+          "club_matches": []
+        }
+      ]
+    }
+  ]
+}

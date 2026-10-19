@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal de Estadísticas, Posiciones y Fixture de Cestoball del Club SITAS">
+  <title>SITAS Cestoball — Fixture y Resultados</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background decorative glows -->
+  <div class="glow-bg glow-1"></div>
+  <div class="glow-bg glow-2"></div>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="brand">
+        <img src="assets/sitas_logo.png" alt="SITAS Cestoball Logo" class="brand-crest-img">
+        <div class="brand-text">
+          <h1>SITAS <span>CESTOBALL</span></h1>
+          <p class="subtitle">Para nuestra hinchada</p>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#section-upcoming" class="nav-link"><i data-lucide="calendar-clock"></i> Próxima Fecha</a>
+        <a href="#section-tournaments" class="nav-link active"><i data-lucide="shield"></i> Torneos</a>
+        <a href="#section-news" class="nav-link"><i data-lucide="newspaper"></i> Noticias</a>
+       
+      </nav>
+
+      <div class="header-actions">
+        <div class="season-picker-wrapper">
+          <label for="season-select" class="visually-hidden">Temporada</label>
+          <i data-lucide="calendar" class="picker-icon"></i>
+          <select id="season-select" aria-label="Seleccionar temporada">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <button id="theme-toggle" class="icon-button" aria-label="Cambiar tema de color" title="Modo Claro / Oscuro">
+          <i data-lucide="moon" id="theme-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container main-layout">
+
+    <!-- SECCIÓN 1: PRÓXIMA FECHA / CRONOGRAMA SEMANAL -->
+    <section class="upcoming-section" id="section-upcoming" aria-label="Próximos partidos del fin de semana">
+      <div class="section-heading">
+        <div class="heading-title-wrap">
+          <span class="heading-badge">📌 CRONOGRAMA SEMANAL</span>
+          <h2>Próxima Fecha de SITAS</h2>
+          <p class="heading-desc">Designaciones y horarios oficiales de la Federación para nuestras categorías.</p>
+        </div>
+        <div class="upcoming-meta-badge" id="upcoming-round-info">
+          <i data-lucide="clock"></i> Fin de Semana
+        </div>
+      </div>
+
+      <div class="upcoming-grid" id="upcoming-matches-grid">
+        <!-- Injected dynamically via JS from /api/schedule/upcoming -->
+        <div class="upcoming-empty-card">
+          <i data-lucide="calendar-off"></i>
+          <p>Cargando designaciones de la próxima fecha...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: TORNEOS Y ESTADÍSTICAS -->
+    <section class="tournaments-section" id="section-tournaments" aria-label="Torneos y Estadísticas">
+      <!-- KPI Summary Hero -->
+      <div class="kpi-section" aria-label="Resumen de temporada">
+        <div class="kpi-card highlight-card">
+          <div class="kpi-icon-wrap"><i data-lucide="trophy"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpi-tournaments">0</span>
+            <span class="kpi-label">Torneos Disputados</span>
+          </div>
+        </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap blue"><i data-lucide="activity"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="kpi-played">0</span>
+          <span class="kpi-label">Partidos Jugados</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap green"><i data-lucide="check-circle-2"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="kpi-won">0</span>
+          <span class="kpi-label">Victorias (PG)</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap red"><i data-lucide="x-circle"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="kpi-lost">0</span>
+          <span class="kpi-label">Derrotas (PP)</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap purple"><i data-lucide="percent"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="kpi-winrate">0%</span>
+          <span class="kpi-label">Efectividad</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap gold"><i data-lucide="flame"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="kpi-points">0</span>
+          <span class="kpi-label">Puntos Acumulados</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Competition Scope Switcher (Metropolitanos vs Nacionales) -->
+    <section class="scope-section">
+      <div class="scope-tabs" role="tablist" aria-label="Ámbito de competición">
+        <button class="scope-tab active" id="scope-tab-metro" data-scope="METRO" role="tab" aria-selected="true">
+          <i data-lucide="shield"></i> Torneos Metropolitanos (Apertura / Clausura)
+        </button>
+        <button class="scope-tab" id="scope-tab-nacional" data-scope="NACIONAL" role="tab" aria-selected="false">
+          <i data-lucide="trophy"></i> Competencias Nacionales (Ligas y Argentinos)
+        </button>
+      </div>
+    </section>
+
+    <!-- Filters and Category Tabs -->
+    <section class="filter-section">
+      <div class="category-scroll-container" id="category-pills" role="tablist" aria-label="Categorías">
+        <button class="pill active" data-category="ALL" role="tab" aria-selected="true">
+          <i data-lucide="layout-grid"></i> Todas las Categorías
+        </button>
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <div class="filter-toolbar">
+        <div class="search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="search-input" placeholder="Buscar rival, torneo o fase...">
+        </div>
+
+        <div class="edition-filters" id="edition-filters">
+          <button class="filter-btn active" data-edition="ALL">Todos</button>
+          <button class="filter-btn" data-edition="APERTURA">Apertura</button>
+          <button class="filter-btn" data-edition="CLAUSURA">Clausura</button>
+        </div>
+
+        <div class="toggle-control">
+          <label class="switch">
+            <input type="checkbox" id="only-sitas-matches" checked>
+            <span class="slider round"></span>
+          </label>
+          <span class="toggle-label">Solo partidos de SITAS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Workspace -->
+    <div class="content-grid">
+      <!-- Left Sidebar: Tournaments Navigator -->
+      <aside class="tournaments-sidebar" aria-label="Listado de torneos">
+        <div class="sidebar-header">
+          <h2>Torneos</h2>
+          <span class="counter-badge" id="tournament-count">0</span>
+        </div>
+        <div class="tournament-list" id="tournament-nav-list" role="list">
+          <!-- Injected via JS -->
+        </div>
+      </aside>
+
+      <!-- Right Main View: Selected Tournament Dashboard -->
+      <section class="tournament-dashboard" id="tournament-view" aria-label="Detalle de torneo">
+        <div class="empty-state" id="empty-state">
+          <i data-lucide="shield-alert" class="empty-icon"></i>
+          <h3>Selecciona un torneo</h3>
+          <p>Elige una categoría o torneo del panel lateral para ver la tabla de posiciones y el fixture de partidos.</p>
+        </div>
+
+        <div class="dashboard-content" id="dashboard-content" style="display: none;">
+          <!-- Tournament Hero Banner -->
+          <div class="tournament-banner">
+            <div class="banner-info">
+              <div class="banner-tags">
+                <span class="tag tag-season" id="t-season-tag">2026</span>
+                <span class="tag tag-category" id="t-category-tag">PRIMERA</span>
+                <span class="tag tag-edition" id="t-edition-tag">CLAUSURA</span>
+                <span class="tag tag-status" id="t-status-tag">En curso</span>
+              </div>
+              <h2 id="t-name">Nombre del Torneo</h2>
+              <p id="t-manager">Federación de Cestoball de Capital Federal</p>
+            </div>
+            <div class="banner-sitas-status" id="t-sitas-badge">
+              <div class="sitas-pos-box">
+                <span class="pos-num" id="sitas-pos-num">-</span>
+                <span class="pos-text">Posición SITAS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phases Tabs -->
+          <div class="phases-bar">
+            <div class="phases-tabs" id="phases-tabs" role="tablist">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+          <!-- Phase Content: Standings & Matches -->
+          <div class="phase-workspace">
+            
+            <!-- View switcher: Posiciones vs Calendario -->
+            <div class="view-mode-bar">
+              <div class="tabs-segmented">
+                <button class="tab-btn active" id="view-tab-standings" data-view="standings">
+                  <i data-lucide="table-2"></i> Tabla de Posiciones
+                </button>
+                <button class="tab-btn" id="view-tab-matches" data-view="matches">
+                  <i data-lucide="calendar-days"></i> Fixture y Partidos (<span id="matches-tab-count">0</span>)
+                </button>
+              </div>
+            </div>
+
+            <!-- Standings Table Container -->
+            <div class="card standings-card" id="standings-container">
+              <div class="card-header">
+                <h3><i data-lucide="list-ordered"></i> Tabla de Posiciones</h3>
+                <span class="phase-badge" id="standings-phase-name">FASE REGULAR</span>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table" id="standings-table">
+                  <thead>
+                    <tr>
+                      <th class="th-pos">#</th>
+                      <th class="th-club">Club</th>
+                      <th class="th-num" title="Puntos">Pts</th>
+                      <th class="th-num" title="Partidos Jugados">PJ</th>
+                      <th class="th-num" title="Partidos Ganados">PG</th>
+                      <th class="th-num" title="Partidos Perdidos">PP</th>
+                      <th class="th-num hide-mobile" title="Goles a Favor">GF</th>
+                      <th class="th-num hide-mobile" title="Goles en Contra">GC</th>
+                      <th class="th-num" title="Diferencia de Goles">Dif</th>
+                    </tr>
+                  </thead>
+                  <tbody id="standings-tbody">
+                    <!-- Injected via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Matches & Fixture Container -->
+            <div class="card matches-card" id="matches-container" style="display: none;">
+              <div class="card-header">
+                <h3><i data-lucide="calendar"></i> Fixture y Resultados</h3>
+                <span class="phase-badge" id="matches-phase-name">FASE REGULAR</span>
+              </div>
+              <div class="matches-grid" id="matches-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </div>
+    </section>
+
+    <!-- SECCIÓN 3: NOTICIAS Y GALERÍA -->
+    <section class="news-section" id="section-news" aria-label="Noticias y Novedades">
+      <div class="section-heading">
+        <div class="heading-title-wrap">
+          <span class="heading-badge">📰 NOVEDADES Y GALERÍA</span>
+          <h2>Noticias del Cestoball de SITAS</h2>
+          <p class="heading-desc">Últimos acontecimientos, crónicas de partidos, fotos y eventos de nuestras categorías.</p>
+        </div>
+      </div>
+
+      <div class="news-grid" id="news-posts-grid">
+        <!-- Injected dynamically via JS from /api/posts -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rival Head-to-Head Modal -->
+  <div class="modal-backdrop" id="h2h-modal" role="dialog" aria-modal="true" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="swords" class="modal-icon"></i>
+          <div>
+            <h3 id="modal-rival-name">Rival</h3>
+            <p class="modal-sub">Historial de enfrentamientos vs SITAS</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="modal-close" aria-label="Cerrar ventana">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Article / News Reading Modal -->
+  <div class="modal-backdrop" id="article-modal" role="dialog" aria-modal="true" style="display: none;">
+    <div class="modal-box article-modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="badge-tag" id="article-modal-category">General</span>
+          <div>
+            <h3 id="article-modal-title">Título</h3>
+            <p class="modal-sub" id="article-modal-date">Fecha</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="article-modal-close" aria-label="Cerrar ventana">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="article-modal-body">
+        <img id="article-modal-img" src="" alt="Foto" class="article-full-img" style="display:none;">
+        <div id="article-modal-text" class="article-full-text"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand-info">
+        <div class="footer-logo">
+          <img src="assets/sitas_logo.png" alt="SITAS Logo" class="footer-crest-img">
+          <span class="footer-title">Para la familia de Sitas</span>
+        </div>
+        <p class="footer-copy">© 2026 SITAS Cestoball</p>
+      </div>
+
+      <div class="footer-contact-wrap">
+        <span class="footer-dev-label">Desarrollado por <strong>Natalia Gristelli</strong></span>
+        <a href="mailto:nataliagristelli@gmail.com" class="footer-contact-pill" title="Contacto por correo electrónico">
+          <i data-lucide="mail"></i>
+          <span>nataliagristelli@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
