@@ -10,11 +10,11 @@ Sistema integral para el Club SITAS Cestoball. Incluye extracción y sincronizac
 ```bash
 python server.py
 ```
-- 🌐 **Portal Web Público:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- 🔐 **Panel de Administración:** [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+- 🌐 **Portal Web Público:** 
+- 🔐 **Panel de Administración:** 
 - 🔑 **Credenciales por defecto:**
-  - **Usuario:** `admin`
-  - **Contraseña:** `sitas2026`
+  - **Usuario:** `xxxx`
+  - **Contraseña:** `xxxxx`
 
 ---
 
@@ -50,83 +50,6 @@ python server.py
    - **Selector de Categorías:** SUB 10, SUB 12, SUB 14, SUB 17, SUB 20, PRIMERA A, PRIMERA B, PRIMERA MASCULINO, MAXI 30.
    - **Tablas de Posiciones y Fixture:** Con buscador en vivo y switch para ver solo partidos de SITAS.
 
-
-## Notas sobre el HTML de Clupik (para tener en cuenta al extender esto)
-
-- Las URLs reales son `/es/tournament/{tournament_id}/ranking/{phase_id}`,
-  `/es/tournament/{tournament_id}/calendar/{phase_id}` y
-  `/es/manager/{manager_id}/tournaments` — no `/ranking/{id}` sueltas
-  como se había asumido en un borrador inicial.
-- Los números en la tabla de posiciones usan "." como separador de
-  miles (ej "1.148") y el atributo `data-sort` trae el signo negativo
-  pegado dentro del padding de ceros (ej `"0000...000-33"`), lo cual
-  rompe `int()` directo — por eso el parser usa el texto visible, no
-  `data-sort`, para esos números.
-- En el calendario, la fecha/hora real de cada partido está en el
-  atributo `data-sort` de la celda de resultado (formato
-  `"<status> <fecha> <hora> <equipo>"`), no en el texto visible.
-  Partidos sin fecha aún tienen el sentinela `"9999-99-99 99:99:99"`.
-- Cestoball no tiene empates: PJ = PG + PP (no hay columna de empates
-  en la tabla de posiciones).
-- El listado de torneos del manager mezcla torneos de club (ej "MAXI 30
-  | CLAUSURA", donde juega SITAS) con torneos de selecciones ("ARGENTINO
-  MAYORES FEMENINO" — participan las selecciones de cada federación,
-  no clubes). El modo `--manager-id` los filtra automáticamente porque
-  simplemente chequea si SITAS aparece en la clasificación de cada uno.
-
-## 🚀 Sincronización Rápida (1 solo comando)
-
-Para actualizar **todo** (descargar novedades de Clupik, actualizar la base de datos `sitas.db` y refrescar la web al instante):
-```bash
-python sync.py
-
-## 🛠️ Flujo Paso a Paso (Opcional)
-
-Si deseas ejecutar cada paso por separado:
-Actualizar solo un torneo específico rápido:
-```bash
-python sync.py --tournament-id 1339117
-
-Actualizar para otro club o federación:
-bash
-python sync.py --manager-id 260550 --club SITAS
-
-
-
-### 1. Descargar datos desde Clupik (Scraper)
-Descarga los torneos donde participa SITAS (con resolución automática de anti-bot Proof-of-Work y extracción de posiciones y partidos):
-```bash
-python main.py --manager-id 260550 --club SITAS
-```
-Esto genera `sitas_data.json`.
-
----
-
-### 2. Cargar a Base de Datos (SQLite / PostgreSQL)
-Ingesta la data en la base de datos relacional local (`sitas.db`) mediante `UPSERT` idempotente:
-```bash
-python load_to_db.py --file sitas_data.json
-```
-*Si tienes datos de años anteriores (ej. `2025.json`, `2024.json`), puedes cargarlos de la misma manera y se acumularán sin pisarse.*
-
----
-
-### 3. Exportar datos optimizados para el Frontend
-Genera el archivo `web/data.json` consolidado a partir de la base de datos:
-```bash
-python -c "from infrastructure.db.queries import export_data_for_frontend; export_data_for_frontend('web/data.json')"
-```
-
----
-
-### 4. Iniciar el Dashboard Web 
-Abre la aplicación web en tu navegador local:
-```bash
-python serve.py
-```
-O visita `http://localhost:8000`.
-
----
 
 ## 📁 Estructura del Proyecto
 
