@@ -99,6 +99,7 @@ def upsert_phase(
     clupik_phase_id: int,
     name: str,
     is_active: bool,
+    is_playoff: bool = False,
 ) -> int:
     row = conn.execute(
         "SELECT id FROM phases WHERE tournament_id = ? AND clupik_phase_id = ?",
@@ -107,17 +108,17 @@ def upsert_phase(
 
     if row:
         conn.execute(
-            "UPDATE phases SET name = ?, is_active = ? WHERE id = ?",
-            (name, is_active, row["id"]),
+            "UPDATE phases SET name = ?, is_active = ?, is_playoff = ? WHERE id = ?",
+            (name, is_active, 1 if is_playoff else 0, row["id"]),
         )
         return row["id"]
     else:
         cursor = conn.execute(
             """
-            INSERT INTO phases (tournament_id, clupik_phase_id, name, is_active)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO phases (tournament_id, clupik_phase_id, name, is_active, is_playoff)
+            VALUES (?, ?, ?, ?, ?)
             """,
-            (tournament_id, clupik_phase_id, name, is_active),
+            (tournament_id, clupik_phase_id, name, is_active, 1 if is_playoff else 0),
         )
         return cursor.lastrowid
 
@@ -296,12 +297,15 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
                 clupik_phase_id = phase_info.get("phase_id")
                 phase_name = phase_info.get("name", "Fase")
                 is_active = phase_info.get("is_active", False)
+                is_playoff = p_item.get("is_playoff", False) or any(
+                    w in phase_name.upper() for w in ["COPA", "PLAYOFF", "ORO", "PLATA", "BRONCE"]
+                )
 
                 if not clupik_phase_id:
                     continue
 
                 db_phase_id = upsert_phase(
-                    conn, db_tournament_id, clupik_phase_id, phase_name, is_active
+                    conn, db_tournament_id, clupik_phase_id, phase_name, is_active, is_playoff
                 )
                 stats["phases"] += 1
 

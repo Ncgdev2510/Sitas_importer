@@ -1,0 +1,39 @@
+name: Deploy SITAS Cestoball to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Permisos requeridos para publicar en GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite una sola ejecución concurrente de despliegue
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static web files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './web'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

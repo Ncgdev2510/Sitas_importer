@@ -1815,3 +1815,185 @@ tr.sitas-row .club-cell {
   color: var(--accent-gold);
 }
 
+/* ==========================================
+   PLAYOFF BRACKET VIEWER (CUADRO ELIMINATORIO)
+   ========================================== */
+.bracket-card {
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.bracket-viewer-scrollable {
+  overflow-x: auto;
+  padding: 1rem 0.5rem 1.5rem 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+.bracket-viewer-scrollable::-webkit-scrollbar {
+  height: 8px;
+}
+
+.bracket-viewer-scrollable::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+.bracket-tree {
+  display: flex;
+  gap: 2.25rem;
+  min-width: max-content;
+  align-items: stretch;
+}
+
+.bracket-round-col {
+  min-width: 270px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bracket-round-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-gold);
+  padding: 0.6rem 0.75rem;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.bracket-round-matches {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+  gap: 1.5rem;
+}
+
+.bracket-match-node {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.bracket-match-node:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.bracket-match-node.sitas-match {
+  border-color: rgba(245, 158, 11, 0.6);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.07) 0%, var(--bg-card) 100%);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+}
+
+.bracket-node-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.bracket-node-label {
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.bracket-team-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.35rem;
+  transition: background 0.15s ease;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bracket-team-item:last-of-type {
+  margin-bottom: 0;
+}
+
+.bracket-team-item.winner {
+  background: rgba(16, 185, 129, 0.08);
+  font-weight: 700;
+}
+
+.bracket-team-item.sitas-team {
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.bracket-team-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.bracket-team-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.bracket-team-name-text {
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bracket-score-badge {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  min-width: 32px;
+  text-align: center;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+.bracket-score-badge.winner {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--accent-green);
+}
+
+.bracket-match-footer {
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border-subtle);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+

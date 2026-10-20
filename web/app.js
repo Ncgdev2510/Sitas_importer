@@ -56,13 +56,17 @@ const DOM = {
   // Phase & Views
   phasesTabs: document.getElementById('phases-tabs'),
   viewTabStandings: document.getElementById('view-tab-standings'),
+  viewTabBracket: document.getElementById('view-tab-bracket'),
   viewTabMatches: document.getElementById('view-tab-matches'),
   matchesTabCount: document.getElementById('matches-tab-count'),
   standingsContainer: document.getElementById('standings-container'),
+  bracketContainer: document.getElementById('bracket-container'),
   matchesContainer: document.getElementById('matches-container'),
   standingsPhaseName: document.getElementById('standings-phase-name'),
+  bracketPhaseName: document.getElementById('bracket-phase-name'),
   matchesPhaseName: document.getElementById('matches-phase-name'),
   standingsTbody: document.getElementById('standings-tbody'),
+  bracketTreeViewer: document.getElementById('bracket-tree-viewer'),
   matchesList: document.getElementById('matches-list'),
 
   // Modal
@@ -171,6 +175,8 @@ function normalizeRawData(raw) {
         id: p.phase?.phase_id,
         name: p.phase?.name || 'Fase',
         is_active: p.phase?.is_active || false,
+        is_playoff: p.is_playoff || false,
+        bracket: p.bracket || null,
         standings: (p.standings || []).map((s) => ({
           ...s,
           club_name: s.club?.name || '',
@@ -400,15 +406,36 @@ function selectTournament(tournamentId) {
 function renderPhases(tournament) {
   const phases = tournament.phases || [];
   DOM.phasesTabs.innerHTML = phases
-    .map((p, idx) => `
-      <button class="phase-tab ${idx === state.selectedPhaseIndex ? 'active' : ''}" data-phase-idx="${idx}" role="tab">
-        ${p.name}
-      </button>
-    `)
+    .map((p, idx) => {
+      let icon = '';
+      const nameUpper = (p.name || '').toUpperCase();
+      if (nameUpper.includes('ORO')) icon = '🏆 ';
+      else if (nameUpper.includes('PLATA')) icon = '🥈 ';
+      else if (nameUpper.includes('BRONCE')) icon = '🥉 ';
+      else if (nameUpper.includes('COPA')) icon = '🛡️ ';
+
+      return `
+        <button class="phase-tab ${idx === state.selectedPhaseIndex ? 'active' : ''}" data-phase-idx="${idx}" role="tab">
+          ${icon}${p.name}
+        </button>
+      `;
+    })
     .join('');
 }
 
-// Render Standings and Matches for Selected Phase
+// Switch between Standings, Bracket, and Matches views
+function switchPhaseView(viewName) {
+  state.activeView = viewName;
+  if (DOM.viewTabStandings) DOM.viewTabStandings.classList.toggle('active', viewName === 'standings');
+  if (DOM.viewTabBracket) DOM.viewTabBracket.classList.toggle('active', viewName === 'bracket');
+  if (DOM.viewTabMatches) DOM.viewTabMatches.classList.toggle('active', viewName === 'matches');
+
+  if (DOM.standingsContainer) DOM.standingsContainer.style.display = viewName === 'standings' ? 'block' : 'none';
+  if (DOM.bracketContainer) DOM.bracketContainer.style.display = viewName === 'bracket' ? 'block' : 'none';
+  if (DOM.matchesContainer) DOM.matchesContainer.style.display = viewName === 'matches' ? 'block' : 'none';
+}
+
+// Render Standings, Matches, and Bracket for Selected Phase
 function renderPhaseData(tournament) {
   const phases = tournament.phases || [];
   const activePhase = phases[state.selectedPhaseIndex] || phases[0];
@@ -416,8 +443,32 @@ function renderPhaseData(tournament) {
   if (!activePhase) return;
 
   const phaseName = activePhase.name || 'Fase';
+  const isPlayoff = Boolean(
+    activePhase.is_playoff ||
+    activePhase.bracket ||
+    ['COPA', 'PLAYOFF', 'ORO', 'PLATA', 'BRONCE'].some((w) => phaseName.toUpperCase().includes(w))
+  );
+
   DOM.standingsPhaseName.textContent = phaseName;
   DOM.matchesPhaseName.textContent = phaseName;
+  if (DOM.bracketPhaseName) DOM.bracketPhaseName.textContent = phaseName;
+
+  if (isPlayoff) {
+    if (DOM.viewTabBracket) DOM.viewTabBracket.style.display = 'inline-flex';
+    if (!state.activeView || state.activeView === 'bracket' || state.activeView === 'standings') {
+      switchPhaseView('bracket');
+    } else {
+      switchPhaseView(state.activeView);
+    }
+    renderBracketTree(activePhase, tournament);
+  } else {
+    if (DOM.viewTabBracket) DOM.viewTabBracket.style.display = 'none';
+    if (state.activeView === 'bracket') {
+      switchPhaseView('standings');
+    } else {
+      switchPhaseView(state.activeView || 'standings');
+    }
+  }
 
   // 1. Standings Table
   const standings = activePhase.standings || [];
@@ -547,6 +598,152 @@ function renderPhaseData(tournament) {
   }
 
   if (window.lucide) window.lucide.createIcons();
+}
+
+// Render Interactive Bracket Tree Viewer
+function renderBracketTree(activePhase, tournament) {
+  const container = DOM.bracketTreeViewer;
+  if (!container) return;
+
+  let bracketData = activePhase.bracket;
+  if (!bracketData || !bracketData.rounds || bracketData.rounds.length === 0) {
+    bracketData = buildBracketFromMatches(activePhase.matches || []);
+  }
+
+  const rounds = bracketData.rounds || [];
+  if (rounds.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding: 2.5rem; color: var(--text-muted);">
+        <i data-lucide="git-branch" style="width: 32px; height: 32px; margin-bottom: 0.5rem;"></i>
+        <p>No se encontraron cruces eliminatorios registrados para esta copa.</p>
+      </div>
+    `;
+    if (window.lucide) window.lucide.createIcons();
+    return;
+  }
+
+  let html = `<div class="bracket-tree">`;
+
+  rounds.forEach((round) => {
+    html += `
+      <div class="bracket-round-col">
+        <div class="bracket-round-title">
+          <i data-lucide="trophy" style="width:16px;height:16px;"></i>
+          ${round.round_name}
+        </div>
+        <div class="bracket-round-matches">
+    `;
+
+    (round.matches || []).forEach((m) => {
+      const homeName = m.home_club?.name || m.home_club_name || 'Por definir';
+      const awayName = m.away_club?.name || m.away_club_name || 'Por definir';
+      const isSitasHome = homeName.toUpperCase().includes(state.targetClub);
+      const isSitasAway = awayName.toUpperCase().includes(state.targetClub);
+      const isSitas = isSitasHome || isSitasAway;
+
+      const played = Boolean(m.played);
+      const homeScore = m.home_score;
+      const awayScore = m.away_score;
+      const homeWinner = played && homeScore !== null && awayScore !== null && homeScore > awayScore;
+      const awayWinner = played && homeScore !== null && awayScore !== null && awayScore > homeScore;
+
+      const homeLogo = m.home_club?.logo_url || getClubLogoUrl(homeName);
+      const awayLogo = m.away_club?.logo_url || getClubLogoUrl(awayName);
+
+      let nextInfoHtml = '';
+      if (m.scheduled_at || m.venue) {
+        const dateStr = m.scheduled_at
+          ? new Date(m.scheduled_at).toLocaleDateString('es-AR', {
+              day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+            })
+          : '';
+        const venueStr = m.venue ? `· ${m.venue}` : '';
+        nextInfoHtml = `
+          <div class="bracket-match-footer">
+            <i data-lucide="clock" style="width:13px; height:13px; flex-shrink:0;"></i>
+            <span>${dateStr} ${venueStr}</span>
+          </div>
+        `;
+      }
+
+      html += `
+        <div class="bracket-match-node ${isSitas ? 'sitas-match' : ''}">
+          <div class="bracket-node-header">
+            <span class="bracket-node-label">${m.bracket_label || round.round_name}</span>
+            ${played ? `<span class="badge-status-finished" style="font-size:0.68rem; padding: 2px 6px; border-radius:4px; background: rgba(16,185,129,0.15); color:#4ade80;">Finalizado</span>` : `<span style="font-size:0.68rem; padding: 2px 6px; border-radius:4px; background: rgba(255,255,255,0.05); color:var(--text-muted);">Pendiente</span>`}
+          </div>
+
+          <div class="bracket-team-item ${homeWinner ? 'winner' : ''} ${isSitasHome ? 'sitas-team' : ''}">
+            <div class="bracket-team-info">
+              ${homeLogo ? `<img src="${homeLogo}" alt="${homeName}" class="bracket-team-logo" onerror="this.style.display='none'">` : `<i data-lucide="shield" style="width:18px;height:18px;color:var(--text-muted);flex-shrink:0;"></i>`}
+              <span class="bracket-team-name-text" title="${homeName}">${homeName}</span>
+            </div>
+            <span class="bracket-score-badge ${homeWinner ? 'winner' : ''}">${played ? homeScore : '-'}</span>
+          </div>
+
+          <div class="bracket-team-item ${awayWinner ? 'winner' : ''} ${isSitasAway ? 'sitas-team' : ''}">
+            <div class="bracket-team-info">
+              ${awayLogo ? `<img src="${awayLogo}" alt="${awayName}" class="bracket-team-logo" onerror="this.style.display='none'">` : `<i data-lucide="shield" style="width:18px;height:18px;color:var(--text-muted);flex-shrink:0;"></i>`}
+              <span class="bracket-team-name-text" title="${awayName}">${awayName}</span>
+            </div>
+            <span class="bracket-score-badge ${awayWinner ? 'winner' : ''}">${played ? awayScore : '-'}</span>
+          </div>
+
+          ${nextInfoHtml}
+        </div>
+      `;
+    });
+
+    html += `</div></div>`;
+  });
+
+  html += `</div>`;
+  container.innerHTML = html;
+  if (window.lucide) window.lucide.createIcons();
+}
+
+// Fallback: Build bracket tree structure from flat matches list
+function buildBracketFromMatches(matches) {
+  const roundOrder = {
+    'octav': 1,
+    'cuart': 2,
+    'semi': 3,
+    'final': 4,
+    'tercer': 5,
+  };
+
+  function getRoundWeight(name) {
+    const n = (name || '').toLowerCase();
+    for (const [k, w] of Object.entries(roundOrder)) {
+      if (n.includes(k)) return w;
+    }
+    return 99;
+  }
+
+  const roundsMap = {};
+  matches.forEach((m) => {
+    const rName = m.round_name || 'Eliminatoria';
+    if (!roundsMap[rName]) roundsMap[rName] = [];
+    roundsMap[rName].push({
+      bracket_label: rName,
+      match_id: m.clupik_id,
+      home_club: { name: m.home_club_name || m.home_club?.name },
+      away_club: { name: m.away_club_name || m.away_club?.name },
+      home_score: m.home_score,
+      away_score: m.away_score,
+      played: m.played,
+      scheduled_at: m.scheduled_at,
+      venue: m.venue,
+    });
+  });
+
+  const sortedNames = Object.keys(roundsMap).sort((a, b) => getRoundWeight(a) - getRoundWeight(b));
+  return {
+    rounds: sortedNames.map((name) => ({
+      round_name: name,
+      matches: roundsMap[name],
+    })),
+  };
 }
 
 // Update Global KPIs based on active season
@@ -756,22 +953,12 @@ function setupEventListeners() {
     if (tournament) renderPhaseData(tournament);
   });
 
-  // View Switcher (Standings vs Matches)
-  DOM.viewTabStandings.addEventListener('click', () => {
-    state.activeView = 'standings';
-    DOM.viewTabStandings.classList.add('active');
-    DOM.viewTabMatches.classList.remove('active');
-    DOM.standingsContainer.style.display = 'block';
-    DOM.matchesContainer.style.display = 'none';
-  });
-
-  DOM.viewTabMatches.addEventListener('click', () => {
-    state.activeView = 'matches';
-    DOM.viewTabMatches.classList.add('active');
-    DOM.viewTabStandings.classList.remove('active');
-    DOM.standingsContainer.style.display = 'none';
-    DOM.matchesContainer.style.display = 'block';
-  });
+  // View Switcher (Standings vs Bracket vs Matches)
+  DOM.viewTabStandings.addEventListener('click', () => switchPhaseView('standings'));
+  if (DOM.viewTabBracket) {
+    DOM.viewTabBracket.addEventListener('click', () => switchPhaseView('bracket'));
+  }
+  DOM.viewTabMatches.addEventListener('click', () => switchPhaseView('matches'));
 
   // Rival Link Click in Standings Table
   DOM.standingsTbody.addEventListener('click', (e) => {
@@ -811,16 +998,40 @@ function showError(msg) {
 // ==========================================
 // Módulo: Próxima Fecha (PDF Importado)
 // ==========================================
+function resolveMediaUrl(url) {
+  if (!url) return null;
+  if (url.startsWith('/uploads/')) {
+    return url.replace(/^\/+/, '');
+  }
+  return url;
+}
+
 async function loadUpcomingSchedule() {
   const grid = document.getElementById('upcoming-matches-grid');
   const roundInfo = document.getElementById('upcoming-round-info');
   if (!grid) return;
 
   try {
-    const res = await fetch('/api/schedule/upcoming?sitas_only=1');
-    if (!res.ok) throw new Error('API no disponible');
-    const data = await res.json();
-    const matches = data.matches || [];
+    let matches = [];
+
+    // Intento 1: API dinámica (cuando corre con server.py local)
+    try {
+      const res = await fetch('/api/schedule/upcoming?sitas_only=1');
+      if (res.ok) {
+        const data = await res.json();
+        matches = data.matches || [];
+      } else {
+        throw new Error('API no disponible');
+      }
+    } catch {
+      // Intento 2: Fallback estático para GitHub Pages
+      const resStatic = await fetch('upcoming.json');
+      if (resStatic.ok) {
+        const dataStatic = await resStatic.json();
+        const allMatches = dataStatic.matches || [];
+        matches = allMatches.filter((m) => m.is_sitas);
+      }
+    }
 
     if (matches.length === 0) {
       grid.innerHTML = `
@@ -897,10 +1108,27 @@ async function loadNewsFeed() {
   if (!grid) return;
 
   try {
-    const res = await fetch('/api/posts?limit=50');
-    if (!res.ok) throw new Error('API no disponible');
-    const data = await res.json();
-    loadedPosts = data.posts || [];
+    let posts = [];
+
+    // Intento 1: API dinámica (cuando corre con server.py local)
+    try {
+      const res = await fetch('/api/posts?limit=50');
+      if (res.ok) {
+        const data = await res.json();
+        posts = data.posts || [];
+      } else {
+        throw new Error('API no disponible');
+      }
+    } catch {
+      // Intento 2: Fallback estático para GitHub Pages
+      const resStatic = await fetch('posts.json');
+      if (resStatic.ok) {
+        const dataStatic = await resStatic.json();
+        posts = dataStatic.posts || [];
+      }
+    }
+
+    loadedPosts = posts;
 
     if (loadedPosts.length === 0) {
       grid.innerHTML = `
@@ -915,7 +1143,8 @@ async function loadNewsFeed() {
 
     grid.innerHTML = loadedPosts.map((p, idx) => {
       const dateStr = p.published_at ? new Date(p.published_at).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
-      const img = p.image_url || 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80';
+      const resolvedImg = resolveMediaUrl(p.image_url);
+      const img = resolvedImg || 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80';
 
       return `
         <article class="news-card" onclick="openArticleModal(${idx})">
@@ -1001,8 +1230,9 @@ window.openArticleModal = function(postIndex) {
   const dateStr = post.published_at ? new Date(post.published_at).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
   date.textContent = `${dateStr} ${post.author_name ? '· Publicado por ' + post.author_name : ''}`;
 
-  if (post.image_url) {
-    img.src = post.image_url;
+  const resolvedImg = resolveMediaUrl(post.image_url);
+  if (resolvedImg) {
+    img.src = resolvedImg;
     img.style.display = 'block';
   } else {
     img.style.display = 'none';

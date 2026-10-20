@@ -103,6 +103,58 @@ def get_tournament_full_detail(tournament_id: int, conn: sqlite3.Connection | No
         ).fetchall()
         p_dict["matches"] = [dict(m) for m in matches_rows]
 
+        # Determinar si es fase de playoff / eliminatorias
+        is_playoff = bool(p_dict.get("is_playoff")) or any(
+            w in (p["name"] or "").upper() for w in ["COPA", "PLAYOFF", "ORO", "PLATA", "BRONCE"]
+        )
+        p_dict["is_playoff"] = is_playoff
+
+        if is_playoff:
+            round_order = {
+                "octav": 1,
+                "cuart": 2,
+                "semi": 3,
+                "final": 4,
+                "tercer": 5,
+            }
+
+            def _get_round_sort(r_name: str) -> int:
+                r_lower = (r_name or "").lower()
+                for k, order in round_order.items():
+                    if k in r_lower:
+                        return order
+                return 99
+
+            rounds_dict: dict[str, list] = {}
+            for m in p_dict["matches"]:
+                r_name = m.get("round_name") or "Eliminatoria"
+                if r_name not in rounds_dict:
+                    rounds_dict[r_name] = []
+                rounds_dict[r_name].append({
+                    "bracket_label": r_name,
+                    "match_id": m.get("clupik_id"),
+                    "home_club": {"name": m.get("home_club_name")},
+                    "away_club": {"name": m.get("away_club_name")},
+                    "home_score": m.get("home_score"),
+                    "away_score": m.get("away_score"),
+                    "played": bool(m.get("played")),
+                    "scheduled_at": m.get("scheduled_at"),
+                    "venue": m.get("venue"),
+                })
+
+            sorted_round_names = sorted(rounds_dict.keys(), key=_get_round_sort)
+            p_dict["bracket"] = {
+                "rounds": [
+                    {
+                        "round_name": r_name,
+                        "matches": rounds_dict[r_name],
+                    }
+                    for r_name in sorted_round_names
+                ]
+            }
+        else:
+            p_dict["bracket"] = None
+
         phases_data.append(p_dict)
 
     t_dict["phases"] = phases_data
@@ -187,8 +239,68 @@ def export_data_for_frontend(
     }
 
     out_file = Path(output_path)
+    out_file.parent.mkdir(parents=True, exist_ok=True)
     out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     return out_file
+
+
+def export_upcoming_for_frontend(
+    output_path: Path | str = "web/upcoming.json",
+    conn: sqlite3.Connection | None = None,
+) -> Path:
+    """
+    Genera un archivo JSON estático con los próximos partidos para GitHub Pages.
+    """
+    c = conn or get_db_connection()
+    matches = get_upcoming_matches(sitas_only=False, conn=c)
+    payload = {
+        "count": len(matches),
+        "matches": matches,
+    }
+    out_file = Path(output_path)
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    return out_file
+
+
+def export_posts_for_frontend(
+    output_path: Path | str = "web/posts.json",
+    limit: int = 50,
+    conn: sqlite3.Connection | None = None,
+) -> Path:
+    """
+    Genera un archivo JSON estático con las publicaciones del blog para GitHub Pages.
+    """
+    c = conn or get_db_connection()
+    posts = get_posts(limit=limit, published_only=True, conn=c)
+    payload = {
+        "success": True,
+        "count": len(posts),
+        "posts": posts,
+    }
+    out_file = Path(output_path)
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    return out_file
+
+
+def export_all_static_data(
+    web_dir: Path | str = "web",
+    club_name: str = "SITAS",
+    conn: sqlite3.Connection | None = None,
+) -> dict[str, Path]:
+    """
+    Exporta todo el dataset estático (data.json, upcoming.json, posts.json)
+    para despliegue directo en GitHub Pages sin necesidad de backend en vivo.
+    """
+    base_web = Path(web_dir)
+    c = conn or get_db_connection()
+    return {
+        "data": export_data_for_frontend(base_web / "data.json", club_name=club_name, conn=c),
+        "upcoming": export_upcoming_for_frontend(base_web / "upcoming.json", conn=c),
+        "posts": export_posts_for_frontend(base_web / "posts.json", conn=c),
+    }
+
 
 
 # ==========================================

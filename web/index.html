@@ -229,11 +229,14 @@
           <!-- Phase Content: Standings & Matches -->
           <div class="phase-workspace">
             
-            <!-- View switcher: Posiciones vs Calendario -->
+            <!-- View switcher: Posiciones vs Calendario vs Cuadro -->
             <div class="view-mode-bar">
               <div class="tabs-segmented">
                 <button class="tab-btn active" id="view-tab-standings" data-view="standings">
                   <i data-lucide="table-2"></i> Tabla de Posiciones
+                </button>
+                <button class="tab-btn" id="view-tab-bracket" data-view="bracket" style="display: none;">
+                  <i data-lucide="git-branch"></i> Cuadro Eliminatorio
                 </button>
                 <button class="tab-btn" id="view-tab-matches" data-view="matches">
                   <i data-lucide="calendar-days"></i> Fixture y Partidos (<span id="matches-tab-count">0</span>)
@@ -266,6 +269,17 @@
                     <!-- Injected via JS -->
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            <!-- Bracket Viewer Container -->
+            <div class="card bracket-card" id="bracket-container" style="display: none;">
+              <div class="card-header">
+                <h3><i data-lucide="git-branch"></i> Cuadro de Playoff / Eliminatorias</h3>
+                <span class="phase-badge" id="bracket-phase-name">COPA DE ORO</span>
+              </div>
+              <div class="bracket-viewer-scrollable" id="bracket-tree-viewer">
+                <!-- Injected via JS -->
               </div>
             </div>
 

@@ -103,53 +103,333 @@ def parse_ranking_phases(html: str, tournament_id: int) -> list[dict]:
     return phases
 
 
-def parse_standings(html: str, tournament_id: int, phase_id: int, phase_name: str = "") -> list[Standing]:
-    """
-    Extrae la tabla de posiciones desde
-    /es/tournament/{tournament_id}/ranking/{phase_id}.
+def is_playoff_phase(html: str) -> bool:
+    """Verifica si el HTML corresponde a una fase de playoff / eliminatorias."""
+    if not html:
+        return False
+    soup = BeautifulSoup(html, "html.parser")
+    return soup.select_one(".playoff-viewer") is not None
 
-    Columnas confirmadas (en este orden): A/D, Posición, Nombre, Puntos,
-    PJ, PG, PP, Valor a favor, Valor en contra, Diferencia.
-    No hay columna de empates en cestoball (PJ = PG + PP).
+
+def parse_playoff_bracket(
+    html: str,
+    tournament_id: int,
+    phase_id: int | None = None,
+    phase_name: str = "",
+    season: str = "2026",
+) -> tuple[list[Match], dict]:
+    """
+    Extrae los partidos y la estructura de cuadro eliminatorio desde el
+    .playoff-viewer de Clupik (ej: COPA DE ORO, COPA DE PLATA, etc.).
     """
     soup = BeautifulSoup(html, "html.parser")
+    playoff_viewer = soup.select_one(".playoff-viewer")
+    if not playoff_viewer:
+        return [], {"rounds": []}
+
+    matches: list[Match] = []
+    rounds_data: list[dict] = []
+
+    round_elems = playoff_viewer.select(".round")
+    for r_idx, r in enumerate(round_elems):
+        header = r.select_one(".round-header")
+        if header:
+            raw_title = header.contents[0].strip() if header.contents else header.get_text(strip=True)
+            round_name = raw_title.replace("\u200c", "").strip()
+        else:
+            round_name = f"Ronda {r_idx + 1}"
+
+        round_dict = {
+            "round_index": r_idx,
+            "round_name": round_name,
+            "matches": [],
+        }
+
+        for b in r.select(".bracket-container"):
+            bracket_data_elem = b.select_one(".bracket-data")
+            bracket_label = bracket_data_elem.get_text(strip=True) if bracket_data_elem else round_name
+
+            # Equipos
+            teams_elems = b.select(".inside .teams > .team")
+            teams_info = []
+            for t in teams_elems:
+                t_id = t.get("data-team")
+                if t_id and t_id.isdigit():
+                    team_id = int(t_id)
+                else:
+                    href = t.get("href", "")
+                    m = re.search(r"/team/(\d+)", href)
+                    team_id = int(m.group(1)) if m else None
+
+                name_text = t.get_text(strip=True)
+                img_tag = t.select_one("img")
+                logo_url = img_tag.get("src") if img_tag else None
+                is_win = "winner" in t.get("class", [])
+
+                teams_info.append({
+                    "name": name_text,
+                    "clupik_id": team_id,
+                    "logo_url": logo_url,
+                    "is_winner": is_win,
+                })
+
+            home_info = teams_info[0] if len(teams_info) > 0 else {"name": "Por definir", "clupik_id": None, "logo_url": None, "is_winner": False}
+            away_info = teams_info[1] if len(teams_info) > 1 else {"name": "Por definir", "clupik_id": None, "logo_url": None, "is_winner": False}
+
+            # Link del partido e ID
+            match_link = b.select_one(".inside .matchs a.match[href]")
+            match_id = None
+            if match_link:
+                m = re.search(r"/match/(\d+)", match_link.get("href", ""))
+                if m:
+                    match_id = int(m.group(1))
+
+            # Marcador
+            scores: list[int | None] = []
+            if match_link:
+                spans = match_link.find_all("span", recursive=False)
+                for s in spans:
+                    txt = s.get_text(strip=True)
+                    if txt.isdigit():
+                        scores.append(int(txt))
+                    elif txt in ("–", "-", "—", "") or "dash" in str(s):
+                        scores.append(None)
+
+            played = len(scores) >= 2 and scores[0] is not None and scores[1] is not None
+            home_score = scores[0] if len(scores) > 0 else None
+            away_score = scores[1] if len(scores) > 1 else None
+
+            # Próximo partido (fecha/hora y sede)
+            next_match = b.select_one(".next-match")
+            scheduled_at = None
+            venue = None
+            if next_match:
+                nm_text = next_match.get_text(" ", strip=True)
+                parts = [p.strip() for p in nm_text.split("·")]
+                date_part = parts[0] if len(parts) > 0 else ""
+                if len(parts) > 1:
+                    venue = parts[1]
+
+                date_m = re.search(r"(\d{1,2})/(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?", date_part)
+                if date_m:
+                    day, month, hour, minute = date_m.groups()
+                    if hour and minute:
+                        year = season if season and season.isdigit() else "2026"
+                        try:
+                            scheduled_at = datetime(int(year), int(month), int(day), int(hour), int(minute))
+                        except ValueError:
+                            scheduled_at = None
+
+            match_obj = Match(
+                clupik_id=match_id,
+                tournament_id=tournament_id,
+                phase_id=phase_id,
+                phase_name=phase_name,
+                round_name=round_name,
+                scheduled_at=scheduled_at,
+                home_club=Club(clupik_id=home_info["clupik_id"], name=home_info["name"]),
+                away_club=Club(clupik_id=away_info["clupik_id"], name=away_info["name"]),
+                home_score=home_score,
+                away_score=away_score,
+                venue=venue,
+                played=played,
+            )
+            matches.append(match_obj)
+
+            round_dict["matches"].append({
+                "bracket_label": bracket_label,
+                "match_id": match_id,
+                "round_name": round_name,
+                "home_club": home_info,
+                "away_club": away_info,
+                "home_score": home_score,
+                "away_score": away_score,
+                "played": played,
+                "scheduled_at": scheduled_at.strftime("%Y-%m-%d %H:%M:%S") if scheduled_at else None,
+                "venue": venue,
+            })
+
+        rounds_data.append(round_dict)
+
+    return matches, {"rounds": rounds_data}
+
+
+def generate_playoff_standings(
+    matches: list[Match],
+    tournament_id: int,
+    phase_id: int,
+    phase_name: str,
+) -> list[Standing]:
+    """
+    Calcula tabla de posiciones a partir de los partidos del cuadro eliminatorio.
+    Determina campeón, subcampeón, 3er/4to puesto y clasificados a rondas avanzadas.
+    """
+    clubs_map: dict[str, Club] = {}
+    stats: dict[str, dict] = {}
+    round_weight = {
+        "final": 100,
+        "tercer": 80,
+        "semi": 60,
+        "cuart": 40,
+        "octav": 20,
+    }
+
+    def _is_real_club(name: str) -> bool:
+        n = name.lower().strip()
+        if not n or "ganador" in n or "sin equipo" in n or "por definir" in n:
+            return False
+        return True
+
+    def _get_weight(round_str: str) -> int:
+        r = round_str.lower()
+        for k, w in round_weight.items():
+            if k in r:
+                return w
+        return 10
+
+    for m in matches:
+        for club, score, opp_score in [
+            (m.home_club, m.home_score, m.away_score),
+            (m.away_club, m.away_score, m.home_score),
+        ]:
+            if not _is_real_club(club.name):
+                continue
+            name = club.name.strip()
+            if name not in stats:
+                clubs_map[name] = club
+                stats[name] = {
+                    "played": 0,
+                    "won": 0,
+                    "lost": 0,
+                    "points": 0,
+                    "gf": 0,
+                    "ga": 0,
+                    "max_weight": 0,
+                    "champion": False,
+                    "runner_up": False,
+                    "third": False,
+                    "fourth": False,
+                }
+
+            w = _get_weight(m.round_name or "")
+            if w > stats[name]["max_weight"]:
+                stats[name]["max_weight"] = w
+
+            if m.played and score is not None and opp_score is not None:
+                stats[name]["played"] += 1
+                stats[name]["gf"] += score
+                stats[name]["ga"] += opp_score
+                if score > opp_score:
+                    stats[name]["won"] += 1
+                    stats[name]["points"] += 2
+                    if "final" in (m.round_name or "").lower() and "tercer" not in (m.round_name or "").lower():
+                        stats[name]["champion"] = True
+                    elif "tercer" in (m.round_name or "").lower():
+                        stats[name]["third"] = True
+                else:
+                    stats[name]["lost"] += 1
+                    stats[name]["points"] += 1
+                    if "final" in (m.round_name or "").lower() and "tercer" not in (m.round_name or "").lower():
+                        stats[name]["runner_up"] = True
+                    elif "tercer" in (m.round_name or "").lower():
+                        stats[name]["fourth"] = True
+
+    def _sort_key(item):
+        name, st = item
+        podium = 10
+        if st["champion"]:
+            podium = 1
+        elif st["runner_up"]:
+            podium = 2
+        elif st["third"]:
+            podium = 3
+        elif st["fourth"]:
+            podium = 4
+
+        return (
+            podium,
+            -st["max_weight"],
+            -st["points"],
+            -(st["gf"] - st["ga"]),
+            -st["gf"],
+            name,
+        )
+
+    sorted_clubs = sorted(stats.items(), key=_sort_key)
     standings: list[Standing] = []
-
-    # La clase "tablestyle-XXXX" varía por torneo; "tabletype-public" es estable.
-    table = soup.select_one("table.tabletype-public")
-    if table is None:
-        return standings
-
-    for row in table.select("tbody tr"):
-        position_cell = row.select_one("td.colstyle-posicion")
-        name_cell = row.select_one("td.colstyle-nombre")
-        if position_cell is None or name_cell is None:
-            continue
-
-        team_link = row.select_one("td.colstyle-ascenso-descenso a[href]")
-        team_id = None
-        if team_link:
-            match = re.search(r"/team/(\d+)", team_link["href"])
-            if match:
-                team_id = int(match.group(1))
-
+    for pos, (name, st) in enumerate(sorted_clubs, start=1):
         standings.append(
             Standing(
                 tournament_id=tournament_id,
                 phase_id=phase_id,
                 phase_name=phase_name,
-                position=_parse_int(position_cell),
-                club=Club(clupik_id=team_id, name=name_cell.get_text(strip=True)),
-                played=_parse_int(row.select_one("td.colstyle-partidos-jugados")),
-                won=_parse_int(row.select_one("td.colstyle-partidos-ganados")),
+                position=pos,
+                club=clubs_map[name],
+                played=st["played"],
+                won=st["won"],
                 drawn=0,
-                lost=_parse_int(row.select_one("td.colstyle-partidos-perdidos")),
-                points=_parse_int(row.select_one("td.colstyle-puntos")),
-                goals_for=_parse_int(row.select_one("td.colstyle-valor")),
-                goals_against=_parse_int(row.select_one("td.colstyle-contravalor")),
-                goal_diff=_parse_int(row.select_one("td.colstyle-diferencia-valor")),
+                lost=st["lost"],
+                points=st["points"],
+                goals_for=st["gf"],
+                goals_against=st["ga"],
+                goal_diff=st["gf"] - st["ga"],
             )
         )
+
+    return standings
+
+
+def parse_standings(html: str, tournament_id: int, phase_id: int, phase_name: str = "") -> list[Standing]:
+    """
+    Extrae la tabla de posiciones desde
+    /es/tournament/{tournament_id}/ranking/{phase_id}.
+
+    Soporta dos variantes de HTML de Clupik:
+    1. Fase regular / grupos: tabla tradicional table.tabletype-public.
+    2. Playoff / eliminatorias: cuadro visual en .playoff-viewer (Copa de Oro, Plata, etc.).
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    standings: list[Standing] = []
+
+    # Caso 1: Tabla tradicional
+    table = soup.select_one("table.tabletype-public")
+    if table is not None:
+        for row in table.select("tbody tr"):
+            position_cell = row.select_one("td.colstyle-posicion")
+            name_cell = row.select_one("td.colstyle-nombre")
+            if position_cell is None or name_cell is None:
+                continue
+
+            team_link = row.select_one("td.colstyle-ascenso-descenso a[href]")
+            team_id = None
+            if team_link:
+                match = re.search(r"/team/(\d+)", team_link["href"])
+                if match:
+                    team_id = int(match.group(1))
+
+            standings.append(
+                Standing(
+                    tournament_id=tournament_id,
+                    phase_id=phase_id,
+                    phase_name=phase_name,
+                    position=_parse_int(position_cell),
+                    club=Club(clupik_id=team_id, name=name_cell.get_text(strip=True)),
+                    played=_parse_int(row.select_one("td.colstyle-partidos-jugados")),
+                    won=_parse_int(row.select_one("td.colstyle-partidos-ganados")),
+                    drawn=0,
+                    lost=_parse_int(row.select_one("td.colstyle-partidos-perdidos")),
+                    points=_parse_int(row.select_one("td.colstyle-puntos")),
+                    goals_for=_parse_int(row.select_one("td.colstyle-valor")),
+                    goals_against=_parse_int(row.select_one("td.colstyle-contravalor")),
+                    goal_diff=_parse_int(row.select_one("td.colstyle-diferencia-valor")),
+                )
+            )
+        return standings
+
+    # Caso 2: Cuadro de Playoff / Eliminatorias (.playoff-viewer)
+    if is_playoff_phase(html):
+        matches, _ = parse_playoff_bracket(html, tournament_id, phase_id, phase_name)
+        return generate_playoff_standings(matches, tournament_id, phase_id, phase_name)
 
     return standings
 

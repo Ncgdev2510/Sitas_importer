@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS phases (
     clupik_phase_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     is_active BOOLEAN DEFAULT 0,
+    is_playoff BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(tournament_id, clupik_phase_id)
 );

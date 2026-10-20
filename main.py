@@ -37,6 +37,9 @@ from infrastructure.clupik.parser import (
     get_standing_for_club,
     parse_calendar,
     get_matches_for_club,
+    is_playoff_phase,
+    parse_playoff_bracket,
+    generate_playoff_standings,
 )
 from domain.entities import Tournament
 
@@ -75,25 +78,54 @@ def extract_tournament(
         else:
             ranking_html = client.get_ranking(tournament_id, phase_id)
 
-        standings = parse_standings(ranking_html, tournament_id, phase_id, phase_name) if ranking_html else []
-        club_standing = get_standing_for_club(standings, club_name)
+        is_playoff = is_playoff_phase(ranking_html) if ranking_html else False
+        bracket_dict = None
 
-        # Si la fase no está activa y su tabla está vacía, evitamos request innecesaria de calendario
-        if not phase["is_active"] and not standings:
-            matches = []
-            club_matches = []
-        else:
+        if is_playoff:
+            playoff_matches, bracket_dict = parse_playoff_bracket(
+                ranking_html, tournament_id, phase_id, phase_name, season=metadata.get("season", "2026")
+            )
+            # Enriquecemos con calendario si está disponible para fechas/horas exactas
             calendar_html = client.get_calendar(tournament_id, phase_id)
             if calendar_html:
-                matches = parse_calendar(calendar_html, tournament_id, phase_id, phase_name)
-                club_matches = get_matches_for_club(matches, club_name)
-            else:
+                cal_matches = parse_calendar(calendar_html, tournament_id, phase_id, phase_name)
+                cal_by_id = {m.clupik_id: m for m in cal_matches if m.clupik_id}
+                for pm in playoff_matches:
+                    if pm.clupik_id and pm.clupik_id in cal_by_id:
+                        cm = cal_by_id[pm.clupik_id]
+                        if cm.scheduled_at and not pm.scheduled_at:
+                            pm.scheduled_at = cm.scheduled_at
+                        if cm.played and not pm.played:
+                            pm.played = True
+                            if pm.home_score is None:
+                                pm.home_score = cm.home_score
+                                pm.away_score = cm.away_score
+
+            matches = playoff_matches
+            standings = generate_playoff_standings(matches, tournament_id, phase_id, phase_name)
+            club_standing = get_standing_for_club(standings, club_name)
+            club_matches = get_matches_for_club(matches, club_name)
+        else:
+            standings = parse_standings(ranking_html, tournament_id, phase_id, phase_name) if ranking_html else []
+            club_standing = get_standing_for_club(standings, club_name)
+
+            # Si la fase regular no está activa y su tabla está vacía, evitamos request innecesaria de calendario
+            if not phase["is_active"] and not standings:
                 matches = []
                 club_matches = []
-
+            else:
+                calendar_html = client.get_calendar(tournament_id, phase_id)
+                if calendar_html:
+                    matches = parse_calendar(calendar_html, tournament_id, phase_id, phase_name)
+                    club_matches = get_matches_for_club(matches, club_name)
+                else:
+                    matches = []
+                    club_matches = []
 
         result["phases"].append({
             "phase": phase,
+            "is_playoff": is_playoff,
+            "bracket": bracket_dict,
             "standings": [asdict(s) for s in standings],
             "club_standing": asdict(club_standing) if club_standing else None,
             "matches": [asdict(m) for m in matches],
@@ -116,7 +148,7 @@ def check_club_participation(
 ) -> tuple[bool, str, dict[int, str]]:
     """
     Chequeo multi-fase: revisa todas las zonas/fases del torneo (ZONA A, B, C, D,
-    FASE REGULAR, etc.) para verificar si el club participa.
+    FASE REGULAR, COPA DE ORO/PLATA/BRONCE, etc.) para verificar si el club participa.
     Devuelve (participa, base_html, phase_cache).
     """
     base_html = client.get_ranking(tournament.clupik_id)
@@ -128,22 +160,29 @@ def check_club_participation(
     active_phase = next((p for p in phases if p["is_active"]), phases[0])
     phase_cache[active_phase["phase_id"]] = base_html
 
+    def _participates_in_html(html: str, p_id: int, p_name: str) -> bool:
+        if is_playoff_phase(html):
+            p_matches, _ = parse_playoff_bracket(html, tournament.clupik_id, p_id, p_name)
+            if any(m.involves(club_name) for m in p_matches):
+                return True
+            p_standings = generate_playoff_standings(p_matches, tournament.clupik_id, p_id, p_name)
+            return get_standing_for_club(p_standings, club_name) is not None
+        else:
+            p_standings = parse_standings(html, tournament.clupik_id, p_id, p_name)
+            return get_standing_for_club(p_standings, club_name) is not None
+
     # 1. Primero chequear la fase activa
-    standings = parse_standings(
-        base_html, tournament.clupik_id, active_phase["phase_id"], active_phase["name"]
-    )
-    if get_standing_for_club(standings, club_name) is not None:
+    if _participates_in_html(base_html, active_phase["phase_id"], active_phase["name"]):
         return True, base_html, phase_cache
 
-    # 2. Si no está en la fase activa, chequear las demás fases (ej. otras Zonas)
+    # 2. Si no está en la fase activa, chequear las demás fases (ej. otras Zonas o Copas)
     for p in phases:
         if p["phase_id"] == active_phase["phase_id"]:
             continue
         p_html = client.get_ranking(tournament.clupik_id, p["phase_id"])
         if p_html:
             phase_cache[p["phase_id"]] = p_html
-            p_standings = parse_standings(p_html, tournament.clupik_id, p["phase_id"], p["name"])
-            if get_standing_for_club(p_standings, club_name) is not None:
+            if _participates_in_html(p_html, p["phase_id"], p["name"]):
                 return True, base_html, phase_cache
 
     return False, base_html, phase_cache

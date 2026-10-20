@@ -29,6 +29,12 @@ def init_db(db_path: Path | str | None = None) -> None:
     schema_sql = SCHEMA_PATH.read_text(encoding="utf-8")
     with get_db_connection(db_path) as conn:
         conn.executescript(schema_sql)
+        try:
+            cols = [c[1] for c in conn.execute("PRAGMA table_info(phases)").fetchall()]
+            if "is_playoff" not in cols:
+                conn.execute("ALTER TABLE phases ADD COLUMN is_playoff BOOLEAN DEFAULT 0")
+        except Exception:
+            pass
 
 
 @contextmanager

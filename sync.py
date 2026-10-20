@@ -22,7 +22,7 @@ from pathlib import Path
 from infrastructure.clupik.client import ClupikClient
 from main import run_by_manager, run_by_tournament
 from load_to_db import load_data_file
-from infrastructure.db.queries import export_data_for_frontend
+from infrastructure.db.queries import export_all_static_data
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger("sync")
@@ -66,10 +66,11 @@ def sync_all(
     logger.info("[2/3] Actualizando base de datos relacional...")
     stats = load_data_file(json_path, db_path=db_path)
 
-    # Paso 3: Exportar JSON consolidado para el frontend
+    # Paso 3: Exportar dataset estático para el frontend y GitHub Pages
     logger.info("[3/3] Exportando datos consolidados para la web (%s)...", web_data_path)
     web_data_path.parent.mkdir(exist_ok=True)
-    export_path = export_data_for_frontend(web_data_path, club_name=club_name, conn=None)
+    exported = export_all_static_data(web_dir=web_data_path.parent, club_name=club_name, conn=None)
+    export_path = exported["data"]
 
     elapsed = round(time.monotonic() - start_time, 1)
     print("\n" + "=" * 60)
@@ -80,6 +81,7 @@ def sync_all(
     print(f"  - Fases procesadas: {stats.get('phases', 0)}")
     print(f"  - Partidos actualizados: {stats.get('matches', 0)}")
     print(f"  - Archivo web listo: {export_path} ({export_path.stat().st_size} bytes)")
+    print("  - Archivos estáticos listos para GitHub Pages en: web/")
     print("  - Dashboard disponible en: http://localhost:8000\n")
 
 

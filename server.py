@@ -39,6 +39,8 @@ from infrastructure.db.queries import (
     verify_user,
     get_user_by_id,
     export_data_for_frontend,
+    export_upcoming_for_frontend,
+    export_posts_for_frontend,
 )
 
 from infrastructure.pdf.parser import parse_schedule_pdf
@@ -162,6 +164,8 @@ def upload_pdf_schedule():
     if publish:
         batch_id = datetime.now().strftime("import_%Y%m%d_%H%M%S")
         saved_count = save_upcoming_matches(matches, batch_id=batch_id, clear_previous=True)
+        # Mantener archivo estático sincronizado para GitHub Pages
+        export_upcoming_for_frontend(WEB_DIR / "upcoming.json")
     else:
         saved_count = 0
 
@@ -181,6 +185,8 @@ def clear_schedule():
     if not is_authenticated():
         return jsonify({"error": "No autorizado"}), 401
     clear_upcoming_matches()
+    # Mantener archivo estático sincronizado para GitHub Pages
+    export_upcoming_for_frontend(WEB_DIR / "upcoming.json")
     return jsonify({"success": True, "message": "Cronograma eliminado con éxito"})
 
 
@@ -241,6 +247,8 @@ def create_new_post():
         author_id=author_id,
         published=published,
     )
+    # Mantener archivo estático sincronizado para GitHub Pages
+    export_posts_for_frontend(WEB_DIR / "posts.json")
 
     return jsonify({
         "success": True,
@@ -303,6 +311,8 @@ def update_post_route(post_id: int):
         image_url=image_url,
         published=published,
     )
+    # Mantener archivo estático sincronizado para GitHub Pages
+    export_posts_for_frontend(WEB_DIR / "posts.json")
 
     return jsonify({
         "success": True,
@@ -316,6 +326,8 @@ def remove_post(post_id: int):
         return jsonify({"error": "No autorizado"}), 401
 
     delete_post(post_id)
+    # Mantener archivo estático sincronizado para GitHub Pages
+    export_posts_for_frontend(WEB_DIR / "posts.json")
     return jsonify({"success": True, "message": "Publicación eliminada correctamente"})
 
 
