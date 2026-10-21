@@ -85,34 +85,3 @@ sitas_importer/
 ## 🚀 Publicación Gratuita en GitHub Pages (con Dominio Personalizado)
 
 El proyecto está configurado para publicarse de forma **100% gratuita, ultrarrápida y con SSL automático** en GitHub Pages mediante GitHub Actions.
-
-### 1. Activar GitHub Pages en el repositorio
-1. Entra a tu repositorio en GitHub: [Sitas_importer](https://github.com/Ncgdev2510/Sitas_importer).
-2. Ve a la pestaña **Settings** (Configuración) > **Pages** (en el menú lateral izquierdo).
-3. En **Build and deployment > Source**, selecciona **GitHub Actions**.
-4. ¡Listo! El flujo automatizado `.github/workflows/deploy.yml` desplegará la carpeta `web/` cada vez que hagas `git push` a `main`.
-
-### 2. Configurar Dominio Personalizado
-1. En **Settings > Pages > Custom domain**, ingresa tu dominio (ej: `cestoballsitas.com` o `cestoball.clubsitas.com.ar`) y haz clic en **Save**.
-2. En el panel de control DNS de tu registrador de dominio (NIC Argentina, DonWeb, etc.):
-   - Si usas un **subdominio** (ej. `cestoball.clubsitas.com.ar`): Crea un registro **CNAME** con valor `ncgdev2510.github.io`.
-   - Si usas un **dominio raíz** (ej. `cestoballsitas.com`): Crea registros **A** con las 4 IPs de GitHub Pages:
-     - `185.199.108.153`
-     - `185.199.109.153`
-     - `185.199.110.153`
-     - `185.199.111.153`
-3. Una vez propagado el DNS, activa la casilla **Enforce HTTPS** para contar con candado de seguridad SSL gratis.
-
-### 3. Cómo actualizar los datos de la web pública
-1. En tu máquina local, actualiza torneos, cronograma PDF o noticias desde el panel (`python server.py`).
-2. Exporta o verifica los datos estáticos:
-   ```bash
-   python export_static.py
-   ```
-3. Sube los cambios a GitHub:
-   ```bash
-   git add .
-   git commit -m "Actualizar datos y resultados"
-   git push
-   ```
-   GitHub Pages se actualizará automáticamente en menos de 1 minuto.
