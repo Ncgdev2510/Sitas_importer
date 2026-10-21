@@ -1045,11 +1045,14 @@ async function loadUpcomingSchedule() {
     }
 
     if (matches[0] && roundInfo) {
-      roundInfo.innerHTML = `<i data-lucide="calendar"></i> Fecha ${matches[0].round_num || ''} — ${matches[0].match_date || ''}`;
+      const r = matches[0].round_num;
+      const rStr = r ? (/^\d+$/.test(String(r).trim()) ? `Fecha ${r}` : String(r)) : '';
+      roundInfo.innerHTML = `<i data-lucide="calendar"></i> ${rStr ? rStr + ' — ' : ''}${matches[0].match_date || ''}`;
     }
 
     grid.innerHTML = matches.map((m) => {
-      const isHome = m.home_team.toUpperCase().includes('SITAS');
+      const isHome = /sitas|sita5/i.test(m.home_team);
+      const isAway = /sitas|sita5/i.test(m.away_team);
       const venueStr = m.venue ? m.venue : (isHome ? 'SITAS' : m.home_team);
 
       return `
@@ -1067,9 +1070,9 @@ async function loadUpcomingSchedule() {
               <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(m.home_team)}${m.home_team}</span>
               ${isHome ? '<span class="tag tag-category" style="font-size:0.65rem;">LOCAL</span>' : ''}
             </div>
-            <div class="upcoming-team-line ${!isHome ? 'sitas' : ''}">
+            <div class="upcoming-team-line ${isAway ? 'sitas' : ''}">
               <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(m.away_team)}${m.away_team}</span>
-              ${!isHome ? '<span class="tag tag-category" style="font-size:0.65rem;">VISITANTE</span>' : ''}
+              ${isAway ? '<span class="tag tag-category" style="font-size:0.65rem;">VISITANTE</span>' : ''}
             </div>
           </div>
 

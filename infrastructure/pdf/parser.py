@@ -23,8 +23,14 @@ except Exception:
 KNOWN_CATEGORIES = [
     "SUB10", "SUB 10", "SUB12", "SUB 12", "SUB14 FLEX", "SUB 14 FLEX", "SUB14", "SUB 14",
     "SUB17 FLEX", "SUB 17 FLEX", "SUB17", "SUB 17", "SUB20", "SUB 20",
-    "PRIMERA A", "PRIMERA B", "PRIMERA MASCULINO", "MASCULINO",
+    "PRIMERA A", "PRIMERA B", "PRIMERAA", "PRIMERAB", "PRIMERA MASCULINO", "MASCULINO", "MASCUUNO",
     "MAXI 30", "MAXI30", "MAXI 35", "MAXI35", "MAXI 40", "MAXI40"
+]
+
+OBSERVATION_KEYWORDS = [
+    "por", "si gana", "gana", "bonaerenses", "reprogramado", "postergado", "cede",
+    "cancha", "local", "sede", "presenta", "no se presenta", "jugadoras", "judío",
+    "judio", "dia", "perdon", "torneo", "partido", "semana", "tienen que", "aviso", "susp"
 ]
 
 
@@ -32,9 +38,47 @@ def normalize_category(cat: str) -> str:
     cat = cat.upper().strip()
     cat = re.sub(r"\bSUB(\d+)", r"SUB \1", cat)
     cat = re.sub(r"\bMAXI(\d+)", r"MAXI \1", cat)
-    if cat == "MASCULINO":
+    if "MASCUUNO" in cat or cat == "MASCULINO":
         cat = "PRIMERA MASCULINO"
+    elif cat == "PRIMERAA":
+        cat = "PRIMERA A"
+    elif cat == "PRIMERAB":
+        cat = "PRIMERA B"
+    cat = re.sub(r"\bSUB\s+(\d+)\s*FLEX\b", r"SUB \1 FLEX", cat)
     return re.sub(r"\s+", " ", cat)
+
+
+def normalize_team_name(name: str) -> str:
+    name = name.strip()
+    # Corrección de errores OCR típicos
+    name = re.sub(r"\bSITA5\b", "SITAS", name, flags=re.IGNORECASE)
+    name = re.sub(r"\bSITAS\s+8\b", "SITAS B", name, flags=re.IGNORECASE)
+    name = re.sub(r"3[\*\"#']\s*vs\s*6[\*\"#']", "3° vs 6°", name, flags=re.IGNORECASE)
+    name = re.sub(r"3[\*\"#']\s*al\s*6[\*\"#']", "3° al 6°", name, flags=re.IGNORECASE)
+
+    # Estandarización de mayúsculas para equipos SITAS
+    if re.search(r"^sitas$", name, flags=re.IGNORECASE):
+        return "SITAS"
+    if re.search(r"^sitas\s+b$", name, flags=re.IGNORECASE):
+        return "SITAS B"
+    if re.search(r"^sitas\s+flex$", name, flags=re.IGNORECASE):
+        return "SITAS FLEX"
+    return name
+
+
+def normalize_venue_name(name: str) -> str:
+    name = name.strip()
+    if re.search(r"^(SITAS|SITA5|Sitas|sitas)$", name, flags=re.IGNORECASE):
+        return "SITAS"
+    return name
+
+
+def is_sitas_team(team_name: str) -> bool:
+    """Verifica si el nombre del equipo corresponde a SITAS en cualquiera de sus variantes."""
+    if not team_name:
+        return False
+    # Detecta SITAS, Sitas, sitas, SITAS B, SITAS FLEX, SITA5 (OCR typo), S.I.T.A.S.
+    return bool(re.search(r"\b(S\.?I\.?T\.?A\.?S\.?|SITA5)\b", team_name, re.IGNORECASE))
 
 
 def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | None:
@@ -42,28 +86,43 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
     if not line:
         return None
 
-    # Check date pattern: e.g. "   7   26/09/2026   ..."
-    m = re.match(r"^(\d+)\s+(\d{1,2}/\d{1,2}/\d{4})\s+(.+)$", line)
-    if not m:
+    u = line.upper()
+    if any(h in u for h in ["FEDERACION", "FEDERACIÓN", "TORNEO APERTURA", "TORNEO CLAUSURA"]) and len(line) < 60:
+        return None
+    if ("FECHA#" in u or "FECHA #" in u) and ("LOCAL" in u or "VISITANTE" in u):
+        return None
+    if u in ("MENORES", "MAYORES", "MAXI 30", "MAXI30", "REPROGRAMADOS"):
         return None
 
-    round_num = int(m.group(1))
-    match_date = m.group(2)
-    rest = m.group(3).strip()
+    # Detectar fecha (dd/mm/yyyy o dd/mm/yy o dd-mm-yyyy)
+    date_match = re.search(r"(\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b)", line)
+    if not date_match:
+        return None
 
-    # Find time: e.g. 9:00, 19:30, 20:45
+    round_raw = line[:date_match.start()].strip()
+    round_clean = re.sub(r"^FECHA\s*#?\s*", "", round_raw, flags=re.IGNORECASE).strip()
+    round_clean = re.sub(r"3[9#]\s*Partido", "3° Partido", round_clean, flags=re.IGNORECASE)
+    round_val: Union[int, str] = round_clean
+    if round_clean.isdigit():
+        round_val = int(round_clean)
+
+    match_date = date_match.group(1).replace("-", "/")
+    rest = line[date_match.end():].strip()
+
+    # Buscar horario: ej. 9:00, 19:30, 20:45
     time_match = re.search(r"(\b\d{1,2}:\d{2}\b)", rest)
-    if not time_match:
-        return None
+    if time_match:
+        time_str = time_match.group(1)
+        time_pos = time_match.start()
+        time_end = time_match.end()
+        before_time = rest[:time_pos].strip()
+        after_time = rest[time_end:].strip()
+    else:
+        time_str = "-"
+        before_time = rest
+        after_time = ""
 
-    time_str = time_match.group(1)
-    time_pos = time_match.start()
-    time_end = time_match.end()
-
-    before_time = rest[:time_pos].strip()
-    after_time = rest[time_end:].strip()
-
-    # Find category in before_time
+    # Buscar categoría en before_time (o en rest)
     cat_found = None
     cat_pos = -1
     for cat in sorted(KNOWN_CATEGORIES, key=len, reverse=True):
@@ -77,12 +136,24 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
         return None
 
     teams_and_venue = before_time[:cat_pos].strip()
-    category_str = before_time[cat_pos:].strip()
-    norm_cat = normalize_category(category_str)
+    norm_cat = normalize_category(cat_found)
+    extra_after_cat = before_time[cat_pos + len(cat_found):].strip()
 
-    # In layout extraction, multiple spaces or tabs separate columns: Local, Visitante, Sede
+    if extra_after_cat:
+        after_time = f"{extra_after_cat} {after_time}".strip() if after_time else extra_after_cat
+
+    # Separar equipos y sede por 2 o más espacios o tabulaciones
     col_parts = [p.strip() for p in re.split(r"\s{2,}|\t", teams_and_venue) if p.strip()]
-    
+
+    # Si hay 4 partes y la segunda o tercera es B o FLEX, reagrupar con el equipo respectivo
+    if len(col_parts) == 4:
+        if col_parts[1].upper() in ("B", "FLEX"):
+            col_parts[0] = f"{col_parts[0]} {col_parts[1]}"
+            col_parts.pop(1)
+        elif len(col_parts) == 4 and col_parts[2].upper() in ("B", "FLEX"):
+            col_parts[1] = f"{col_parts[1]} {col_parts[2]}"
+            col_parts.pop(2)
+
     home_team = ""
     away_team = ""
     venue = ""
@@ -105,8 +176,11 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
             away_team = ""
         venue = ""
 
-    # Parse referees and observations from after_time
-    # Handle glued parenthesis e.g. "Sergio Sourigues (A)Reprogramado..."
+    home_team = normalize_team_name(home_team)
+    away_team = normalize_team_name(away_team)
+    venue = normalize_venue_name(venue)
+
+    # Parsear árbitros y observaciones
     after_time_clean = re.sub(r"(\([A-Za-z0-9]\))([A-Za-z])", r"\1   \2", after_time)
     after_parts = [p.strip() for p in re.split(r"\s{2,}|\t", after_time_clean) if p.strip()]
     ref1 = ""
@@ -114,26 +188,29 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
     obs = ""
 
     if len(after_parts) == 1:
-        if any(w in after_parts[0].lower() for w in ["local", "sede", "reprogramado", "cede", "cancha", "vs", "postergado", "yom", "dia del perdon"]):
+        if any(w in after_parts[0].lower() for w in OBSERVATION_KEYWORDS) or len(after_parts[0].split()) > 2:
             obs = after_parts[0]
         else:
             ref1 = after_parts[0]
     elif len(after_parts) == 2:
-        ref1 = after_parts[0]
-        if any(w in after_parts[1].lower() for w in ["local", "sede", "reprogramado", "cede", "cancha", "yom", "dia del perdon"]):
-            obs = after_parts[1]
+        if any(w in after_parts[0].lower() for w in OBSERVATION_KEYWORDS):
+            obs = " ".join(after_parts)
         else:
-            ref2 = after_parts[1]
+            ref1 = after_parts[0]
+            if any(w in after_parts[1].lower() for w in OBSERVATION_KEYWORDS) or len(after_parts[1].split()) > 2:
+                obs = after_parts[1]
+            else:
+                ref2 = after_parts[1]
     elif len(after_parts) >= 3:
         ref1 = after_parts[0]
         ref2 = after_parts[1]
         obs = " ".join(after_parts[2:])
 
-    is_sitas = ("SITAS" in home_team.upper()) or ("SITAS" in away_team.upper())
+    is_sitas = is_sitas_team(home_team) or is_sitas_team(away_team)
 
     return {
         "division": current_division,
-        "round_num": round_num,
+        "round_num": round_val,
         "match_date": match_date,
         "time": time_str,
         "category": norm_cat,
@@ -175,7 +252,7 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
         curr_line = []
         curr_y = None
         for y, x, text in items:
-            if curr_y is None or abs(y - curr_y) < 14:
+            if curr_y is None or abs(y - curr_y) < 7:
                 curr_line.append((x, text))
                 curr_y = y if curr_y is None else (curr_y + y) / 2
             else:
@@ -217,7 +294,7 @@ def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Di
     """
     Lee un archivo PDF (ruta, stream de bytes o buffer) y devuelve la lista de partidos estructurados.
     Primero intenta la extracción de texto nativa directa; si el archivo carece de fuentes
-    estándar o no encuentra partidos, conmuta automáticamente a extracción con OCR.
+    estándar o no encuentra partidos suficientes, conmuta automáticamente a extracción con OCR.
     """
     raw_bytes: bytes
     if isinstance(pdf_source, (str, Path)):
@@ -271,8 +348,11 @@ def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Di
     except Exception:
         matches = []
 
-    # 2. Si no se encontraron partidos con el texto nativo (por fuentes Type3 / imágenes), recurrir al OCR
-    if not matches:
-        matches = parse_schedule_with_ocr(raw_bytes)
+    # 2. Si no se encontraron partidos con el texto nativo (por fuentes Type3 / imágenes)
+    # o si se extrajeron muy pocos por fuentes incompletas, recurrir al OCR
+    if not matches or (len(matches) < 4 and _ocr_engine):
+        ocr_matches = parse_schedule_with_ocr(raw_bytes)
+        if len(ocr_matches) > len(matches):
+            matches = ocr_matches
 
     return matches

@@ -307,8 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     scheduleTbody.innerHTML = filtered.map(m => {
       const isSitas = m.is_sitas;
-      const homeClass = m.home_team.toUpperCase().includes("SITAS") ? "team-highlight" : "";
-      const awayClass = m.away_team.toUpperCase().includes("SITAS") ? "team-highlight" : "";
+      const homeClass = /sitas|sita5/i.test(m.home_team) ? "team-highlight" : "";
+      const awayClass = /sitas|sita5/i.test(m.away_team) ? "team-highlight" : "";
 
       return `
         <tr class="${isSitas ? 'sitas-row' : ''}">
