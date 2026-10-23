@@ -12532,26 +12532,6 @@
               "played": false
             },
             {
-              "clupik_id": 145409637,
-              "tournament_id": 1341494,
-              "phase_id": 3710487,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 2",
-              "scheduled_at": "2026-08-15 12:00:00",
-              "home_club": {
-                "clupik_id": null,
-                "name": "APV"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "SOCIAL PARQUE"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
-            },
-            {
               "clupik_id": 145409635,
               "tournament_id": 1341494,
               "phase_id": 3710487,
@@ -12565,6 +12545,26 @@
               "away_club": {
                 "clupik_id": null,
                 "name": "AVELLANEDA"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145409637,
+              "tournament_id": 1341494,
+              "phase_id": 3710487,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-08-15 12:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "SOCIAL PARQUE"
               },
               "home_score": null,
               "away_score": null,
@@ -12732,6 +12732,26 @@
               "played": false
             },
             {
+              "clupik_id": 145409652,
+              "tournament_id": 1341494,
+              "phase_id": 3710487,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 5",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "HACOAJ"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145409653,
               "tournament_id": 1341494,
               "phase_id": 3710487,
@@ -12785,26 +12805,6 @@
               "away_club": {
                 "clupik_id": null,
                 "name": "SITAS"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
-            },
-            {
-              "clupik_id": 145409652,
-              "tournament_id": 1341494,
-              "phase_id": 3710487,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 5",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "APV"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "HACOAJ"
               },
               "home_score": null,
               "away_score": null,
@@ -15070,6 +15070,26 @@
           },
           "matches": [
             {
+              "clupik_id": 145409791,
+              "tournament_id": 1341497,
+              "phase_id": 3710492,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "BALLESTER FLEX"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145409788,
               "tournament_id": 1341497,
               "phase_id": 3710492,
@@ -15108,26 +15128,6 @@
               "away_score": 48,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145409791,
-              "tournament_id": 1341497,
-              "phase_id": 3710492,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 1",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "BALLESTER FLEX"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145409789,
@@ -15330,6 +15330,26 @@
               "played": false
             },
             {
+              "clupik_id": 145409803,
+              "tournament_id": 1341497,
+              "phase_id": 3710492,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "BALLESTER FLEX"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145409800,
               "tournament_id": 1341497,
               "phase_id": 3710492,
@@ -15368,26 +15388,6 @@
               "away_score": 72,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145409803,
-              "tournament_id": 1341497,
-              "phase_id": 3710492,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 4",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "BALLESTER FLEX"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145409801,
@@ -15510,6 +15510,26 @@
               "played": false
             },
             {
+              "clupik_id": 145409809,
+              "tournament_id": 1341497,
+              "phase_id": 3710492,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 6",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD FLEX"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145409810,
               "tournament_id": 1341497,
               "phase_id": 3710492,
@@ -15548,26 +15568,6 @@
               "away_score": 56,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145409809,
-              "tournament_id": 1341497,
-              "phase_id": 3710492,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 6",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "CIUDAD FLEX"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145409808,
@@ -15770,6 +15770,26 @@
               "played": false
             },
             {
+              "clupik_id": 145409823,
+              "tournament_id": 1341497,
+              "phase_id": 3710492,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "CIUDAD FLEX"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145409821,
               "tournament_id": 1341497,
               "phase_id": 3710492,
@@ -15808,26 +15828,6 @@
               "away_score": 48,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145409823,
-              "tournament_id": 1341497,
-              "phase_id": 3710492,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 9",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "CIUDAD FLEX"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145409820,
@@ -16365,26 +16365,6 @@
               "played": false
             },
             {
-              "clupik_id": 145409744,
-              "tournament_id": 1341496,
-              "phase_id": 3710489,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 2",
-              "scheduled_at": "2026-08-15 14:30:00",
-              "home_club": {
-                "clupik_id": null,
-                "name": "BALLESTER"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "AVELLANEDA"
-              },
-              "home_score": 52,
-              "away_score": 50,
-              "venue": null,
-              "played": true
-            },
-            {
               "clupik_id": 145409743,
               "tournament_id": 1341496,
               "phase_id": 3710489,
@@ -16401,6 +16381,26 @@
               },
               "home_score": 36,
               "away_score": 100,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145409744,
+              "tournament_id": 1341496,
+              "phase_id": 3710489,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 2",
+              "scheduled_at": "2026-08-15 14:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "BALLESTER"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 52,
+              "away_score": 50,
               "venue": null,
               "played": true
             },
@@ -16565,26 +16565,6 @@
               "played": false
             },
             {
-              "clupik_id": 145409756,
-              "tournament_id": 1341496,
-              "phase_id": 3710489,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 4",
-              "scheduled_at": "2026-09-05 14:30:00",
-              "home_club": {
-                "clupik_id": null,
-                "name": "APV"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "AVELLANEDA"
-              },
-              "home_score": 68,
-              "away_score": 82,
-              "venue": null,
-              "played": true
-            },
-            {
               "clupik_id": 145409754,
               "tournament_id": 1341496,
               "phase_id": 3710489,
@@ -16601,6 +16581,26 @@
               },
               "home_score": 52,
               "away_score": 84,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145409756,
+              "tournament_id": 1341496,
+              "phase_id": 3710489,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": "2026-09-05 14:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "home_score": 68,
+              "away_score": 82,
               "venue": null,
               "played": true
             },
@@ -19118,6 +19118,26 @@
           },
           "matches": [
             {
+              "clupik_id": 145410141,
+              "tournament_id": 1341498,
+              "phase_id": 3710499,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 1",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "BALLESTER"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145410137,
               "tournament_id": 1341498,
               "phase_id": 3710499,
@@ -19176,26 +19196,6 @@
               "away_score": 75,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145410141,
-              "tournament_id": 1341498,
-              "phase_id": 3710499,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 1",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "BALLESTER"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145410139,
@@ -19438,6 +19438,26 @@
               "played": true
             },
             {
+              "clupik_id": 145410156,
+              "tournament_id": 1341498,
+              "phase_id": 3710499,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 4",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145410152,
               "tournament_id": 1341498,
               "phase_id": 3710499,
@@ -19476,26 +19496,6 @@
               "away_score": 76,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145410156,
-              "tournament_id": 1341498,
-              "phase_id": 3710499,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 4",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "GEVP"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145410154,
@@ -19718,6 +19718,26 @@
               "played": true
             },
             {
+              "clupik_id": 145410171,
+              "tournament_id": 1341498,
+              "phase_id": 3710499,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 7",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "BALLESTER"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145410167,
               "tournament_id": 1341498,
               "phase_id": 3710499,
@@ -19756,26 +19776,6 @@
               "away_score": 2,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145410171,
-              "tournament_id": 1341498,
-              "phase_id": 3710499,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 7",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "BALLESTER"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145410169,
@@ -19918,6 +19918,26 @@
               "played": true
             },
             {
+              "clupik_id": 145410181,
+              "tournament_id": 1341498,
+              "phase_id": 3710499,
+              "phase_name": "FASE REGULAR",
+              "round_name": "Jornada 9",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145410177,
               "tournament_id": 1341498,
               "phase_id": 3710499,
@@ -19956,26 +19976,6 @@
               "away_score": 63,
               "venue": null,
               "played": true
-            },
-            {
-              "clupik_id": 145410181,
-              "tournament_id": 1341498,
-              "phase_id": 3710499,
-              "phase_name": "FASE REGULAR",
-              "round_name": "Jornada 9",
-              "scheduled_at": null,
-              "home_club": {
-                "clupik_id": null,
-                "name": "AVELLANEDA"
-              },
-              "away_club": {
-                "clupik_id": null,
-                "name": "descansa"
-              },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
             },
             {
               "clupik_id": 145410179,
