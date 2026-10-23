@@ -566,14 +566,14 @@ input:checked + .slider:before {
 /* Content Grid */
 .content-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 340px minmax(0, 1fr);
   gap: 1.75rem;
   align-items: start;
 }
 
 @media (max-width: 992px) {
   .content-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -689,6 +689,13 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dashboard-content {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .empty-state {
@@ -852,6 +859,8 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .view-mode-bar {
@@ -931,6 +940,27 @@ input:checked + .slider:before {
 
 .table-responsive {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) var(--bg-input);
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: var(--bg-input);
+  border-radius: var(--radius-full);
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: var(--radius-full);
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: var(--sitas-red);
 }
 
 .data-table {
@@ -1821,22 +1851,38 @@ tr.sitas-row .club-cell {
 .bracket-card {
   padding: 1.5rem;
   overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .bracket-viewer-scrollable {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 1rem 0.5rem 1.5rem 0.5rem;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: var(--border-subtle) transparent;
+  scrollbar-color: var(--text-muted) var(--bg-input);
 }
 
 .bracket-viewer-scrollable::-webkit-scrollbar {
-  height: 8px;
+  height: 10px;
+}
+
+.bracket-viewer-scrollable::-webkit-scrollbar-track {
+  background: var(--bg-input);
+  border-radius: var(--radius-full);
 }
 
 .bracket-viewer-scrollable::-webkit-scrollbar-thumb {
-  background: var(--border-subtle);
-  border-radius: 4px;
+  background: var(--text-muted);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-card);
+}
+
+.bracket-viewer-scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--sitas-red);
 }
 
 .bracket-tree {
