@@ -372,9 +372,13 @@ function selectTournament(tournamentId) {
   state.selectedTournamentId = tournamentId;
   state.selectedPhaseIndex = 0;
 
-  // Highlight in sidebar
+  // Highlight in sidebar & smooth scroll into view
   document.querySelectorAll('.tournament-nav-item').forEach((el) => {
-    el.classList.toggle('active', Number(el.dataset.id) === tournamentId);
+    const isCur = Number(el.dataset.id) === tournamentId;
+    el.classList.toggle('active', isCur);
+    if (isCur) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
   });
 
   const tournament = state.data.tournaments.find((t) => t.id === tournamentId);
@@ -622,9 +626,14 @@ function renderBracketTree(activePhase, tournament) {
     return;
   }
 
+  // Sort rounds logically: Cuartos -> Semifinales -> Final -> Tercer puesto
+  const sortedRounds = [...rounds].sort((a, b) => {
+    return getRoundSortWeight(a.round_name) - getRoundSortWeight(b.round_name);
+  });
+
   let html = `<div class="bracket-tree">`;
 
-  rounds.forEach((round) => {
+  sortedRounds.forEach((round) => {
     html += `
       <div class="bracket-round-col">
         <div class="bracket-round-title">
@@ -700,26 +709,110 @@ function renderBracketTree(activePhase, tournament) {
   html += `</div>`;
   container.innerHTML = html;
   if (window.lucide) window.lucide.createIcons();
+
+  // Initialize smooth drag-to-scroll, scroll arrows, and hint indicator
+  setupBracketInteractions();
+}
+
+// Setup horizontal drag, arrow navigation and scroll cues for bracket
+function setupBracketInteractions() {
+  const container = DOM.bracketTreeViewer;
+  if (!container) return;
+
+  const btnPrev = document.getElementById('bracket-btn-prev');
+  const btnNext = document.getElementById('bracket-btn-next');
+  const hint = document.getElementById('bracket-scroll-hint');
+
+  const updateControls = () => {
+    const hasOverflow = container.scrollWidth > container.clientWidth + 10;
+    if (hint) {
+      if (!hasOverflow || container.scrollLeft > 40) {
+        hint.style.opacity = '0';
+        hint.style.pointerEvents = 'none';
+      } else {
+        hint.style.opacity = '1';
+        hint.style.pointerEvents = 'auto';
+      }
+    }
+    if (btnPrev) {
+      const atStart = container.scrollLeft <= 5;
+      btnPrev.disabled = atStart;
+      btnPrev.style.opacity = atStart ? '0.35' : '1';
+    }
+    if (btnNext) {
+      const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+      btnNext.disabled = atEnd;
+      btnNext.style.opacity = atEnd ? '0.35' : '1';
+    }
+  };
+
+  if (!container._interactionsBound) {
+    container._interactionsBound = true;
+
+    btnPrev?.addEventListener('click', () => {
+      container.scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    btnNext?.addEventListener('click', () => {
+      container.scrollBy({ left: 300, behavior: 'smooth' });
+    });
+
+    container.addEventListener('scroll', updateControls, { passive: true });
+    window.addEventListener('resize', updateControls, { passive: true });
+
+    // Drag-to-scroll for mouse users
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    container.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isDown = true;
+      container.classList.add('is-dragging');
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDown) {
+        isDown = false;
+        container.classList.remove('is-dragging');
+      }
+    });
+
+    container.addEventListener('mouseleave', () => {
+      if (isDown) {
+        isDown = false;
+        container.classList.remove('is-dragging');
+      }
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      container.scrollLeft = scrollLeft - walk;
+    });
+  }
+
+  // Update controls state
+  setTimeout(updateControls, 60);
+}
+
+// Helper to sort playoff rounds chronologically
+function getRoundSortWeight(name) {
+  const n = (name || '').toLowerCase().trim();
+  if (n.includes('16') || n.includes('diecis')) return 10;
+  if (n.includes('octav')) return 20;
+  if (n.includes('cuart')) return 30;
+  if (n.includes('semi')) return 40;
+  if (n.includes('tercer') || n.includes('3') || n.includes('bronce')) return 60;
+  if (n.includes('final')) return 50;
+  return 99;
 }
 
 // Fallback: Build bracket tree structure from flat matches list
 function buildBracketFromMatches(matches) {
-  const roundOrder = {
-    'octav': 1,
-    'cuart': 2,
-    'semi': 3,
-    'final': 4,
-    'tercer': 5,
-  };
-
-  function getRoundWeight(name) {
-    const n = (name || '').toLowerCase();
-    for (const [k, w] of Object.entries(roundOrder)) {
-      if (n.includes(k)) return w;
-    }
-    return 99;
-  }
-
   const roundsMap = {};
   matches.forEach((m) => {
     const rName = m.round_name || 'Eliminatoria';
@@ -737,7 +830,7 @@ function buildBracketFromMatches(matches) {
     });
   });
 
-  const sortedNames = Object.keys(roundsMap).sort((a, b) => getRoundWeight(a) - getRoundWeight(b));
+  const sortedNames = Object.keys(roundsMap).sort((a, b) => getRoundSortWeight(a) - getRoundSortWeight(b));
   return {
     rounds: sortedNames.map((name) => ({
       round_name: name,
