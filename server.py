@@ -369,6 +369,47 @@ def sync_status():
     })
 
 
+def _run_sync_worker(edition: str, season: str) -> None:
+    """Ejecuta sync.py en un subproceso en segundo plano sin bloquear el servidor web ni causar timeouts 504."""
+    try:
+        cmd = [
+            sys.executable,
+            str(BASE_DIR / "sync.py"),
+            "--edition", edition,
+            "--season", season,
+        ]
+        result = subprocess.run(
+            cmd,
+            cwd=str(BASE_DIR),
+            capture_output=True,
+            text=True,
+            timeout=1800,  # 30 minutos de tiempo seguro para sincronizaciones completas
+        )
+        with SYNC_LOCK:
+            if result.returncode == 0:
+                SYNC_STATE["last_success"] = True
+                SYNC_STATE["last_output"] = result.stdout
+                SYNC_STATE["last_error"] = None
+            else:
+                err_details = result.stderr or result.stdout or "Error en el subproceso de sincronización"
+                SYNC_STATE["last_success"] = False
+                SYNC_STATE["last_error"] = err_details
+            SYNC_STATE["last_completed"] = datetime.now().isoformat()
+    except subprocess.TimeoutExpired:
+        with SYNC_LOCK:
+            SYNC_STATE["last_success"] = False
+            SYNC_STATE["last_error"] = "Tiempo de espera agotado al sincronizar con Clupik (límite de 30 min superado)."
+            SYNC_STATE["last_completed"] = datetime.now().isoformat()
+    except Exception as e:
+        with SYNC_LOCK:
+            SYNC_STATE["last_success"] = False
+            SYNC_STATE["last_error"] = str(e)
+            SYNC_STATE["last_completed"] = datetime.now().isoformat()
+    finally:
+        with SYNC_LOCK:
+            SYNC_STATE["running"] = False
+
+
 @app.route("/api/sync-clupik", methods=["POST"])
 def trigger_sync():
     if not is_authenticated():
@@ -396,55 +437,29 @@ def trigger_sync():
         SYNC_STATE["last_error"] = None
         SYNC_STATE["last_output"] = None
 
-    try:
-        # Ejecutamos sync.py en un subproceso con los filtros optimizados
-        cmd = [
-            sys.executable,
-            str(BASE_DIR / "sync.py"),
-            "--edition", edition,
-            "--season", season,
-        ]
-        result = subprocess.run(
-            cmd,
-            cwd=str(BASE_DIR),
-            capture_output=True,
-            text=True,
-            timeout=300,
-        )
-        if result.returncode == 0:
-            SYNC_STATE["last_success"] = True
-            SYNC_STATE["last_output"] = result.stdout
-            SYNC_STATE["last_completed"] = datetime.now().isoformat()
-            return jsonify({
-                "success": True,
-                "message": f"Sincronización {season} ({edition}) completada con éxito.",
-                "output": result.stdout,
-                "timestamp": datetime.now().isoformat(),
-            })
-        else:
-            err_details = result.stderr or result.stdout
-            SYNC_STATE["last_success"] = False
-            SYNC_STATE["last_error"] = err_details
-            SYNC_STATE["last_completed"] = datetime.now().isoformat()
-            return jsonify({
-                "success": False,
-                "error": "Falló la sincronización con Clupik",
-                "details": err_details,
-            }), 500
-    except subprocess.TimeoutExpired:
-        err_msg = "Tiempo de espera agotado al sincronizar con Clupik"
-        SYNC_STATE["last_success"] = False
-        SYNC_STATE["last_error"] = err_msg
-        SYNC_STATE["last_completed"] = datetime.now().isoformat()
-        return jsonify({"success": False, "error": err_msg}), 504
-    except Exception as e:
-        err_msg = str(e)
-        SYNC_STATE["last_success"] = False
-        SYNC_STATE["last_error"] = err_msg
-        SYNC_STATE["last_completed"] = datetime.now().isoformat()
-        return jsonify({"success": False, "error": err_msg}), 500
-    finally:
+    # Ejecutar en segundo plano en un hilo independiente para respuesta inmediata (202) y 0 timeouts
+    worker_thread = threading.Thread(target=_run_sync_worker, args=(edition, season), daemon=True)
+    worker_thread.start()
+
+    return jsonify({
+        "success": True,
+        "message": f"Sincronización {season} ({edition}) iniciada en segundo plano con éxito.",
+        "running": True,
+        "season": season,
+        "edition": edition,
+    }), 202
+
+
+@app.route("/api/sync-clupik/reset", methods=["POST"])
+def reset_sync():
+    """Permite desbloquear o cancelar el estado de sincronización si quedara en curso."""
+    if not is_authenticated():
+        return jsonify({"error": "No autorizado"}), 401
+    with SYNC_LOCK:
         SYNC_STATE["running"] = False
+        SYNC_STATE["last_error"] = "Sincronización reiniciada / restablecida manualmente."
+        SYNC_STATE["last_completed"] = datetime.now().isoformat()
+    return jsonify({"success": True, "message": "Estado de sincronización restablecido con éxito."})
 
 
 

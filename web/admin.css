@@ -1133,5 +1133,34 @@ input[type="file"] {
   .admin-header {
     flex-direction: column;
     padding: 16px;
+    gap: 16px;
+  }
+  .admin-tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-main {
+    padding: 16px 12px;
+  }
+  .login-card {
+    padding: 24px 16px;
+    margin: 16px;
+  }
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .actions-group {
+    width: 100%;
+  }
+  .actions-group button, .actions-group a {
+    width: 100%;
+    justify-content: center;
   }
 }

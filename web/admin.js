@@ -714,15 +714,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (res.ok && data.success) {
-          stopSyncUI(true);
-          syncOutput.textContent += "\n" + (data.output || "Sincronización completada exitosamente.");
-          showToast(`¡Base de datos actualizada (${edition}) con éxito desde Clupik!`, "success");
+          showToast(data.message || `Sincronización (${edition}) iniciada en segundo plano`, "info");
+          syncOutput.textContent += `[SISTEMA]: Tarea en segundo plano iniciada correctamente.\nTemporada: ${season} | Edición: ${edition}\nMonitoreando avance y conexión con Clupik...\n`;
+          startStatusPolling();
         } else if (res.status === 409) {
           showToast(data.error || "Ya hay una sincronización en curso.", "warning");
           startStatusPolling();
         } else {
           stopSyncUI(false);
-          syncOutput.textContent += "\n[ERROR]: " + (data.error || "Falló la sincronización") + "\n" + (data.details || "");
+          syncOutput.textContent += "\n[ERROR]: " + (data.error || "Falló al iniciar la sincronización") + "\n" + (data.details || "");
           showToast(data.error || "Ocurrió un error al sincronizar con Clupik", "error");
         }
       } catch (err) {

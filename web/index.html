@@ -182,8 +182,11 @@
       <!-- Left Sidebar: Tournaments Navigator -->
       <aside class="tournaments-sidebar" aria-label="Listado de torneos">
         <div class="sidebar-header">
-          <h2>Torneos</h2>
-          <span class="counter-badge" id="tournament-count">0</span>
+          <div class="sidebar-title-group">
+            <h2>Torneos</h2>
+            <span class="counter-badge" id="tournament-count">0</span>
+          </div>
+          <span class="sidebar-swipe-hint"><i data-lucide="chevrons-right"></i> Deslizá categorías</span>
         </div>
         <div class="tournament-list" id="tournament-nav-list" role="list">
           <!-- Injected via JS -->
@@ -274,9 +277,25 @@
 
             <!-- Bracket Viewer Container -->
             <div class="card bracket-card" id="bracket-container" style="display: none;">
-              <div class="card-header">
-                <h3><i data-lucide="git-branch"></i> Cuadro de Playoff / Eliminatorias</h3>
-                <span class="phase-badge" id="bracket-phase-name">COPA DE ORO</span>
+              <div class="card-header bracket-header">
+                <div class="bracket-header-left">
+                  <h3><i data-lucide="git-branch"></i> Cuadro de Playoff / Eliminatorias</h3>
+                  <span class="phase-badge" id="bracket-phase-name">COPA DE ORO</span>
+                </div>
+                <div class="bracket-scroll-actions">
+                  <span class="bracket-scroll-hint" id="bracket-scroll-hint" title="Deslizá horizontalmente para ver todas las fases">
+                    <i data-lucide="chevrons-right"></i>
+                    <span class="hint-text">Deslizar para ver cuadro</span>
+                  </span>
+                  <div class="bracket-nav-arrows">
+                    <button type="button" class="bracket-arrow-btn" id="bracket-btn-prev" aria-label="Rondas anteriores" title="Ver rondas anteriores">
+                      <i data-lucide="chevron-left"></i>
+                    </button>
+                    <button type="button" class="bracket-arrow-btn" id="bracket-btn-next" aria-label="Rondas siguientes" title="Ver rondas siguientes">
+                      <i data-lucide="chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="bracket-viewer-scrollable" id="bracket-tree-viewer">
                 <!-- Injected via JS -->
