@@ -176,34 +176,17 @@ def parse_playoff_bracket(
             home_info = teams_info[0] if len(teams_info) > 0 else {"name": "Por definir", "clupik_id": None, "logo_url": None, "is_winner": False}
             away_info = teams_info[1] if len(teams_info) > 1 else {"name": "Por definir", "clupik_id": None, "logo_url": None, "is_winner": False}
 
-            # Link del partido e ID
-            match_link = b.select_one(".inside .matchs a.match[href]")
-            match_id = None
-            if match_link:
-                m = re.search(r"/match/(\d+)", match_link.get("href", ""))
-                if m:
-                    match_id = int(m.group(1))
-
-            # Marcador
-            scores: list[int | None] = []
-            if match_link:
-                spans = match_link.find_all("span", recursive=False)
-                for s in spans:
-                    txt = s.get_text(strip=True)
-                    if txt.isdigit():
-                        scores.append(int(txt))
-                    elif txt in ("–", "-", "—", "") or "dash" in str(s):
-                        scores.append(None)
-
-            played = len(scores) >= 2 and scores[0] is not None and scores[1] is not None
-            home_score = scores[0] if len(scores) > 0 else None
-            away_score = scores[1] if len(scores) > 1 else None
-
             # Próximo partido (fecha/hora y sede)
             next_match = b.select_one(".next-match")
             scheduled_at = None
             venue = None
+            next_match_id = None
             if next_match:
+                nm_href = next_match.get("href", "")
+                if nm_href:
+                    m_id_match = re.search(r"/match/(\d+)", nm_href)
+                    if m_id_match:
+                        next_match_id = int(m_id_match.group(1))
                 nm_text = next_match.get_text(" ", strip=True)
                 parts = [p.strip() for p in nm_text.split("·")]
                 date_part = parts[0] if len(parts) > 0 else ""
@@ -213,43 +196,176 @@ def parse_playoff_bracket(
                 date_m = re.search(r"(\d{1,2})/(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?", date_part)
                 if date_m:
                     day, month, hour, minute = date_m.groups()
-                    if hour and minute:
+                    if hour and minute and not (day == "01" and month == "01"):
                         year = season if season and season.isdigit() else "2026"
                         try:
                             scheduled_at = datetime(int(year), int(month), int(day), int(hour), int(minute))
                         except ValueError:
                             scheduled_at = None
 
-            match_obj = Match(
-                clupik_id=match_id,
-                tournament_id=tournament_id,
-                phase_id=phase_id,
-                phase_name=phase_name,
-                round_name=round_name,
-                scheduled_at=scheduled_at,
-                home_club=Club(clupik_id=home_info["clupik_id"], name=home_info["name"]),
-                away_club=Club(clupik_id=away_info["clupik_id"], name=away_info["name"]),
-                home_score=home_score,
-                away_score=away_score,
-                venue=venue,
-                played=played,
-            )
-            matches.append(match_obj)
+            # Procesar todos los partidos de la serie (.inside .matchs a.match)
+            match_links = b.select(".inside .matchs a.match")
+            games: list[dict] = []
+            primary_match_id = None
 
+            for g_idx, ml in enumerate(match_links):
+                m_href = ml.get("href", "")
+                m_id = None
+                if m_href:
+                    m = re.search(r"/match/(\d+)", m_href)
+                    if m:
+                        m_id = int(m.group(1))
+                        if primary_match_id is None:
+                            primary_match_id = m_id
+
+                spans = ml.find_all("span", recursive=False)
+                g_home_score = None
+                g_away_score = None
+                g_home_winner = False
+                g_away_winner = False
+                g_played = False
+
+                if len(spans) >= 2:
+                    txt0 = spans[0].get_text(strip=True)
+                    txt1 = spans[1].get_text(strip=True)
+                    if txt0.isdigit() and txt1.isdigit():
+                        g_home_score = int(txt0)
+                        g_away_score = int(txt1)
+                        g_played = True
+                        g_home_winner = "winner" in spans[0].get("class", []) or g_home_score > g_away_score
+                        g_away_winner = "winner" in spans[1].get("class", []) or g_away_score > g_home_score
+
+                games.append({
+                    "match_id": m_id,
+                    "game_number": g_idx + 1,
+                    "home_score": g_home_score,
+                    "away_score": g_away_score,
+                    "home_winner": g_home_winner,
+                    "away_winner": g_away_winner,
+                    "played": g_played,
+                })
+
+                # Crear Match object para cada partido de la serie que tenga ID
+                if m_id:
+                    game_sched = scheduled_at if (g_idx == 0 or m_id == next_match_id) else None
+                    game_venue = venue if (g_idx == 0 or m_id == next_match_id) else None
+                    match_obj = Match(
+                        clupik_id=m_id,
+                        tournament_id=tournament_id,
+                        phase_id=phase_id,
+                        phase_name=phase_name,
+                        round_name=round_name,
+                        scheduled_at=game_sched,
+                        home_club=Club(clupik_id=home_info["clupik_id"], name=home_info["name"]),
+                        away_club=Club(clupik_id=away_info["clupik_id"], name=away_info["name"]),
+                        home_score=g_home_score,
+                        away_score=g_away_score,
+                        venue=game_venue,
+                        played=g_played,
+                    )
+                    matches.append(match_obj)
+
+            # Si no hubo match_links pero hay next_match_id, agregar Match pendiente
+            if not match_links and next_match_id:
+                primary_match_id = next_match_id
+                matches.append(
+                    Match(
+                        clupik_id=next_match_id,
+                        tournament_id=tournament_id,
+                        phase_id=phase_id,
+                        phase_name=phase_name,
+                        round_name=round_name,
+                        scheduled_at=scheduled_at,
+                        home_club=Club(clupik_id=home_info["clupik_id"], name=home_info["name"]),
+                        away_club=Club(clupik_id=away_info["clupik_id"], name=away_info["name"]),
+                        home_score=None,
+                        away_score=None,
+                        venue=venue,
+                        played=False,
+                    )
+                )
+
+            # Métricas agregadas de la serie / cruce
+            is_matchup_played = any(g["played"] for g in games)
+            home_wins = sum(1 for g in games if g["played"] and g["home_winner"])
+            away_wins = sum(1 for g in games if g["played"] and g["away_winner"])
+
+            # Ganador de la serie: por clase en el HTML o por victorias en partidos
+            if home_info["is_winner"]:
+                series_winner = "home"
+            elif away_info["is_winner"]:
+                series_winner = "away"
+            elif home_wins >= 2 or (len(games) == 1 and home_wins == 1):
+                series_winner = "home"
+                home_info["is_winner"] = True
+            elif away_wins >= 2 or (len(games) == 1 and away_wins == 1):
+                series_winner = "away"
+                away_info["is_winner"] = True
+            else:
+                series_winner = None
+
+            is_matchup_finished = series_winner is not None or (len(games) == 1 and games[0]["played"])
+
+            # Marcador representativo para compatibilidad
+            if len(games) > 1 and is_matchup_played:
+                home_score = home_wins
+                away_score = away_wins
+            elif len(games) == 1:
+                home_score = games[0]["home_score"]
+                away_score = games[0]["away_score"]
+            else:
+                home_score = None
             round_dict["matches"].append({
                 "bracket_label": bracket_label,
-                "match_id": match_id,
+                "match_id": primary_match_id,
                 "round_name": round_name,
                 "home_club": home_info,
                 "away_club": away_info,
+                "is_series": len(games) > 1,
+                "series_winner": series_winner,
+                "games": games,
                 "home_score": home_score,
                 "away_score": away_score,
-                "played": played,
+                "played": is_matchup_played,
+                "is_finished": is_matchup_finished,
                 "scheduled_at": scheduled_at.strftime("%Y-%m-%d %H:%M:%S") if scheduled_at else None,
                 "venue": venue,
             })
 
         rounds_data.append(round_dict)
+
+    def _round_sort_weight(r_dict: dict) -> int:
+        n = (r_dict.get("round_name") or "").lower().strip()
+        if "32" in n:
+            return 5
+        if "16" in n or "diecis" in n:
+            return 10
+        if "octav" in n:
+            return 20
+        if "cuart" in n and "puesto" not in n:
+            return 30
+        if "semi" in n:
+            return 40
+        # Tercer y cuarto puesto: después de semifinal (40) y antes de final (50)
+        if any(k in n for k in ["tercer", "tercero", "3er", "3°", "3º", "3ro", "bronce", "cuarto puesto", "4to puesto", "4° puesto", "4º puesto"]):
+            return 45
+        if "final" in n:
+            return 50
+        if "5" in n or "quinto" in n:
+            return 60
+        if "7" in n or "sept" in n or "sépt" in n:
+            return 70
+        if "9" in n or "noveno" in n:
+            return 80
+        if "11" in n:
+            return 85
+        if "13" in n:
+            return 90
+        if "15" in n:
+            return 95
+        return 99
+
+    rounds_data.sort(key=_round_sort_weight)
 
     return matches, {"rounds": rounds_data}
 
@@ -572,28 +688,33 @@ def parse_calendar(html: str, tournament_id: int, phase_id: int | None = None, p
             away_score = None
             scheduled_at = None
 
+            venue = None
             score_span = result_cell.select_one("span.result") if result_cell else None
             if score_span is not None:
-                numbers = re.findall(r"\d+", score_span.get_text(" ", strip=True))
-                if len(numbers) >= 2:
-                    home_score, away_score = int(numbers[0]), int(numbers[1])
-                    played = True
-            elif result_cell:
-                numbers = re.findall(r"\d+", result_cell.get_text(" ", strip=True))
-                if len(numbers) >= 2:
-                    home_score, away_score = int(numbers[0]), int(numbers[1])
+                txt = score_span.get_text(" ", strip=True)
+                m_score = re.search(r"(\d+)\s*[-–—\xa0]+\s*(\d+)", txt)
+                if m_score:
+                    home_score = int(m_score.group(1))
+                    away_score = int(m_score.group(2))
                     played = True
 
             sort_holder = result_cell.select_one("[data-sort]") if result_cell else None
             if sort_holder is not None:
-                parts = sort_holder.get("data-sort", "").split()
-                if len(parts) >= 3:
+                raw_sort = sort_holder.get("data-sort", "").strip()
+                parts = raw_sort.split()
+                if len(parts) >= 3 and not parts[1].startswith("9999"):
                     try:
                         scheduled_at = datetime.strptime(
                             f"{parts[1]} {parts[2]}", "%Y-%m-%d %H:%M:%S"
                         )
                     except ValueError:
                         scheduled_at = None
+
+            venue_span = result_cell.select_one(".ellipsis") if result_cell else None
+            if venue_span:
+                v_title = venue_span.get("title", "").strip()
+                v_text = venue_span.get_text(strip=True)
+                venue = v_title or v_text or None
 
             matches.append(
                 Match(
@@ -607,6 +728,7 @@ def parse_calendar(html: str, tournament_id: int, phase_id: int | None = None, p
                     away_club=Club(clupik_id=None, name=away_name),
                     home_score=home_score,
                     away_score=away_score,
+                    venue=venue,
                     played=played,
                 )
             )

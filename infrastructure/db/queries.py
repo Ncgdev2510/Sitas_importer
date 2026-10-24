@@ -110,48 +110,113 @@ def get_tournament_full_detail(tournament_id: int, conn: sqlite3.Connection | No
         p_dict["is_playoff"] = is_playoff
 
         if is_playoff:
-            round_order = {
-                "octav": 1,
-                "cuart": 2,
-                "semi": 3,
-                "final": 4,
-                "tercer": 5,
-            }
-
             def _get_round_sort(r_name: str) -> int:
-                r_lower = (r_name or "").lower()
-                for k, order in round_order.items():
-                    if k in r_lower:
-                        return order
+                r_lower = (r_name or "").lower().strip()
+                if "32" in r_lower:
+                    return 5
+                if "16" in r_lower or "diecis" in r_lower:
+                    return 10
+                if "octav" in r_lower:
+                    return 20
+                if "cuart" in r_lower and "puesto" not in r_lower:
+                    return 30
+                if "semi" in r_lower:
+                    return 40
+                # Tercer y cuarto puesto: después de semifinal (40) y antes de final (50)
+                if any(k in r_lower for k in ["tercer", "tercero", "3er", "3°", "3º", "3ro", "bronce", "cuarto puesto", "4to puesto", "4° puesto", "4º puesto"]):
+                    return 45
+                if "final" in r_lower:
+                    return 50
+                if "5" in r_lower or "quinto" in r_lower:
+                    return 60
+                if "7" in r_lower or "sept" in r_lower or "sépt" in r_lower:
+                    return 70
+                if "9" in r_lower or "noveno" in r_lower:
+                    return 80
+                if "11" in r_lower:
+                    return 85
+                if "13" in r_lower:
+                    return 90
+                if "15" in r_lower:
+                    return 95
                 return 99
 
-            rounds_dict: dict[str, list] = {}
-            for m in p_dict["matches"]:
-                r_name = m.get("round_name") or "Eliminatoria"
-                if r_name not in rounds_dict:
-                    rounds_dict[r_name] = []
-                rounds_dict[r_name].append({
-                    "bracket_label": r_name,
-                    "match_id": m.get("clupik_id"),
-                    "home_club": {"name": m.get("home_club_name")},
-                    "away_club": {"name": m.get("away_club_name")},
-                    "home_score": m.get("home_score"),
-                    "away_score": m.get("away_score"),
-                    "played": bool(m.get("played")),
-                    "scheduled_at": m.get("scheduled_at"),
-                    "venue": m.get("venue"),
-                })
+            bracket_obj = None
+            if p_dict.get("bracket_data"):
+                try:
+                    bracket_obj = json.loads(p_dict["bracket_data"])
+                except Exception:
+                    bracket_obj = None
 
-            sorted_round_names = sorted(rounds_dict.keys(), key=_get_round_sort)
-            p_dict["bracket"] = {
-                "rounds": [
-                    {
-                        "round_name": r_name,
-                        "matches": rounds_dict[r_name],
-                    }
-                    for r_name in sorted_round_names
-                ]
-            }
+            if bracket_obj and bracket_obj.get("rounds"):
+                bracket_obj["rounds"].sort(key=lambda r: _get_round_sort(r.get("round_name", "")))
+                p_dict["bracket"] = bracket_obj
+            else:
+
+                rounds_map: dict[str, dict[frozenset, dict]] = {}
+                for m in p_dict["matches"]:
+                    r_name = m.get("round_name") or "Eliminatoria"
+                    if r_name not in rounds_map:
+                        rounds_map[r_name] = {}
+
+                    h_name = m.get("home_club_name") or "Por definir"
+                    a_name = m.get("away_club_name") or "Por definir"
+                    pair_key = frozenset([h_name, a_name])
+
+                    if pair_key not in rounds_map[r_name]:
+                        rounds_map[r_name][pair_key] = {
+                            "bracket_label": r_name,
+                            "match_id": m.get("clupik_id"),
+                            "home_club": {"name": h_name, "is_winner": False},
+                            "away_club": {"name": a_name, "is_winner": False},
+                            "games": [],
+                            "home_score": m.get("home_score"),
+                            "away_score": m.get("away_score"),
+                            "played": bool(m.get("played")),
+                            "scheduled_at": m.get("scheduled_at"),
+                            "venue": m.get("venue"),
+                        }
+
+                    entry = rounds_map[r_name][pair_key]
+                    g_played = bool(m.get("played"))
+                    hs = m.get("home_score")
+                    as_ = m.get("away_score")
+                    is_direct = entry["home_club"]["name"] == h_name
+                    g_h_score = hs if is_direct else as_
+                    g_a_score = as_ if is_direct else hs
+                    g_h_win = (g_h_score > g_a_score) if (g_played and g_h_score is not None and g_a_score is not None) else False
+                    g_a_win = (g_a_score > g_h_score) if (g_played and g_h_score is not None and g_a_score is not None) else False
+
+                    entry["games"].append({
+                        "match_id": m.get("clupik_id"),
+                        "game_number": len(entry["games"]) + 1,
+                        "home_score": g_h_score,
+                        "away_score": g_a_score,
+                        "home_winner": g_h_win,
+                        "away_winner": g_a_win,
+                        "played": g_played,
+                    })
+
+                sorted_round_names = sorted(rounds_map.keys(), key=_get_round_sort)
+                rounds_list = []
+                for r_name in sorted_round_names:
+                    matchups = list(rounds_map[r_name].values())
+                    for mu in matchups:
+                        mu["is_series"] = len(mu["games"]) > 1
+                        mu["played"] = any(g["played"] for g in mu["games"])
+                        h_wins = sum(1 for g in mu["games"] if g["played"] and g["home_winner"])
+                        a_wins = sum(1 for g in mu["games"] if g["played"] and g["away_winner"])
+                        if h_wins >= 2 or (len(mu["games"]) == 1 and h_wins == 1):
+                            mu["home_club"]["is_winner"] = True
+                            mu["is_finished"] = True
+                        elif a_wins >= 2 or (len(mu["games"]) == 1 and a_wins == 1):
+                            mu["away_club"]["is_winner"] = True
+                            mu["is_finished"] = True
+                        else:
+                            mu["is_finished"] = False
+                    rounds_list.append({"round_name": r_name, "matches": matchups})
+
+                p_dict["bracket"] = {"rounds": rounds_list}
         else:
             p_dict["bracket"] = None
 

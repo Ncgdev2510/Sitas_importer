@@ -100,6 +100,7 @@ def upsert_phase(
     name: str,
     is_active: bool,
     is_playoff: bool = False,
+    bracket_data: str | None = None,
 ) -> int:
     row = conn.execute(
         "SELECT id FROM phases WHERE tournament_id = ? AND clupik_phase_id = ?",
@@ -108,17 +109,17 @@ def upsert_phase(
 
     if row:
         conn.execute(
-            "UPDATE phases SET name = ?, is_active = ?, is_playoff = ? WHERE id = ?",
-            (name, is_active, 1 if is_playoff else 0, row["id"]),
+            "UPDATE phases SET name = ?, is_active = ?, is_playoff = ?, bracket_data = ? WHERE id = ?",
+            (name, is_active, 1 if is_playoff else 0, bracket_data, row["id"]),
         )
         return row["id"]
     else:
         cursor = conn.execute(
             """
-            INSERT INTO phases (tournament_id, clupik_phase_id, name, is_active, is_playoff)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO phases (tournament_id, clupik_phase_id, name, is_active, is_playoff, bracket_data)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
-            (tournament_id, clupik_phase_id, name, is_active, 1 if is_playoff else 0),
+            (tournament_id, clupik_phase_id, name, is_active, 1 if is_playoff else 0, bracket_data),
         )
         return cursor.lastrowid
 
@@ -300,12 +301,14 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
                 is_playoff = p_item.get("is_playoff", False) or any(
                     w in phase_name.upper() for w in ["COPA", "PLAYOFF", "ORO", "PLATA", "BRONCE"]
                 )
+                bracket_data = p_item.get("bracket")
+                bracket_json = json.dumps(bracket_data, ensure_ascii=False) if bracket_data else None
 
                 if not clupik_phase_id:
                     continue
 
                 db_phase_id = upsert_phase(
-                    conn, db_tournament_id, clupik_phase_id, phase_name, is_active, is_playoff
+                    conn, db_tournament_id, clupik_phase_id, phase_name, is_active, is_playoff, bracket_json
                 )
                 stats["phases"] += 1
 

@@ -651,35 +651,81 @@ function renderBracketTree(activePhase, tournament) {
       const isSitas = isSitasHome || isSitasAway;
 
       const played = Boolean(m.played);
-      const homeScore = m.home_score;
-      const awayScore = m.away_score;
-      const homeWinner = played && homeScore !== null && awayScore !== null && homeScore > awayScore;
-      const awayWinner = played && homeScore !== null && awayScore !== null && awayScore > homeScore;
+      const hasGames = Array.isArray(m.games) && m.games.length > 0;
+
+      // Determine series winners
+      const isHomeSeriesWin = Boolean(m.home_club?.is_winner) || m.series_winner === 'home';
+      const isAwaySeriesWin = Boolean(m.away_club?.is_winner) || m.series_winner === 'away';
+      const isFinished = Boolean(m.is_finished) || isHomeSeriesWin || isAwaySeriesWin || (played && !hasGames);
+
+      const homeWinner = isHomeSeriesWin || (!hasGames && played && m.home_score !== null && m.away_score !== null && m.home_score > m.away_score);
+      const awayWinner = isAwaySeriesWin || (!hasGames && played && m.home_score !== null && m.away_score !== null && m.away_score > m.home_score);
 
       const homeLogo = m.home_club?.logo_url || getClubLogoUrl(homeName);
       const awayLogo = m.away_club?.logo_url || getClubLogoUrl(awayName);
 
+      // Status badge
+      let statusBadgeHtml = '';
+      if (isFinished) {
+        statusBadgeHtml = `<span class="badge-status-finished" style="font-size:0.68rem; padding: 2px 6px; border-radius:4px; background: rgba(16,185,129,0.15); color:#4ade80; font-weight:700;">Finalizado</span>`;
+      } else if (played) {
+        statusBadgeHtml = `<span class="badge-status-live" style="font-size:0.68rem; padding: 2px 6px; border-radius:4px;">En juego</span>`;
+      } else {
+        statusBadgeHtml = `<span style="font-size:0.68rem; padding: 2px 6px; border-radius:4px; background: rgba(255,255,255,0.05); color:var(--text-muted);">Pendiente</span>`;
+      }
+
+      // Render score badges (columns for each game if series, or single badge)
+      let homeScoresHtml = '';
+      let awayScoresHtml = '';
+
+      if (hasGames) {
+        homeScoresHtml = `<div class="bracket-scores-group">` + m.games.map((g) => {
+          const scoreText = (g.played && g.home_score !== null) ? g.home_score : '-';
+          const isWin = Boolean(g.home_winner);
+          return `<span class="bracket-score-badge ${isWin ? 'winner' : ''} ${!g.played ? 'score-pending' : ''}">${scoreText}</span>`;
+        }).join('') + `</div>`;
+
+        awayScoresHtml = `<div class="bracket-scores-group">` + m.games.map((g) => {
+          const scoreText = (g.played && g.away_score !== null) ? g.away_score : '-';
+          const isWin = Boolean(g.away_winner);
+          return `<span class="bracket-score-badge ${isWin ? 'winner' : ''} ${!g.played ? 'score-pending' : ''}">${scoreText}</span>`;
+        }).join('') + `</div>`;
+      } else {
+        homeScoresHtml = `<div class="bracket-scores-group"><span class="bracket-score-badge ${homeWinner ? 'winner' : ''} ${!played ? 'score-pending' : ''}">${played && m.home_score !== null ? m.home_score : '-'}</span></div>`;
+        awayScoresHtml = `<div class="bracket-scores-group"><span class="bracket-score-badge ${awayWinner ? 'winner' : ''} ${!played ? 'score-pending' : ''}">${played && m.away_score !== null ? m.away_score : '-'}</span></div>`;
+      }
+
       let nextInfoHtml = '';
       if (m.scheduled_at || m.venue) {
-        const dateStr = m.scheduled_at
-          ? new Date(m.scheduled_at).toLocaleDateString('es-AR', {
-              day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
-            })
-          : '';
+        let dateStr = '';
+        if (m.scheduled_at) {
+          try {
+            const d = new Date(m.scheduled_at.replace(' ', 'T'));
+            if (!isNaN(d.getTime())) {
+              dateStr = d.toLocaleDateString('es-AR', {
+                day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+              });
+            }
+          } catch (e) {
+            dateStr = m.scheduled_at;
+          }
+        }
         const venueStr = m.venue ? `· ${m.venue}` : '';
-        nextInfoHtml = `
-          <div class="bracket-match-footer">
-            <i data-lucide="clock" style="width:13px; height:13px; flex-shrink:0;"></i>
-            <span>${dateStr} ${venueStr}</span>
-          </div>
-        `;
+        if (dateStr || venueStr) {
+          nextInfoHtml = `
+            <div class="bracket-match-footer">
+              <i data-lucide="clock" style="width:13px; height:13px; flex-shrink:0;"></i>
+              <span>${dateStr} ${venueStr}</span>
+            </div>
+          `;
+        }
       }
 
       html += `
         <div class="bracket-match-node ${isSitas ? 'sitas-match' : ''}">
           <div class="bracket-node-header">
             <span class="bracket-node-label">${m.bracket_label || round.round_name}</span>
-            ${played ? `<span class="badge-status-finished" style="font-size:0.68rem; padding: 2px 6px; border-radius:4px; background: rgba(16,185,129,0.15); color:#4ade80;">Finalizado</span>` : `<span style="font-size:0.68rem; padding: 2px 6px; border-radius:4px; background: rgba(255,255,255,0.05); color:var(--text-muted);">Pendiente</span>`}
+            ${statusBadgeHtml}
           </div>
 
           <div class="bracket-team-item ${homeWinner ? 'winner' : ''} ${isSitasHome ? 'sitas-team' : ''}">
@@ -687,7 +733,7 @@ function renderBracketTree(activePhase, tournament) {
               ${homeLogo ? `<img src="${homeLogo}" alt="${homeName}" class="bracket-team-logo" onerror="this.style.display='none'">` : `<i data-lucide="shield" style="width:18px;height:18px;color:var(--text-muted);flex-shrink:0;"></i>`}
               <span class="bracket-team-name-text" title="${homeName}">${homeName}</span>
             </div>
-            <span class="bracket-score-badge ${homeWinner ? 'winner' : ''}">${played ? homeScore : '-'}</span>
+            ${homeScoresHtml}
           </div>
 
           <div class="bracket-team-item ${awayWinner ? 'winner' : ''} ${isSitasAway ? 'sitas-team' : ''}">
@@ -695,7 +741,7 @@ function renderBracketTree(activePhase, tournament) {
               ${awayLogo ? `<img src="${awayLogo}" alt="${awayName}" class="bracket-team-logo" onerror="this.style.display='none'">` : `<i data-lucide="shield" style="width:18px;height:18px;color:var(--text-muted);flex-shrink:0;"></i>`}
               <span class="bracket-team-name-text" title="${awayName}">${awayName}</span>
             </div>
-            <span class="bracket-score-badge ${awayWinner ? 'winner' : ''}">${played ? awayScore : '-'}</span>
+            ${awayScoresHtml}
           </div>
 
           ${nextInfoHtml}
@@ -802,12 +848,34 @@ function setupBracketInteractions() {
 // Helper to sort playoff rounds chronologically
 function getRoundSortWeight(name) {
   const n = (name || '').toLowerCase().trim();
+  if (n.includes('32')) return 5;
   if (n.includes('16') || n.includes('diecis')) return 10;
   if (n.includes('octav')) return 20;
-  if (n.includes('cuart')) return 30;
+  if (n.includes('cuart') && !n.includes('puesto')) return 30;
   if (n.includes('semi')) return 40;
-  if (n.includes('tercer') || n.includes('3') || n.includes('bronce')) return 60;
+  // Tercer y cuarto puesto: después de semifinal (40) y antes de final (50)
+  if (
+    n.includes('tercer') ||
+    n.includes('tercero') ||
+    n.includes('3er') ||
+    n.includes('3°') ||
+    n.includes('3º') ||
+    n.includes('3ro') ||
+    n.includes('bronce') ||
+    n.includes('cuarto puesto') ||
+    n.includes('4to puesto') ||
+    n.includes('4° puesto') ||
+    n.includes('4º puesto')
+  ) {
+    return 45;
+  }
   if (n.includes('final')) return 50;
+  if (n.includes('5') || n.includes('quinto')) return 60;
+  if (n.includes('7') || n.includes('sept') || n.includes('sépt')) return 70;
+  if (n.includes('9') || n.includes('noveno')) return 80;
+  if (n.includes('11')) return 85;
+  if (n.includes('13')) return 90;
+  if (n.includes('15')) return 95;
   return 99;
 }
 
@@ -816,26 +884,71 @@ function buildBracketFromMatches(matches) {
   const roundsMap = {};
   matches.forEach((m) => {
     const rName = m.round_name || 'Eliminatoria';
-    if (!roundsMap[rName]) roundsMap[rName] = [];
-    roundsMap[rName].push({
-      bracket_label: rName,
+    if (!roundsMap[rName]) roundsMap[rName] = {};
+
+    const hName = m.home_club_name || m.home_club?.name || 'Por definir';
+    const aName = m.away_club_name || m.away_club?.name || 'Por definir';
+    const pairKey = [hName, aName].sort().join('___');
+
+    if (!roundsMap[rName][pairKey]) {
+      roundsMap[rName][pairKey] = {
+        bracket_label: rName,
+        match_id: m.clupik_id,
+        home_club: { name: hName, is_winner: false },
+        away_club: { name: aName, is_winner: false },
+        games: [],
+        home_score: m.home_score,
+        away_score: m.away_score,
+        played: false,
+        scheduled_at: m.scheduled_at,
+        venue: m.venue,
+      };
+    }
+
+    const entry = roundsMap[rName][pairKey];
+    const isDirect = entry.home_club.name === hName;
+    const gPlayed = Boolean(m.played);
+    const hs = m.home_score;
+    const as = m.away_score;
+    const gHScore = isDirect ? hs : as;
+    const gAScore = isDirect ? as : hs;
+    const gHWin = (gPlayed && gHScore !== null && gAScore !== null) ? gHScore > gAScore : false;
+    const gAWin = (gPlayed && gHScore !== null && gAScore !== null) ? gAScore > gHScore : false;
+
+    entry.games.push({
       match_id: m.clupik_id,
-      home_club: { name: m.home_club_name || m.home_club?.name },
-      away_club: { name: m.away_club_name || m.away_club?.name },
-      home_score: m.home_score,
-      away_score: m.away_score,
-      played: m.played,
-      scheduled_at: m.scheduled_at,
-      venue: m.venue,
+      game_number: entry.games.length + 1,
+      home_score: gHScore,
+      away_score: gAScore,
+      home_winner: gHWin,
+      away_winner: gAWin,
+      played: gPlayed,
     });
   });
 
   const sortedNames = Object.keys(roundsMap).sort((a, b) => getRoundSortWeight(a) - getRoundSortWeight(b));
   return {
-    rounds: sortedNames.map((name) => ({
-      round_name: name,
-      matches: roundsMap[name],
-    })),
+    rounds: sortedNames.map((name) => {
+      const matchups = Object.values(roundsMap[name]);
+      matchups.forEach((mu) => {
+        mu.played = mu.games.some((g) => g.played);
+        const hWins = mu.games.filter((g) => g.played && g.home_winner).length;
+        const aWins = mu.games.filter((g) => g.played && g.away_winner).length;
+        if (hWins >= 2 || (mu.games.length === 1 && hWins === 1)) {
+          mu.home_club.is_winner = true;
+          mu.is_finished = true;
+        } else if (aWins >= 2 || (mu.games.length === 1 && aWins === 1)) {
+          mu.away_club.is_winner = true;
+          mu.is_finished = true;
+        } else {
+          mu.is_finished = false;
+        }
+      });
+      return {
+        round_name: name,
+        matches: matchups,
+      };
+    }),
   };
 }
 

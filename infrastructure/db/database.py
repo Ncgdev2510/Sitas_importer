@@ -33,6 +33,8 @@ def init_db(db_path: Path | str | None = None) -> None:
             cols = [c[1] for c in conn.execute("PRAGMA table_info(phases)").fetchall()]
             if "is_playoff" not in cols:
                 conn.execute("ALTER TABLE phases ADD COLUMN is_playoff BOOLEAN DEFAULT 0")
+            if "bracket_data" not in cols:
+                conn.execute("ALTER TABLE phases ADD COLUMN bracket_data TEXT")
         except Exception:
             pass
 
