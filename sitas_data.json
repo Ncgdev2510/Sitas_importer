@@ -4991,11 +4991,11 @@
                       "name": "GEVP",
                       "clupik_id": 15878709,
                       "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
-                      "is_winner": false
+                      "is_winner": true
                     },
-                    "home_score": null,
-                    "away_score": null,
-                    "played": false,
+                    "home_score": 108,
+                    "away_score": 122,
+                    "played": true,
                     "scheduled_at": null,
                     "venue": null
                   },
@@ -5032,9 +5032,9 @@
                     "match_id": 145706188,
                     "round_name": "Final",
                     "home_club": {
-                      "name": "Ganador de Semifinal 1",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "GEVP",
+                      "clupik_id": 15878709,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
@@ -5060,9 +5060,9 @@
                     "match_id": 145706189,
                     "round_name": "Tercer y cuarto puesto",
                     "home_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "APV",
+                      "clupik_id": 15878719,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa4dWlwsexJd.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
@@ -5088,6 +5088,24 @@
               "phase_name": "COPA DE PLATA",
               "position": 1,
               "club": {
+                "clupik_id": 15878709,
+                "name": "GEVP"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 122,
+              "goals_against": 108,
+              "goal_diff": 14
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "position": 2,
+              "club": {
                 "clupik_id": 15878712,
                 "name": "VELEZ"
               },
@@ -5104,7 +5122,7 @@
               "tournament_id": 1339117,
               "phase_id": 3701722,
               "phase_name": "COPA DE PLATA",
-              "position": 2,
+              "position": 3,
               "club": {
                 "clupik_id": 15878711,
                 "name": "SITAS"
@@ -5122,44 +5140,26 @@
               "tournament_id": 1339117,
               "phase_id": 3701722,
               "phase_name": "COPA DE PLATA",
-              "position": 3,
+              "position": 4,
               "club": {
                 "clupik_id": 15878719,
                 "name": "APV"
               },
-              "played": 0,
+              "played": 1,
               "won": 0,
               "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1339117,
-              "phase_id": 3701722,
-              "phase_name": "COPA DE PLATA",
-              "position": 4,
-              "club": {
-                "clupik_id": 15878709,
-                "name": "GEVP"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
+              "lost": 1,
+              "points": 1,
+              "goals_for": 108,
+              "goals_against": 122,
+              "goal_diff": -14
             }
           ],
           "club_standing": {
             "tournament_id": 1339117,
             "phase_id": 3701722,
             "phase_name": "COPA DE PLATA",
-            "position": 2,
+            "position": 3,
             "club": {
               "clupik_id": 15878711,
               "name": "SITAS"
@@ -5189,10 +5189,10 @@
                 "clupik_id": 15878709,
                 "name": "GEVP"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 108,
+              "away_score": 122,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145706187,
@@ -5222,8 +5222,8 @@
               "round_name": "Final",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Ganador de Semifinal 1"
+                "clupik_id": 15878709,
+                "name": "GEVP"
               },
               "away_club": {
                 "clupik_id": 15878712,
@@ -5242,8 +5242,8 @@
               "round_name": "Tercer y cuarto puesto",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878719,
+                "name": "APV"
               },
               "away_club": {
                 "clupik_id": 15878711,
@@ -5284,8 +5284,8 @@
               "round_name": "Tercer y cuarto puesto",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878719,
+                "name": "APV"
               },
               "away_club": {
                 "clupik_id": 15878711,
@@ -5326,7 +5326,7 @@
                       "name": "SAN MARTIN",
                       "clupik_id": 15878720,
                       "logo_url": "https://cdn.leverade.com/thumbnails/AaJbVlMiPmyk.30x30.jpg",
-                      "is_winner": false
+                      "is_winner": true
                     },
                     "home_score": 28,
                     "away_score": 80,
@@ -5367,9 +5367,9 @@
                     "match_id": 145706192,
                     "round_name": "Final",
                     "home_club": {
-                      "name": "Ganador de Semifinal 1",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "SAN MARTIN",
+                      "clupik_id": 15878720,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaJbVlMiPmyk.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
@@ -5395,9 +5395,9 @@
                     "match_id": 145706193,
                     "round_name": "Tercer y cuarto puesto",
                     "home_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "CIUDAD B",
+                      "clupik_id": 15878715,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
@@ -5540,8 +5540,8 @@
               "round_name": "Final",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Ganador de Semifinal 1"
+                "clupik_id": 15878720,
+                "name": "SAN MARTIN"
               },
               "away_club": {
                 "clupik_id": null,
@@ -5560,8 +5560,8 @@
               "round_name": "Tercer y cuarto puesto",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878715,
+                "name": "CIUDAD B"
               },
               "away_club": {
                 "clupik_id": null,
@@ -7376,8 +7376,8 @@
                     "home_score": 74,
                     "away_score": 71,
                     "played": true,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-25 18:00:00",
+                    "venue": "CIUDAD"
                   },
                   {
                     "bracket_label": "Cuartos de final 3",
@@ -7724,7 +7724,7 @@
               "phase_id": 3702296,
               "phase_name": "COPA DE ORO",
               "round_name": "Cuartos de final",
-              "scheduled_at": "2026-10-03 23:30:00",
+              "scheduled_at": "2026-10-25 18:00:00",
               "home_club": {
                 "clupik_id": 15880511,
                 "name": "AVELLANEDA"
@@ -7735,7 +7735,7 @@
               },
               "home_score": 74,
               "away_score": 71,
-              "venue": null,
+              "venue": "CIUDAD",
               "played": true
             },
             {
@@ -7918,6 +7918,42 @@
               "phase_name": "COPA DE PLATA",
               "position": 1,
               "club": {
+                "clupik_id": 15880510,
+                "name": "VELEZ"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1339244,
+              "phase_id": 3702297,
+              "phase_name": "COPA DE PLATA",
+              "position": 2,
+              "club": {
+                "clupik_id": 15880513,
+                "name": "HACOAJ"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1339244,
+              "phase_id": 3702297,
+              "phase_name": "COPA DE PLATA",
+              "position": 3,
+              "club": {
                 "clupik_id": 15880514,
                 "name": "SOCIAL PARQUE"
               },
@@ -7934,7 +7970,25 @@
               "tournament_id": 1339244,
               "phase_id": 3702297,
               "phase_name": "COPA DE PLATA",
-              "position": 2,
+              "position": 4,
+              "club": {
+                "clupik_id": 15880515,
+                "name": "APV"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1339244,
+              "phase_id": 3702297,
+              "phase_name": "COPA DE PLATA",
+              "position": 5,
               "club": {
                 "clupik_id": 15880516,
                 "name": "HERNANDEZ"
@@ -9832,8 +9886,8 @@
                     "home_score": 64,
                     "away_score": 58,
                     "played": true,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-25 21:00:00",
+                    "venue": "GEVP"
                   },
                   {
                     "bracket_label": "Cuartos de final 4",
@@ -9854,8 +9908,8 @@
                     "home_score": 82,
                     "away_score": 66,
                     "played": true,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-25 19:30:00",
+                    "venue": "CIUDAD"
                   }
                 ]
               },
@@ -10178,7 +10232,7 @@
               "phase_id": 3702290,
               "phase_name": "COPA DE ORO",
               "round_name": "Cuartos de final",
-              "scheduled_at": "2026-10-03 22:00:00",
+              "scheduled_at": "2026-10-25 21:00:00",
               "home_club": {
                 "clupik_id": 15880495,
                 "name": "AVELLANEDA"
@@ -10189,7 +10243,7 @@
               },
               "home_score": 64,
               "away_score": 58,
-              "venue": null,
+              "venue": "GEVP",
               "played": true
             },
             {
@@ -10198,7 +10252,7 @@
               "phase_id": 3702290,
               "phase_name": "COPA DE ORO",
               "round_name": "Cuartos de final",
-              "scheduled_at": "2026-10-05 00:30:00",
+              "scheduled_at": "2026-10-25 19:30:00",
               "home_club": {
                 "clupik_id": 15880492,
                 "name": "CIUDAD"
@@ -10209,7 +10263,7 @@
               },
               "home_score": 82,
               "away_score": 66,
-              "venue": null,
+              "venue": "CIUDAD",
               "played": true
             },
             {
@@ -10355,9 +10409,9 @@
                     "match_id": 145693562,
                     "round_name": "Semifinal",
                     "home_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "HACOAJ",
+                      "clupik_id": 15880497,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aasy54zg7iRM.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
@@ -10454,7 +10508,26 @@
               }
             ]
           },
-          "standings": [],
+          "standings": [
+            {
+              "tournament_id": 1339243,
+              "phase_id": 3702291,
+              "phase_name": "COPA DE PLATA",
+              "position": 1,
+              "club": {
+                "clupik_id": 15880497,
+                "name": "HACOAJ"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            }
+          ],
           "club_standing": null,
           "matches": [
             {
@@ -10465,8 +10538,8 @@
               "round_name": "Semifinal",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15880497,
+                "name": "HACOAJ"
               },
               "away_club": {
                 "clupik_id": null,
@@ -10595,8 +10668,8 @@
                     "home_score": 58,
                     "away_score": 54,
                     "played": true,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-24 17:30:00",
+                    "venue": "APV"
                   }
                 ]
               },
@@ -10760,7 +10833,7 @@
               "phase_id": 3716957,
               "phase_name": "COPA DE BRONCE",
               "round_name": "Semifinal",
-              "scheduled_at": "2026-10-03 21:30:00",
+              "scheduled_at": "2026-10-24 17:30:00",
               "home_club": {
                 "clupik_id": 15880506,
                 "name": "APV"
@@ -10771,7 +10844,7 @@
               },
               "home_score": 58,
               "away_score": 54,
-              "venue": null,
+              "venue": "APV",
               "played": true
             },
             {
@@ -16002,28 +16075,157 @@
           },
           "is_playoff": true,
           "bracket": {
-            "rounds": []
+            "rounds": [
+              {
+                "round_index": 0,
+                "round_name": "Semifinal",
+                "matches": [
+                  {
+                    "bracket_label": "Semifinal 1",
+                    "match_id": 145781219,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "GEVP FLEX",
+                      "clupik_id": 15912254,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "CIUDAD FLEX",
+                      "clupik_id": 15912259,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Semifinal 2",
+                    "match_id": 145781220,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "SITAS FLEX",
+                      "clupik_id": 15912256,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa1KFxPwczIq.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "HACOAJ FLEX",
+                      "clupik_id": 15912253,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aasy54zg7iRM.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 1,
+                "round_name": "Final",
+                "matches": [
+                  {
+                    "bracket_label": "Final 1",
+                    "match_id": 145781221,
+                    "round_name": "Final",
+                    "home_club": {
+                      "name": "Ganador de Semifinal 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Semifinal 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 2,
+                "round_name": "Tercer y cuarto puesto",
+                "matches": [
+                  {
+                    "bracket_label": "Tercer y cuarto puesto",
+                    "match_id": 145781222,
+                    "round_name": "Tercer y cuarto puesto",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              }
+            ]
           },
-          "standings": [],
-          "club_standing": null,
-          "matches": [],
-          "club_matches": []
-        },
-        {
-          "phase": {
-            "tournament_id": 1341497,
-            "phase_id": 3710494,
-            "name": "COPA DE PLATA",
-            "is_active": false
-          },
-          "is_playoff": false,
-          "bracket": null,
           "standings": [
             {
               "tournament_id": 1341497,
-              "phase_id": 3710494,
-              "phase_name": "COPA DE PLATA",
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
               "position": 1,
+              "club": {
+                "clupik_id": 15912259,
+                "name": "CIUDAD FLEX"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "position": 2,
+              "club": {
+                "clupik_id": 15912254,
+                "name": "GEVP FLEX"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "position": 3,
               "club": {
                 "clupik_id": 15912253,
                 "name": "HACOAJ FLEX"
@@ -16039,12 +16241,213 @@
             },
             {
               "tournament_id": 1341497,
-              "phase_id": 3710494,
-              "phase_name": "COPA DE PLATA",
-              "position": 2,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "position": 4,
               "club": {
+                "clupik_id": 15912256,
+                "name": "SITAS FLEX"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            }
+          ],
+          "club_standing": {
+            "tournament_id": 1341497,
+            "phase_id": 3710493,
+            "phase_name": "COPA DE ORO",
+            "position": 4,
+            "club": {
+              "clupik_id": 15912256,
+              "name": "SITAS FLEX"
+            },
+            "played": 0,
+            "won": 0,
+            "drawn": 0,
+            "lost": 0,
+            "points": 0,
+            "goals_for": 0,
+            "goals_against": 0,
+            "goal_diff": 0
+          },
+          "matches": [
+            {
+              "clupik_id": 145781219,
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
                 "clupik_id": 15912254,
                 "name": "GEVP FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912259,
+                "name": "CIUDAD FLEX"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781220,
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912256,
+                "name": "SITAS FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912253,
+                "name": "HACOAJ FLEX"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781221,
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781222,
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Tercer y cuarto puesto",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ],
+          "club_matches": [
+            {
+              "clupik_id": 145781220,
+              "tournament_id": 1341497,
+              "phase_id": 3710493,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912256,
+                "name": "SITAS FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912253,
+                "name": "HACOAJ FLEX"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ]
+        },
+        {
+          "phase": {
+            "tournament_id": 1341497,
+            "phase_id": 3719708,
+            "name": "COPA PLATA",
+            "is_active": false
+          },
+          "is_playoff": true,
+          "bracket": {
+            "rounds": [
+              {
+                "round_index": 0,
+                "round_name": "Final",
+                "matches": [
+                  {
+                    "bracket_label": "Final",
+                    "match_id": 145781223,
+                    "round_name": "Final",
+                    "home_club": {
+                      "name": "HERNANDEZ FLEX",
+                      "clupik_id": 15912266,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa33t06kEVY3.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "BALLESTER FLEX",
+                      "clupik_id": 15912255,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaIqCgD8ZLA9.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              }
+            ]
+          },
+          "standings": [
+            {
+              "tournament_id": 1341497,
+              "phase_id": 3719708,
+              "phase_name": "COPA PLATA",
+              "position": 1,
+              "club": {
+                "clupik_id": 15912255,
+                "name": "BALLESTER FLEX"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341497,
+              "phase_id": 3719708,
+              "phase_name": "COPA PLATA",
+              "position": 2,
+              "club": {
+                "clupik_id": 15912266,
+                "name": "HERNANDEZ FLEX"
               },
               "played": 0,
               "won": 0,
@@ -16057,7 +16460,28 @@
             }
           ],
           "club_standing": null,
-          "matches": [],
+          "matches": [
+            {
+              "clupik_id": 145781223,
+              "tournament_id": 1341497,
+              "phase_id": 3719708,
+              "phase_name": "COPA PLATA",
+              "round_name": "Final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912266,
+                "name": "HERNANDEZ FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912255,
+                "name": "BALLESTER FLEX"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ],
           "club_matches": []
         }
       ]
@@ -17357,12 +17781,557 @@
           },
           "is_playoff": true,
           "bracket": {
-            "rounds": []
+            "rounds": [
+              {
+                "round_index": 0,
+                "round_name": "Cuartos de final",
+                "matches": [
+                  {
+                    "bracket_label": "Cuartos de final 1",
+                    "match_id": 145781187,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "CIUDAD",
+                      "clupik_id": 15912244,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "GEVP",
+                      "clupik_id": 15912239,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-07-25 11:00:00",
+                    "venue": "CIUDAD"
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 2",
+                    "match_id": 145781188,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "AVELLANEDA",
+                      "clupik_id": 15912236,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaDC1kgA4ueD.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "SOCIAL PARQUE",
+                      "clupik_id": 15912243,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa6PKWXAoAcX.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-25 12:30:00",
+                    "venue": "AVELLANEDA DELFO CABRERA"
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 3",
+                    "match_id": 145781189,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "BALLESTER",
+                      "clupik_id": 15912240,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaIqCgD8ZLA9.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "VELEZ",
+                      "clupik_id": 15912242,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaNNIQmRkTOs.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-24 18:00:00",
+                    "venue": "BALLESTER"
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 4",
+                    "match_id": 145781190,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "SITAS",
+                      "clupik_id": 15912241,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa1KFxPwczIq.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "APV",
+                      "clupik_id": 15912237,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa4dWlwsexJd.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-24 10:00:00",
+                    "venue": "SITAS"
+                  }
+                ]
+              },
+              {
+                "round_index": 1,
+                "round_name": "Semifinal",
+                "matches": [
+                  {
+                    "bracket_label": "Semifinal 1",
+                    "match_id": 145781191,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Ganador de Cuartos de final 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Cuartos de final 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Semifinal 2",
+                    "match_id": 145781192,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Ganador de Cuartos de final 3",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Cuartos de final 4",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 2,
+                "round_name": "Final",
+                "matches": [
+                  {
+                    "bracket_label": "Final 1",
+                    "match_id": 145781193,
+                    "round_name": "Final",
+                    "home_club": {
+                      "name": "Ganador de Semifinal 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Semifinal 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 3,
+                "round_name": "Tercer y cuarto puesto",
+                "matches": [
+                  {
+                    "bracket_label": "Tercer y cuarto puesto",
+                    "match_id": 145781194,
+                    "round_name": "Tercer y cuarto puesto",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              }
+            ]
           },
-          "standings": [],
-          "club_standing": null,
-          "matches": [],
-          "club_matches": []
+          "standings": [
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 1,
+              "club": {
+                "clupik_id": 15912236,
+                "name": "AVELLANEDA"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 25,
+              "goals_against": 10,
+              "goal_diff": 15
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 2,
+              "club": {
+                "clupik_id": 15912240,
+                "name": "BALLESTER"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 24,
+              "goals_against": 10,
+              "goal_diff": 14
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 3,
+              "club": {
+                "clupik_id": 15912242,
+                "name": "VELEZ"
+              },
+              "played": 1,
+              "won": 0,
+              "drawn": 0,
+              "lost": 1,
+              "points": 1,
+              "goals_for": 10,
+              "goals_against": 24,
+              "goal_diff": -14
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 4,
+              "club": {
+                "clupik_id": 15912243,
+                "name": "SOCIAL PARQUE"
+              },
+              "played": 1,
+              "won": 0,
+              "drawn": 0,
+              "lost": 1,
+              "points": 1,
+              "goals_for": 10,
+              "goals_against": 25,
+              "goal_diff": -15
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 5,
+              "club": {
+                "clupik_id": 15912237,
+                "name": "APV"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 6,
+              "club": {
+                "clupik_id": 15912244,
+                "name": "CIUDAD"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 7,
+              "club": {
+                "clupik_id": 15912239,
+                "name": "GEVP"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "position": 8,
+              "club": {
+                "clupik_id": 15912241,
+                "name": "SITAS"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            }
+          ],
+          "club_standing": {
+            "tournament_id": 1341496,
+            "phase_id": 3710490,
+            "phase_name": "COPA DE ORO",
+            "position": 8,
+            "club": {
+              "clupik_id": 15912241,
+              "name": "SITAS"
+            },
+            "played": 0,
+            "won": 0,
+            "drawn": 0,
+            "lost": 0,
+            "points": 0,
+            "goals_for": 0,
+            "goals_against": 0,
+            "goal_diff": 0
+          },
+          "matches": [
+            {
+              "clupik_id": 145781187,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-07-25 11:00:00",
+              "home_club": {
+                "clupik_id": 15912244,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": 15912239,
+                "name": "GEVP"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": "CIUDAD",
+              "played": false
+            },
+            {
+              "clupik_id": 145781188,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-25 12:30:00",
+              "home_club": {
+                "clupik_id": 15912236,
+                "name": "AVELLANEDA"
+              },
+              "away_club": {
+                "clupik_id": 15912243,
+                "name": "SOCIAL PARQUE"
+              },
+              "home_score": 25,
+              "away_score": 10,
+              "venue": "AVELLANEDA DELFO CABRERA",
+              "played": true
+            },
+            {
+              "clupik_id": 145781189,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 18:00:00",
+              "home_club": {
+                "clupik_id": 15912240,
+                "name": "BALLESTER"
+              },
+              "away_club": {
+                "clupik_id": 15912242,
+                "name": "VELEZ"
+              },
+              "home_score": 24,
+              "away_score": 10,
+              "venue": "BALLESTER",
+              "played": true
+            },
+            {
+              "clupik_id": 145781190,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 10:00:00",
+              "home_club": {
+                "clupik_id": 15912241,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": 15912237,
+                "name": "APV"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": "SITAS",
+              "played": false
+            },
+            {
+              "clupik_id": 145781191,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781192,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 3"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 4"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781193,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781194,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Tercer y cuarto puesto",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ],
+          "club_matches": [
+            {
+              "clupik_id": 145781190,
+              "tournament_id": 1341496,
+              "phase_id": 3710490,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 10:00:00",
+              "home_club": {
+                "clupik_id": 15912241,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": 15912237,
+                "name": "APV"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": "SITAS",
+              "played": false
+            }
+          ]
         },
         {
           "phase": {
@@ -17380,80 +18349,8 @@
               "phase_name": "COPA DE PLATA",
               "position": 1,
               "club": {
-                "clupik_id": 15912236,
-                "name": "AVELLANEDA"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341496,
-              "phase_id": 3710491,
-              "phase_name": "COPA DE PLATA",
-              "position": 2,
-              "club": {
-                "clupik_id": 15912237,
-                "name": "APV"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341496,
-              "phase_id": 3710491,
-              "phase_name": "COPA DE PLATA",
-              "position": 3,
-              "club": {
                 "clupik_id": 15912238,
                 "name": "HACOAJ"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341496,
-              "phase_id": 3710491,
-              "phase_name": "COPA DE PLATA",
-              "position": 4,
-              "club": {
-                "clupik_id": 15912239,
-                "name": "GEVP"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341496,
-              "phase_id": 3710491,
-              "phase_name": "COPA DE PLATA",
-              "position": 5,
-              "club": {
-                "clupik_id": 15912242,
-                "name": "VELEZ"
               },
               "played": 0,
               "won": 0,
@@ -18784,12 +19681,557 @@
           },
           "is_playoff": true,
           "bracket": {
-            "rounds": []
+            "rounds": [
+              {
+                "round_index": 0,
+                "round_name": "Cuartos de final",
+                "matches": [
+                  {
+                    "bracket_label": "Cuartos de final 1",
+                    "match_id": 145781434,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "SOCIAL PARQUE FLEX",
+                      "clupik_id": 15912290,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa6PKWXAoAcX.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "SITAS FLEX",
+                      "clupik_id": 15912287,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa1KFxPwczIq.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-24 12:30:00",
+                    "venue": "SOCIAL PARQUE"
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 2",
+                    "match_id": 145781435,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "CIUDAD FLEX",
+                      "clupik_id": 15912284,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "APV FLEX",
+                      "clupik_id": 15912291,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa4dWlwsexJd.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-25 15:00:00",
+                    "venue": "CIUDAD"
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 3",
+                    "match_id": 145781436,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "HERNANDEZ FLEX",
+                      "clupik_id": 15912289,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa33t06kEVY3.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "CIUDAD FLEX B",
+                      "clupik_id": 15912286,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-24 18:30:00",
+                    "venue": "CEF"
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 4",
+                    "match_id": 145781437,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "BALLESTER FLEX",
+                      "clupik_id": 15912285,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaIqCgD8ZLA9.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "VELEZ FLEX",
+                      "clupik_id": 15912283,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaNNIQmRkTOs.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": "2026-10-24 19:30:00",
+                    "venue": "BALLESTER"
+                  }
+                ]
+              },
+              {
+                "round_index": 1,
+                "round_name": "Semifinal",
+                "matches": [
+                  {
+                    "bracket_label": "Semifinal 1",
+                    "match_id": 145781438,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Ganador de Cuartos de final 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Cuartos de final 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Semifinal 2",
+                    "match_id": 145781439,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Ganador de Cuartos de final 3",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Cuartos de final 4",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 2,
+                "round_name": "Final",
+                "matches": [
+                  {
+                    "bracket_label": "Final 1",
+                    "match_id": 145781440,
+                    "round_name": "Final",
+                    "home_club": {
+                      "name": "Ganador de Semifinal 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Semifinal 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 3,
+                "round_name": "Tercer y cuarto puesto",
+                "matches": [
+                  {
+                    "bracket_label": "Tercer y cuarto puesto",
+                    "match_id": 145781441,
+                    "round_name": "Tercer y cuarto puesto",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              }
+            ]
           },
-          "standings": [],
-          "club_standing": null,
-          "matches": [],
-          "club_matches": []
+          "standings": [
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 1,
+              "club": {
+                "clupik_id": 15912284,
+                "name": "CIUDAD FLEX"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 25,
+              "goals_against": 10,
+              "goal_diff": 15
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 2,
+              "club": {
+                "clupik_id": 15912285,
+                "name": "BALLESTER FLEX"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 24,
+              "goals_against": 10,
+              "goal_diff": 14
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 3,
+              "club": {
+                "clupik_id": 15912289,
+                "name": "HERNANDEZ FLEX"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 24,
+              "goals_against": 10,
+              "goal_diff": 14
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 4,
+              "club": {
+                "clupik_id": 15912286,
+                "name": "CIUDAD FLEX B"
+              },
+              "played": 1,
+              "won": 0,
+              "drawn": 0,
+              "lost": 1,
+              "points": 1,
+              "goals_for": 10,
+              "goals_against": 24,
+              "goal_diff": -14
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 5,
+              "club": {
+                "clupik_id": 15912283,
+                "name": "VELEZ FLEX"
+              },
+              "played": 1,
+              "won": 0,
+              "drawn": 0,
+              "lost": 1,
+              "points": 1,
+              "goals_for": 10,
+              "goals_against": 24,
+              "goal_diff": -14
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 6,
+              "club": {
+                "clupik_id": 15912291,
+                "name": "APV FLEX"
+              },
+              "played": 1,
+              "won": 0,
+              "drawn": 0,
+              "lost": 1,
+              "points": 1,
+              "goals_for": 10,
+              "goals_against": 25,
+              "goal_diff": -15
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 7,
+              "club": {
+                "clupik_id": 15912287,
+                "name": "SITAS FLEX"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "position": 8,
+              "club": {
+                "clupik_id": 15912290,
+                "name": "SOCIAL PARQUE FLEX"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            }
+          ],
+          "club_standing": {
+            "tournament_id": 1341499,
+            "phase_id": 3710503,
+            "phase_name": "COPA DE ORO",
+            "position": 7,
+            "club": {
+              "clupik_id": 15912287,
+              "name": "SITAS FLEX"
+            },
+            "played": 0,
+            "won": 0,
+            "drawn": 0,
+            "lost": 0,
+            "points": 0,
+            "goals_for": 0,
+            "goals_against": 0,
+            "goal_diff": 0
+          },
+          "matches": [
+            {
+              "clupik_id": 145781434,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 12:30:00",
+              "home_club": {
+                "clupik_id": 15912290,
+                "name": "SOCIAL PARQUE FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912287,
+                "name": "SITAS FLEX"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": "SOCIAL PARQUE",
+              "played": false
+            },
+            {
+              "clupik_id": 145781435,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-25 15:00:00",
+              "home_club": {
+                "clupik_id": 15912284,
+                "name": "CIUDAD FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912291,
+                "name": "APV FLEX"
+              },
+              "home_score": 25,
+              "away_score": 10,
+              "venue": "CIUDAD",
+              "played": true
+            },
+            {
+              "clupik_id": 145781436,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 18:30:00",
+              "home_club": {
+                "clupik_id": 15912289,
+                "name": "HERNANDEZ FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912286,
+                "name": "CIUDAD FLEX B"
+              },
+              "home_score": 24,
+              "away_score": 10,
+              "venue": "CEF",
+              "played": true
+            },
+            {
+              "clupik_id": 145781437,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 19:30:00",
+              "home_club": {
+                "clupik_id": 15912285,
+                "name": "BALLESTER FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912283,
+                "name": "VELEZ FLEX"
+              },
+              "home_score": 24,
+              "away_score": 10,
+              "venue": "BALLESTER",
+              "played": true
+            },
+            {
+              "clupik_id": 145781438,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781439,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 3"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 4"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781440,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781441,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Tercer y cuarto puesto",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ],
+          "club_matches": [
+            {
+              "clupik_id": 145781434,
+              "tournament_id": 1341499,
+              "phase_id": 3710503,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": "2026-10-24 12:30:00",
+              "home_club": {
+                "clupik_id": 15912290,
+                "name": "SOCIAL PARQUE FLEX"
+              },
+              "away_club": {
+                "clupik_id": 15912287,
+                "name": "SITAS FLEX"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": "SOCIAL PARQUE",
+              "played": false
+            }
+          ]
         },
         {
           "phase": {
@@ -18807,60 +20249,6 @@
               "phase_name": "COPA DE PLATA",
               "position": 1,
               "club": {
-                "clupik_id": 15912283,
-                "name": "VELEZ FLEX"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341499,
-              "phase_id": 3710504,
-              "phase_name": "COPA DE PLATA",
-              "position": 2,
-              "club": {
-                "clupik_id": 15912286,
-                "name": "CIUDAD FLEX B"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341499,
-              "phase_id": 3710504,
-              "phase_name": "COPA DE PLATA",
-              "position": 3,
-              "club": {
-                "clupik_id": 15912287,
-                "name": "SITAS FLEX"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341499,
-              "phase_id": 3710504,
-              "phase_name": "COPA DE PLATA",
-              "position": 4,
-              "club": {
                 "clupik_id": 15912288,
                 "name": "HACOAJ FLEX"
               },
@@ -18877,25 +20265,7 @@
               "tournament_id": 1341499,
               "phase_id": 3710504,
               "phase_name": "COPA DE PLATA",
-              "position": 5,
-              "club": {
-                "clupik_id": 15912291,
-                "name": "APV FLEX"
-              },
-              "played": 0,
-              "won": 0,
-              "drawn": 0,
-              "lost": 0,
-              "points": 0,
-              "goals_for": 0,
-              "goals_against": 0,
-              "goal_diff": 0
-            },
-            {
-              "tournament_id": 1341499,
-              "phase_id": 3710504,
-              "phase_name": "COPA DE PLATA",
-              "position": 6,
+              "position": 2,
               "club": {
                 "clupik_id": 15912292,
                 "name": "VELEZ FLEX B"
@@ -18910,24 +20280,7 @@
               "goal_diff": 0
             }
           ],
-          "club_standing": {
-            "tournament_id": 1341499,
-            "phase_id": 3710504,
-            "phase_name": "COPA DE PLATA",
-            "position": 3,
-            "club": {
-              "clupik_id": 15912287,
-              "name": "SITAS FLEX"
-            },
-            "played": 0,
-            "won": 0,
-            "drawn": 0,
-            "lost": 0,
-            "points": 0,
-            "goals_for": 0,
-            "goals_against": 0,
-            "goal_diff": 0
-          },
+          "club_standing": null,
           "matches": [],
           "club_matches": []
         }
@@ -20190,12 +21543,557 @@
           },
           "is_playoff": true,
           "bracket": {
-            "rounds": []
+            "rounds": [
+              {
+                "round_index": 0,
+                "round_name": "Cuartos de final",
+                "matches": [
+                  {
+                    "bracket_label": "Cuartos de final 1",
+                    "match_id": 145781389,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "SITAS",
+                      "clupik_id": 15912273,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa1KFxPwczIq.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "HACOAJ",
+                      "clupik_id": 15912270,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aasy54zg7iRM.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 2",
+                    "match_id": 145781390,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "BALLESTER",
+                      "clupik_id": 15912272,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaIqCgD8ZLA9.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "GEVP",
+                      "clupik_id": 15912271,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 3",
+                    "match_id": 145781391,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "CIUDAD",
+                      "clupik_id": 15912275,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "AVELLANEDA",
+                      "clupik_id": 15912268,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaDC1kgA4ueD.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Cuartos de final 4",
+                    "match_id": 145781392,
+                    "round_name": "Cuartos de final",
+                    "home_club": {
+                      "name": "VELEZ",
+                      "clupik_id": 15912274,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaNNIQmRkTOs.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "APV",
+                      "clupik_id": 15912269,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa4dWlwsexJd.30x30.jpg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 1,
+                "round_name": "Semifinal",
+                "matches": [
+                  {
+                    "bracket_label": "Semifinal 1",
+                    "match_id": 145781393,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Ganador de Cuartos de final 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Cuartos de final 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Semifinal 2",
+                    "match_id": 145781394,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Ganador de Cuartos de final 3",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Cuartos de final 4",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 2,
+                "round_name": "Final",
+                "matches": [
+                  {
+                    "bracket_label": "Final 1",
+                    "match_id": 145781395,
+                    "round_name": "Final",
+                    "home_club": {
+                      "name": "Ganador de Semifinal 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Semifinal 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 3,
+                "round_name": "Tercer y cuarto puesto",
+                "matches": [
+                  {
+                    "bracket_label": "Tercer y cuarto puesto",
+                    "match_id": 145781396,
+                    "round_name": "Tercer y cuarto puesto",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              }
+            ]
           },
-          "standings": [],
-          "club_standing": null,
-          "matches": [],
-          "club_matches": []
+          "standings": [
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 1,
+              "club": {
+                "clupik_id": 15912269,
+                "name": "APV"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 2,
+              "club": {
+                "clupik_id": 15912268,
+                "name": "AVELLANEDA"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 3,
+              "club": {
+                "clupik_id": 15912272,
+                "name": "BALLESTER"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 4,
+              "club": {
+                "clupik_id": 15912275,
+                "name": "CIUDAD"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 5,
+              "club": {
+                "clupik_id": 15912271,
+                "name": "GEVP"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 6,
+              "club": {
+                "clupik_id": 15912270,
+                "name": "HACOAJ"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 7,
+              "club": {
+                "clupik_id": 15912273,
+                "name": "SITAS"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "position": 8,
+              "club": {
+                "clupik_id": 15912274,
+                "name": "VELEZ"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            }
+          ],
+          "club_standing": {
+            "tournament_id": 1341498,
+            "phase_id": 3710500,
+            "phase_name": "COPA DE ORO",
+            "position": 7,
+            "club": {
+              "clupik_id": 15912273,
+              "name": "SITAS"
+            },
+            "played": 0,
+            "won": 0,
+            "drawn": 0,
+            "lost": 0,
+            "points": 0,
+            "goals_for": 0,
+            "goals_against": 0,
+            "goal_diff": 0
+          },
+          "matches": [
+            {
+              "clupik_id": 145781389,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912273,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": 15912270,
+                "name": "HACOAJ"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781390,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912272,
+                "name": "BALLESTER"
+              },
+              "away_club": {
+                "clupik_id": 15912271,
+                "name": "GEVP"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781391,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912275,
+                "name": "CIUDAD"
+              },
+              "away_club": {
+                "clupik_id": 15912268,
+                "name": "AVELLANEDA"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781392,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912274,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": 15912269,
+                "name": "APV"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781393,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781394,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 3"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Cuartos de final 4"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781395,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781396,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Tercer y cuarto puesto",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ],
+          "club_matches": [
+            {
+              "clupik_id": 145781389,
+              "tournament_id": 1341498,
+              "phase_id": 3710500,
+              "phase_name": "COPA DE ORO",
+              "round_name": "Cuartos de final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15912273,
+                "name": "SITAS"
+              },
+              "away_club": {
+                "clupik_id": 15912270,
+                "name": "HACOAJ"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ]
         },
         {
           "phase": {
@@ -20206,11 +22104,199 @@
           },
           "is_playoff": true,
           "bracket": {
-            "rounds": []
+            "rounds": [
+              {
+                "round_index": 0,
+                "round_name": "Semifinal",
+                "matches": [
+                  {
+                    "bracket_label": "Semifinal 1",
+                    "match_id": 145781403,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  },
+                  {
+                    "bracket_label": "Semifinal 2",
+                    "match_id": 145781404,
+                    "round_name": "Semifinal",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 1,
+                "round_name": "Final",
+                "matches": [
+                  {
+                    "bracket_label": "Final 1",
+                    "match_id": 145781405,
+                    "round_name": "Final",
+                    "home_club": {
+                      "name": "Ganador de Semifinal 1",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Ganador de Semifinal 2",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              },
+              {
+                "round_index": 2,
+                "round_name": "Tercer y cuarto puesto",
+                "matches": [
+                  {
+                    "bracket_label": "Tercer y cuarto puesto",
+                    "match_id": 145781406,
+                    "round_name": "Tercer y cuarto puesto",
+                    "home_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "away_club": {
+                      "name": "Sin equipo",
+                      "clupik_id": null,
+                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "is_winner": false
+                    },
+                    "home_score": null,
+                    "away_score": null,
+                    "played": false,
+                    "scheduled_at": null,
+                    "venue": null
+                  }
+                ]
+              }
+            ]
           },
           "standings": [],
           "club_standing": null,
-          "matches": [],
+          "matches": [
+            {
+              "clupik_id": 145781403,
+              "tournament_id": 1341498,
+              "phase_id": 3710501,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781404,
+              "tournament_id": 1341498,
+              "phase_id": 3710501,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781405,
+              "tournament_id": 1341498,
+              "phase_id": 3710501,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Final",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 1"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Ganador de Semifinal 2"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145781406,
+              "tournament_id": 1341498,
+              "phase_id": 3710501,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Tercer y cuarto puesto",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "Sin equipo"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            }
+          ],
           "club_matches": []
         }
       ]
@@ -22225,13 +24311,13 @@
                       "name": "CIUDAD",
                       "clupik_id": 15880470,
                       "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
-                      "is_winner": true
+                      "is_winner": false
                     },
                     "home_score": 38,
                     "away_score": 70,
                     "played": true,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-03 17:00:00",
+                    "venue": "APV"
                   },
                   {
                     "bracket_label": "Cuartos de final 2",
@@ -22247,7 +24333,7 @@
                       "name": "HACOAJ",
                       "clupik_id": 15880477,
                       "logo_url": "https://cdn.leverade.com/thumbnails/Aasy54zg7iRM.30x30.jpg",
-                      "is_winner": true
+                      "is_winner": false
                     },
                     "home_score": 88,
                     "away_score": 98,
@@ -22291,7 +24377,7 @@
                       "name": "VELEZ",
                       "clupik_id": 15880472,
                       "logo_url": "https://cdn.leverade.com/thumbnails/AaNNIQmRkTOs.30x30.jpg",
-                      "is_winner": false
+                      "is_winner": true
                     },
                     "home_score": 82,
                     "away_score": 77,
@@ -22310,22 +24396,22 @@
                     "match_id": 145693501,
                     "round_name": "Semifinal",
                     "home_club": {
-                      "name": "CIUDAD",
-                      "clupik_id": 15880470,
-                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
-                      "is_winner": false
-                    },
-                    "away_club": {
                       "name": "HACOAJ",
                       "clupik_id": 15880477,
                       "logo_url": "https://cdn.leverade.com/thumbnails/Aasy54zg7iRM.30x30.jpg",
                       "is_winner": false
                     },
+                    "away_club": {
+                      "name": "CIUDAD",
+                      "clupik_id": 15880470,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
+                      "is_winner": false
+                    },
                     "home_score": null,
                     "away_score": null,
                     "played": false,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-25 14:00:00",
+                    "venue": "HACOAJ TIGRE"
                   },
                   {
                     "bracket_label": "Semifinal 2",
@@ -22338,9 +24424,9 @@
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Ganador de Cuartos de final 4",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "VELEZ",
+                      "clupik_id": 15880472,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaNNIQmRkTOs.30x30.jpg",
                       "is_winner": false
                     },
                     "home_score": null,
@@ -22416,23 +24502,41 @@
               "phase_name": "COPA DE ORO",
               "position": 1,
               "club": {
-                "clupik_id": 15880470,
-                "name": "CIUDAD"
+                "clupik_id": 15880477,
+                "name": "HACOAJ"
               },
-              "played": 1,
-              "won": 1,
+              "played": 2,
+              "won": 2,
               "drawn": 0,
               "lost": 0,
-              "points": 2,
-              "goals_for": 70,
-              "goals_against": 38,
-              "goal_diff": 32
+              "points": 4,
+              "goals_for": 123,
+              "goals_against": 98,
+              "goal_diff": 25
             },
             {
               "tournament_id": 1339242,
               "phase_id": 3702285,
               "phase_name": "COPA DE ORO",
               "position": 2,
+              "club": {
+                "clupik_id": 15880470,
+                "name": "CIUDAD"
+              },
+              "played": 2,
+              "won": 1,
+              "drawn": 0,
+              "lost": 1,
+              "points": 3,
+              "goals_for": 80,
+              "goals_against": 63,
+              "goal_diff": 17
+            },
+            {
+              "tournament_id": 1339242,
+              "phase_id": 3702285,
+              "phase_name": "COPA DE ORO",
+              "position": 3,
               "club": {
                 "clupik_id": 15880484,
                 "name": "SITAS"
@@ -22445,24 +24549,6 @@
               "goals_for": 95,
               "goals_against": 67,
               "goal_diff": 28
-            },
-            {
-              "tournament_id": 1339242,
-              "phase_id": 3702285,
-              "phase_name": "COPA DE ORO",
-              "position": 3,
-              "club": {
-                "clupik_id": 15880477,
-                "name": "HACOAJ"
-              },
-              "played": 1,
-              "won": 1,
-              "drawn": 0,
-              "lost": 0,
-              "points": 2,
-              "goals_for": 98,
-              "goals_against": 88,
-              "goal_diff": 10
             },
             {
               "tournament_id": 1339242,
@@ -22559,7 +24645,7 @@
             "tournament_id": 1339242,
             "phase_id": 3702285,
             "phase_name": "COPA DE ORO",
-            "position": 2,
+            "position": 3,
             "club": {
               "clupik_id": 15880484,
               "name": "SITAS"
@@ -22580,7 +24666,7 @@
               "phase_id": 3702285,
               "phase_name": "COPA DE ORO",
               "round_name": "Cuartos de final",
-              "scheduled_at": null,
+              "scheduled_at": "2026-10-03 17:00:00",
               "home_club": {
                 "clupik_id": 15880475,
                 "name": "APV"
@@ -22591,7 +24677,7 @@
               },
               "home_score": 38,
               "away_score": 70,
-              "venue": null,
+              "venue": "APV",
               "played": true
             },
             {
@@ -22660,19 +24746,19 @@
               "phase_id": 3702285,
               "phase_name": "COPA DE ORO",
               "round_name": "Semifinal",
-              "scheduled_at": null,
+              "scheduled_at": "2026-10-25 14:00:00",
               "home_club": {
-                "clupik_id": 15880470,
-                "name": "CIUDAD"
-              },
-              "away_club": {
                 "clupik_id": 15880477,
                 "name": "HACOAJ"
               },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
+              "away_club": {
+                "clupik_id": 15880470,
+                "name": "CIUDAD"
+              },
+              "home_score": 25,
+              "away_score": 10,
+              "venue": "HACOAJ TIGRE",
+              "played": true
             },
             {
               "clupik_id": 145693502,
@@ -22686,8 +24772,8 @@
                 "name": "SITAS"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Ganador de Cuartos de final 4"
+                "clupik_id": 15880472,
+                "name": "VELEZ"
               },
               "home_score": null,
               "away_score": null,
@@ -22768,8 +24854,8 @@
                 "name": "SITAS"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Ganador de Cuartos de final 4"
+                "clupik_id": 15880472,
+                "name": "VELEZ"
               },
               "home_score": null,
               "away_score": null,
@@ -22797,37 +24883,37 @@
                     "match_id": 145693523,
                     "round_name": "Semifinal",
                     "home_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "APV",
+                      "clupik_id": 15880475,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa4dWlwsexJd.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "AVELLANEDA",
+                      "clupik_id": 15880473,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaDC1kgA4ueD.30x30.jpg",
                       "is_winner": false
                     },
                     "home_score": null,
                     "away_score": null,
                     "played": false,
-                    "scheduled_at": null,
-                    "venue": null
+                    "scheduled_at": "2026-10-24 19:00:00",
+                    "venue": "APV"
                   },
                   {
                     "bracket_label": "Semifinal 2",
                     "match_id": 145693526,
                     "round_name": "Semifinal",
                     "home_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "BALLESTER",
+                      "clupik_id": 15880474,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaIqCgD8ZLA9.30x30.jpg",
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "GEVP",
+                      "clupik_id": 15880469,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
                       "is_winner": false
                     },
                     "home_score": null,
@@ -22896,7 +24982,80 @@
               }
             ]
           },
-          "standings": [],
+          "standings": [
+            {
+              "tournament_id": 1339242,
+              "phase_id": 3716955,
+              "phase_name": "COPA DE PLATA",
+              "position": 1,
+              "club": {
+                "clupik_id": 15880475,
+                "name": "APV"
+              },
+              "played": 1,
+              "won": 1,
+              "drawn": 0,
+              "lost": 0,
+              "points": 2,
+              "goals_for": 24,
+              "goals_against": 10,
+              "goal_diff": 14
+            },
+            {
+              "tournament_id": 1339242,
+              "phase_id": 3716955,
+              "phase_name": "COPA DE PLATA",
+              "position": 2,
+              "club": {
+                "clupik_id": 15880473,
+                "name": "AVELLANEDA"
+              },
+              "played": 1,
+              "won": 0,
+              "drawn": 0,
+              "lost": 1,
+              "points": 1,
+              "goals_for": 10,
+              "goals_against": 24,
+              "goal_diff": -14
+            },
+            {
+              "tournament_id": 1339242,
+              "phase_id": 3716955,
+              "phase_name": "COPA DE PLATA",
+              "position": 3,
+              "club": {
+                "clupik_id": 15880474,
+                "name": "BALLESTER"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            },
+            {
+              "tournament_id": 1339242,
+              "phase_id": 3716955,
+              "phase_name": "COPA DE PLATA",
+              "position": 4,
+              "club": {
+                "clupik_id": 15880469,
+                "name": "GEVP"
+              },
+              "played": 0,
+              "won": 0,
+              "drawn": 0,
+              "lost": 0,
+              "points": 0,
+              "goals_for": 0,
+              "goals_against": 0,
+              "goal_diff": 0
+            }
+          ],
           "club_standing": null,
           "matches": [
             {
@@ -22905,19 +25064,19 @@
               "phase_id": 3716955,
               "phase_name": "COPA DE PLATA",
               "round_name": "Semifinal",
-              "scheduled_at": null,
+              "scheduled_at": "2026-10-24 19:00:00",
               "home_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15880475,
+                "name": "APV"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15880473,
+                "name": "AVELLANEDA"
               },
-              "home_score": null,
-              "away_score": null,
-              "venue": null,
-              "played": false
+              "home_score": 24,
+              "away_score": 10,
+              "venue": "APV",
+              "played": true
             },
             {
               "clupik_id": 145693526,
@@ -22927,12 +25086,12 @@
               "round_name": "Semifinal",
               "scheduled_at": null,
               "home_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15880474,
+                "name": "BALLESTER"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15880469,
+                "name": "GEVP"
               },
               "home_score": null,
               "away_score": null,
@@ -23145,6 +25304,46 @@
               "away_score": null,
               "venue": null,
               "played": false
+            },
+            {
+              "clupik_id": 145693520,
+              "tournament_id": 1339242,
+              "phase_id": 3716954,
+              "phase_name": "COPA DE BRONCE",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-10-24 21:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 24,
+              "away_score": 10,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145693519,
+              "tournament_id": 1339242,
+              "phase_id": 3716954,
+              "phase_name": "COPA DE BRONCE",
+              "round_name": "Jornada 3",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": null,
+                "name": "GEVP B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "descansa"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
             }
           ],
           "club_matches": [
@@ -23185,6 +25384,26 @@
               },
               "home_score": 2,
               "away_score": 0,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145693520,
+              "tournament_id": 1339242,
+              "phase_id": 3716954,
+              "phase_name": "COPA DE BRONCE",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-10-24 21:30:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "SITAS B"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "CIUDAD B"
+              },
+              "home_score": 24,
+              "away_score": 10,
               "venue": null,
               "played": true
             }
