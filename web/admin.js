@@ -206,8 +206,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function handleFileSelected(file) {
-    if (!file.name.toLowerCase().endsWith(".pdf")) {
-      showToast("Por favor seleccioná un archivo en formato .pdf", "error");
+    const validExtensions = [".pdf", ".png", ".jpg", ".jpeg", ".webp"];
+    const isValid = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+    if (!isValid) {
+      showToast("Por favor seleccioná un archivo PDF o una imagen (.png, .jpg, .webp)", "error");
       return;
     }
     selectedPdfFile = file;
@@ -228,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!selectedPdfFile) return;
 
     btnProcessPdf.disabled = true;
-    btnProcessPdf.innerHTML = `<span>⏳ Procesando PDF con Inteligencia...</span>`;
+    btnProcessPdf.innerHTML = `<span>⏳ Procesando fixture con OCR e Inteligencia...</span>`;
 
     const formData = new FormData();
     formData.append("pdf", selectedPdfFile);

@@ -100,15 +100,15 @@
           <!-- Formulario Uploader -->
           <div class="card uploader-card">
             <div class="card-header">
-              <h3>📄 Cargar archivo PDF</h3>
+              <h3>📄 Cargar Fixture (PDF o Imagen)</h3>
             </div>
             <div class="card-body">
               <form id="pdf-upload-form" class="uploader-form">
                 <div class="drop-zone" id="pdf-dropzone">
                   <span class="drop-icon">📑</span>
-                  <p class="drop-title">Arrastrá el PDF aquí o hacé clic para seleccionar</p>
-                  <p class="drop-subtitle">Formatos compatibles: .PDF (Designaciones Federación)</p>
-                  <input type="file" id="pdf-file-input" name="pdf" accept=".pdf" class="file-input-hidden">
+                  <p class="drop-title">Arrastrá el fixture aquí o hacé clic para seleccionar</p>
+                  <p class="drop-subtitle">Formatos compatibles: .PDF o Imágenes PNG/JPG (Designaciones)</p>
+                  <input type="file" id="pdf-file-input" name="pdf" accept=".pdf,image/png,image/jpeg,image/webp" class="file-input-hidden">
                 </div>
 
                 <div id="selected-file-info" class="file-selected-pill" style="display:none;">
@@ -164,6 +164,7 @@
                 <option value="">Todas las divisiones</option>
                 <option value="MENORES">Menores</option>
                 <option value="MAYORES">Mayores</option>
+                <option value="MAXI 30">Maxi 30</option>
               </select>
             </div>
           </div>

@@ -143,21 +143,22 @@ def upload_pdf_schedule():
     if not is_authenticated():
         return jsonify({"error": "No autorizado. Inicie sesión como administrador."}), 401
 
-    if "pdf" not in request.files:
-        return jsonify({"error": "No se envió ningún archivo PDF"}), 400
+    file = request.files.get("pdf") or request.files.get("file")
+    if not file:
+        return jsonify({"error": "No se envió ningún archivo (PDF o Imagen)"}), 400
 
-    file = request.files["pdf"]
-    if file.filename == "" or not allowed_file(file.filename, ALLOWED_EXTENSIONS_PDF):
-        return jsonify({"error": "Archivo no válido. Debe ser un archivo .pdf"}), 400
+    allowed_exts = ALLOWED_EXTENSIONS_PDF | ALLOWED_EXTENSIONS_IMG
+    if file.filename == "" or not allowed_file(file.filename, allowed_exts):
+        return jsonify({"error": "Archivo no válido. Debe ser un PDF o imagen (.png, .jpg, .jpeg, .webp)"}), 400
 
-    pdf_bytes = file.read()
+    file_bytes = file.read()
     try:
-        matches = parse_schedule_pdf(pdf_bytes)
+        matches = parse_schedule_pdf(file_bytes)
     except Exception as e:
-        return jsonify({"error": f"Error al parsear el PDF: {str(e)}"}), 422
+        return jsonify({"error": f"Error al procesar el archivo: {str(e)}"}), 422
 
     if not matches:
-        return jsonify({"error": "No se encontraron partidos válidos en el PDF enviado."}), 422
+        return jsonify({"error": "No se encontraron partidos válidos en el archivo enviado."}), 422
 
     # Opción de publicar directamente en la base
     publish = request.form.get("publish", "1") in ("1", "true", "True")

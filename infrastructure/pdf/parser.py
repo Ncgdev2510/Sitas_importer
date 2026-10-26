@@ -95,7 +95,8 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
         return None
 
     # Detectar fecha (dd/mm/yyyy o dd/mm/yy o dd-mm-yyyy)
-    date_match = re.search(r"(\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b)", line)
+    # Toleramos que OCR haya pegado una palabra antes de la fecha (ej. "Vuelta29/10/2026")
+    date_match = re.search(r"((?<!\d)\d{1,2}[/-]\d{1,2}[/-]\d{2,4}(?!\d))", line)
     if not date_match:
         return None
 
@@ -107,10 +108,18 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
         round_val = int(round_clean)
 
     match_date = date_match.group(1).replace("-", "/")
+    d_parts = match_date.split("/")
+    if len(d_parts) == 3:
+        day = d_parts[0].zfill(2)
+        month = d_parts[1].zfill(2)
+        year = d_parts[2]
+        if len(year) == 2:
+            year = "20" + year
+        match_date = f"{day}/{month}/{year}"
     rest = line[date_match.end():].strip()
 
     # Buscar horario: ej. 9:00, 19:30, 20:45
-    time_match = re.search(r"(\b\d{1,2}:\d{2}\b)", rest)
+    time_match = re.search(r"((?<!\d)\d{1,2}:\d{2}(?!\d))", rest)
     if time_match:
         time_str = time_match.group(1)
         time_pos = time_match.start()
@@ -132,6 +141,16 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
             cat_pos = idx
             break
 
+    # Fallback si categoría quedó después de horario
+    if not cat_found and after_time:
+        for cat in sorted(KNOWN_CATEGORIES, key=len, reverse=True):
+            idx = after_time.upper().find(cat.upper())
+            if idx != -1:
+                cat_found = cat
+                cat_pos = len(before_time)
+                after_time = (after_time[:idx] + " " + after_time[idx + len(cat):]).strip()
+                break
+
     if not cat_found:
         return None
 
@@ -145,14 +164,14 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
     # Separar equipos y sede por 2 o más espacios o tabulaciones
     col_parts = [p.strip() for p in re.split(r"\s{2,}|\t", teams_and_venue) if p.strip()]
 
-    # Si hay 4 partes y la segunda o tercera es B o FLEX, reagrupar con el equipo respectivo
-    if len(col_parts) == 4:
-        if col_parts[1].upper() in ("B", "FLEX"):
-            col_parts[0] = f"{col_parts[0]} {col_parts[1]}"
-            col_parts.pop(1)
-        elif len(col_parts) == 4 and col_parts[2].upper() in ("B", "FLEX"):
-            col_parts[1] = f"{col_parts[1]} {col_parts[2]}"
-            col_parts.pop(2)
+    # Reagrupar sufijos de equipos (A, B, C, FLEX, PROMO, etc.) que hayan quedado separados en una columna
+    team_suffixes = {"A", "B", "C", "D", "FLEX", "PROMO"}
+    if len(col_parts) >= 4 and col_parts[1].upper() in team_suffixes:
+        col_parts[0] = f"{col_parts[0]} {col_parts[1]}"
+        col_parts.pop(1)
+    if len(col_parts) >= 4 and col_parts[2].upper() in team_suffixes:
+        col_parts[1] = f"{col_parts[1]} {col_parts[2]}"
+        col_parts.pop(2)
 
     home_team = ""
     away_team = ""
@@ -161,20 +180,25 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
     if len(col_parts) >= 3:
         home_team = col_parts[0]
         away_team = col_parts[1]
-        venue = col_parts[2]
+        venue = " ".join(col_parts[2:])
     elif len(col_parts) == 2:
         home_team = col_parts[0]
         away_team = col_parts[1]
         venue = home_team
     elif len(col_parts) == 1:
         tokens = col_parts[0].split()
-        if len(tokens) >= 2:
+        if len(tokens) >= 3 and tokens[0].upper() == tokens[-1].upper():
+            home_team = tokens[0]
+            away_team = " ".join(tokens[1:-1])
+            venue = tokens[-1]
+        elif len(tokens) >= 2:
             home_team = tokens[0]
             away_team = " ".join(tokens[1:])
+            venue = ""
         else:
             home_team = col_parts[0]
             away_team = ""
-        venue = ""
+            venue = ""
 
     home_team = normalize_team_name(home_team)
     away_team = normalize_team_name(away_team)
@@ -231,7 +255,18 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
     if not _ocr_engine:
         return []
 
-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+    file_type = "pdf"
+    if pdf_bytes.startswith(b"\x89PNG"):
+        file_type = "png"
+    elif pdf_bytes.startswith(b"\xff\xd8\xff"):
+        file_type = "jpeg"
+    elif pdf_bytes.startswith(b"RIFF") and b"WEBP" in pdf_bytes[:16]:
+        file_type = "webp"
+
+    try:
+        doc = pymupdf.open(stream=pdf_bytes, filetype=file_type)
+    except Exception:
+        doc = pymupdf.open(stream=pdf_bytes)
     matches: List[Dict[str, Any]] = []
     current_division = "MENORES"
 
@@ -243,26 +278,32 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
 
         items = []
         for box, text, _score in res:
+            t = text.strip()
+            # Separar textos pegados a fechas u horarios por artefactos del OCR
+            t = re.sub(r"([A-Za-z])(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})", r"\1   \2", t)
+            t = re.sub(r"(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})([A-Za-z])", r"\1   \2", t)
+            t = re.sub(r"([A-Za-z])(\d{1,2}:\d{2})", r"\1   \2", t)
+            t = re.sub(r"(\d{1,2}:\d{2})([A-Za-z])", r"\1   \2", t)
             y_center = (box[0][1] + box[2][1]) / 2
             x_left = box[0][0]
-            items.append((y_center, x_left, text.strip()))
+            items.append((y_center, x_left, t))
         items.sort(key=lambda item: item[0])
 
         lines = []
         curr_line = []
         curr_y = None
         for y, x, text in items:
-            if curr_y is None or abs(y - curr_y) < 7:
-                curr_line.append((x, text))
-                curr_y = y if curr_y is None else (curr_y + y) / 2
+            if curr_y is None or abs(y - curr_y) < 8.5:
+                curr_line.append((x, y, text))
+                curr_y = sum(iy for _, iy, _ in curr_line) / len(curr_line)
             else:
                 curr_line.sort(key=lambda it: it[0])
-                lines.append("   ".join([t for _, t in curr_line]))
-                curr_line = [(x, text)]
+                lines.append("   ".join([t for _, _, t in curr_line]))
+                curr_line = [(x, y, text)]
                 curr_y = y
         if curr_line:
             curr_line.sort(key=lambda it: it[0])
-            lines.append("   ".join([t for _, t in curr_line]))
+            lines.append("   ".join([t for _, _, t in curr_line]))
 
         for line in lines:
             line_str = line.strip()
@@ -303,6 +344,10 @@ def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Di
         raw_bytes = pdf_source
     else:
         raw_bytes = pdf_source.read()
+
+    # Si el archivo recibido es una imagen (PNG, JPG, WEBP), procesar directamente con OCR
+    if raw_bytes.startswith((b"\x89PNG", b"\xff\xd8\xff", b"RIFF")):
+        return parse_schedule_with_ocr(raw_bytes)
 
     # 1. Intentar extracción de texto estándar con pypdf
     matches: List[Dict[str, Any]] = []
@@ -350,7 +395,7 @@ def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Di
 
     # 2. Si no se encontraron partidos con el texto nativo (por fuentes Type3 / imágenes)
     # o si se extrajeron muy pocos por fuentes incompletas, recurrir al OCR
-    if not matches or (len(matches) < 4 and _ocr_engine):
+    if _ocr_engine and (not matches or len(matches) < 8):
         ocr_matches = parse_schedule_with_ocr(raw_bytes)
         if len(ocr_matches) > len(matches):
             matches = ocr_matches
