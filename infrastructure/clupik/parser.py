@@ -307,14 +307,14 @@ def parse_playoff_bracket(
             is_matchup_finished = series_winner is not None or (len(games) == 1 and games[0]["played"])
 
             # Marcador representativo para compatibilidad
+            home_score = None
+            away_score = None
             if len(games) > 1 and is_matchup_played:
                 home_score = home_wins
                 away_score = away_wins
             elif len(games) == 1:
                 home_score = games[0]["home_score"]
                 away_score = games[0]["away_score"]
-            else:
-                home_score = None
             round_dict["matches"].append({
                 "bracket_label": bracket_label,
                 "match_id": primary_match_id,

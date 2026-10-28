@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+server.py
 
 # Environments
 .env
@@ -24,3 +25,4 @@ desktop.ini
 # Logs & temp
 *.log
 *.tmp
+

@@ -4964,7 +4964,7 @@
                       "name": "AVELLANEDA",
                       "clupik_id": 15878713,
                       "logo_url": "https://cdn.leverade.com/thumbnails/AaDC1kgA4ueD.30x30.jpg",
-                      "is_winner": false
+                      "is_winner": true
                     },
                     "away_club": {
                       "name": "CIUDAD",
@@ -4973,7 +4973,7 @@
                       "is_winner": false
                     },
                     "is_series": true,
-                    "series_winner": null,
+                    "series_winner": "home",
                     "games": [
                       {
                         "match_id": 145706220,
@@ -4987,11 +4987,11 @@
                       {
                         "match_id": 145763288,
                         "game_number": 2,
-                        "home_score": null,
-                        "away_score": null,
-                        "home_winner": false,
+                        "home_score": 76,
+                        "away_score": 66,
+                        "home_winner": true,
                         "away_winner": false,
-                        "played": false
+                        "played": true
                       },
                       {
                         "match_id": 145763289,
@@ -5003,10 +5003,10 @@
                         "played": false
                       }
                     ],
-                    "home_score": 1,
+                    "home_score": 2,
                     "away_score": 0,
                     "played": true,
-                    "is_finished": false,
+                    "is_finished": true,
                     "scheduled_at": null,
                     "venue": null
                   }
@@ -5027,9 +5027,9 @@
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "CIUDAD",
+                      "clupik_id": 15878710,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AazWhczjcoys.30x30.jpg",
                       "is_winner": false
                     },
                     "is_series": false,
@@ -5069,9 +5069,9 @@
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Ganador de Semifinal 2",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "AVELLANEDA",
+                      "clupik_id": 15878713,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaDC1kgA4ueD.30x30.jpg",
                       "is_winner": false
                     },
                     "is_series": false,
@@ -5108,14 +5108,14 @@
                 "clupik_id": 15878713,
                 "name": "AVELLANEDA"
               },
-              "played": 2,
-              "won": 2,
+              "played": 3,
+              "won": 3,
               "drawn": 0,
               "lost": 0,
-              "points": 4,
-              "goals_for": 206,
-              "goals_against": 138,
-              "goal_diff": 68
+              "points": 6,
+              "goals_for": 282,
+              "goals_against": 204,
+              "goal_diff": 78
             },
             {
               "tournament_id": 1339117,
@@ -5141,6 +5141,24 @@
               "phase_name": "COPA DE ORO",
               "position": 3,
               "club": {
+                "clupik_id": 15878710,
+                "name": "CIUDAD"
+              },
+              "played": 3,
+              "won": 1,
+              "drawn": 0,
+              "lost": 2,
+              "points": 4,
+              "goals_for": 248,
+              "goals_against": 277,
+              "goal_diff": -29
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701721,
+              "phase_name": "COPA DE ORO",
+              "position": 4,
+              "club": {
                 "clupik_id": 15878716,
                 "name": "SOCIAL PARQUE"
               },
@@ -5152,24 +5170,6 @@
               "goals_for": 196,
               "goals_against": 165,
               "goal_diff": 31
-            },
-            {
-              "tournament_id": 1339117,
-              "phase_id": 3701721,
-              "phase_name": "COPA DE ORO",
-              "position": 4,
-              "club": {
-                "clupik_id": 15878710,
-                "name": "CIUDAD"
-              },
-              "played": 2,
-              "won": 1,
-              "drawn": 0,
-              "lost": 1,
-              "points": 3,
-              "goals_for": 182,
-              "goals_against": 201,
-              "goal_diff": -19
             },
             {
               "tournament_id": 1339117,
@@ -5438,10 +5438,10 @@
                 "clupik_id": 15878710,
                 "name": "CIUDAD"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 76,
+              "away_score": 66,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145763289,
@@ -5475,8 +5475,8 @@
                 "name": "Ganador de Semifinal 1"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Ganador de Semifinal 2"
+                "clupik_id": 15878713,
+                "name": "AVELLANEDA"
               },
               "home_score": null,
               "away_score": null,
@@ -5495,8 +5495,8 @@
                 "name": "Sin equipo"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878710,
+                "name": "CIUDAD"
               },
               "home_score": null,
               "away_score": null,
@@ -5557,7 +5557,7 @@
                       "logo_url": "https://cdn.leverade.com/thumbnails/AauojBTz3yMC.30x30.jpg",
                       "is_winner": true
                     },
-                    "is_series": false,
+                    "is_series": true,
                     "series_winner": "away",
                     "games": [
                       {
@@ -5568,10 +5568,28 @@
                         "home_winner": false,
                         "away_winner": true,
                         "played": true
+                      },
+                      {
+                        "match_id": 145795587,
+                        "game_number": 2,
+                        "home_score": 90,
+                        "away_score": 92,
+                        "home_winner": false,
+                        "away_winner": true,
+                        "played": true
+                      },
+                      {
+                        "match_id": 145795588,
+                        "game_number": 3,
+                        "home_score": null,
+                        "away_score": null,
+                        "home_winner": false,
+                        "away_winner": false,
+                        "played": false
                       }
                     ],
-                    "home_score": 108,
-                    "away_score": 122,
+                    "home_score": 0,
+                    "away_score": 2,
                     "played": true,
                     "is_finished": true,
                     "scheduled_at": null,
@@ -5593,7 +5611,7 @@
                       "logo_url": "https://cdn.leverade.com/thumbnails/Aa1KFxPwczIq.30x30.jpg",
                       "is_winner": false
                     },
-                    "is_series": false,
+                    "is_series": true,
                     "series_winner": "home",
                     "games": [
                       {
@@ -5604,10 +5622,28 @@
                         "home_winner": true,
                         "away_winner": false,
                         "played": true
+                      },
+                      {
+                        "match_id": 145795589,
+                        "game_number": 2,
+                        "home_score": null,
+                        "away_score": null,
+                        "home_winner": false,
+                        "away_winner": false,
+                        "played": false
+                      },
+                      {
+                        "match_id": 145795590,
+                        "game_number": 3,
+                        "home_score": null,
+                        "away_score": null,
+                        "home_winner": false,
+                        "away_winner": false,
+                        "played": false
                       }
                     ],
-                    "home_score": 88,
-                    "away_score": 80,
+                    "home_score": 1,
+                    "away_score": 0,
                     "played": true,
                     "is_finished": true,
                     "scheduled_at": null,
@@ -5711,14 +5747,14 @@
                 "clupik_id": 15878709,
                 "name": "GEVP"
               },
-              "played": 1,
-              "won": 1,
+              "played": 2,
+              "won": 2,
               "drawn": 0,
               "lost": 0,
-              "points": 2,
-              "goals_for": 122,
-              "goals_against": 108,
-              "goal_diff": 14
+              "points": 4,
+              "goals_for": 214,
+              "goals_against": 198,
+              "goal_diff": 16
             },
             {
               "tournament_id": 1339117,
@@ -5744,6 +5780,24 @@
               "phase_name": "COPA DE PLATA",
               "position": 3,
               "club": {
+                "clupik_id": 15878719,
+                "name": "APV"
+              },
+              "played": 2,
+              "won": 0,
+              "drawn": 0,
+              "lost": 2,
+              "points": 2,
+              "goals_for": 198,
+              "goals_against": 214,
+              "goal_diff": -16
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "position": 4,
+              "club": {
                 "clupik_id": 15878711,
                 "name": "SITAS"
               },
@@ -5755,31 +5809,13 @@
               "goals_for": 80,
               "goals_against": 88,
               "goal_diff": -8
-            },
-            {
-              "tournament_id": 1339117,
-              "phase_id": 3701722,
-              "phase_name": "COPA DE PLATA",
-              "position": 4,
-              "club": {
-                "clupik_id": 15878719,
-                "name": "APV"
-              },
-              "played": 1,
-              "won": 0,
-              "drawn": 0,
-              "lost": 1,
-              "points": 1,
-              "goals_for": 108,
-              "goals_against": 122,
-              "goal_diff": -14
             }
           ],
           "club_standing": {
             "tournament_id": 1339117,
             "phase_id": 3701722,
             "phase_name": "COPA DE PLATA",
-            "position": 3,
+            "position": 4,
             "club": {
               "clupik_id": 15878711,
               "name": "SITAS"
@@ -5815,6 +5851,46 @@
               "played": true
             },
             {
+              "clupik_id": 145795587,
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15878719,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": 15878709,
+                "name": "GEVP"
+              },
+              "home_score": 90,
+              "away_score": 92,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145795588,
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15878719,
+                "name": "APV"
+              },
+              "away_club": {
+                "clupik_id": 15878709,
+                "name": "GEVP"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
               "clupik_id": 145706187,
               "tournament_id": 1339117,
               "phase_id": 3701722,
@@ -5833,6 +5909,46 @@
               "away_score": 80,
               "venue": null,
               "played": true
+            },
+            {
+              "clupik_id": 145795589,
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15878712,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": 15878711,
+                "name": "SITAS"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145795590,
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15878712,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": 15878711,
+                "name": "SITAS"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
             },
             {
               "clupik_id": 145706188,
@@ -5895,6 +6011,46 @@
               "away_score": 80,
               "venue": null,
               "played": true
+            },
+            {
+              "clupik_id": 145795589,
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15878712,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": 15878711,
+                "name": "SITAS"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
+            },
+            {
+              "clupik_id": 145795590,
+              "tournament_id": 1339117,
+              "phase_id": 3701722,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Semifinal",
+              "scheduled_at": null,
+              "home_club": {
+                "clupik_id": 15878712,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": 15878711,
+                "name": "SITAS"
+              },
+              "home_score": null,
+              "away_score": null,
+              "venue": null,
+              "played": false
             },
             {
               "clupik_id": 145706189,
@@ -6000,10 +6156,10 @@
                       "name": "LANUS",
                       "clupik_id": 15878718,
                       "logo_url": "https://cdn.leverade.com/thumbnails/Aa6HLWVrhO4M.30x30.jpg",
-                      "is_winner": false
+                      "is_winner": true
                     },
                     "is_series": true,
-                    "series_winner": null,
+                    "series_winner": "away",
                     "games": [
                       {
                         "match_id": 145706191,
@@ -6017,11 +6173,11 @@
                       {
                         "match_id": 145706236,
                         "game_number": 2,
-                        "home_score": null,
-                        "away_score": null,
+                        "home_score": 34,
+                        "away_score": 66,
                         "home_winner": false,
-                        "away_winner": false,
-                        "played": false
+                        "away_winner": true,
+                        "played": true
                       },
                       {
                         "match_id": 145706237,
@@ -6034,9 +6190,9 @@
                       }
                     ],
                     "home_score": 0,
-                    "away_score": 1,
+                    "away_score": 2,
                     "played": true,
-                    "is_finished": false,
+                    "is_finished": true,
                     "scheduled_at": null,
                     "venue": null
                   }
@@ -6057,9 +6213,9 @@
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Sin equipo",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "VELEZ B",
+                      "clupik_id": 15878717,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/AaeHS7hOrNLx.30x30.jpg",
                       "is_winner": false
                     },
                     "is_series": true,
@@ -6094,7 +6250,7 @@
                       }
                     ],
                     "home_score": null,
-                    "away_score": 1,
+                    "away_score": 2,
                     "played": false,
                     "is_finished": false,
                     "scheduled_at": null,
@@ -6117,9 +6273,9 @@
                       "is_winner": false
                     },
                     "away_club": {
-                      "name": "Ganador de Semifinal 2",
-                      "clupik_id": null,
-                      "logo_url": "https://static.leverade.com/img/others/icon-team-empty.svg",
+                      "name": "LANUS",
+                      "clupik_id": 15878718,
+                      "logo_url": "https://cdn.leverade.com/thumbnails/Aa6HLWVrhO4M.30x30.jpg",
                       "is_winner": false
                     },
                     "is_series": true,
@@ -6154,7 +6310,7 @@
                       }
                     ],
                     "home_score": null,
-                    "away_score": 1,
+                    "away_score": 2,
                     "played": false,
                     "is_finished": false,
                     "scheduled_at": null,
@@ -6192,20 +6348,38 @@
                 "clupik_id": 15878718,
                 "name": "LANUS"
               },
-              "played": 1,
-              "won": 1,
+              "played": 2,
+              "won": 2,
               "drawn": 0,
               "lost": 0,
-              "points": 2,
-              "goals_for": 74,
-              "goals_against": 60,
-              "goal_diff": 14
+              "points": 4,
+              "goals_for": 140,
+              "goals_against": 94,
+              "goal_diff": 46
             },
             {
               "tournament_id": 1339117,
               "phase_id": 3701723,
               "phase_name": "COPA DE BRONCE",
               "position": 3,
+              "club": {
+                "clupik_id": 15878717,
+                "name": "VELEZ B"
+              },
+              "played": 2,
+              "won": 0,
+              "drawn": 0,
+              "lost": 2,
+              "points": 2,
+              "goals_for": 94,
+              "goals_against": 140,
+              "goal_diff": -46
+            },
+            {
+              "tournament_id": 1339117,
+              "phase_id": 3701723,
+              "phase_name": "COPA DE BRONCE",
+              "position": 4,
               "club": {
                 "clupik_id": 15878715,
                 "name": "CIUDAD B"
@@ -6218,24 +6392,6 @@
               "goals_for": 62,
               "goals_against": 159,
               "goal_diff": -97
-            },
-            {
-              "tournament_id": 1339117,
-              "phase_id": 3701723,
-              "phase_name": "COPA DE BRONCE",
-              "position": 4,
-              "club": {
-                "clupik_id": 15878717,
-                "name": "VELEZ B"
-              },
-              "played": 1,
-              "won": 0,
-              "drawn": 0,
-              "lost": 1,
-              "points": 1,
-              "goals_for": 60,
-              "goals_against": 74,
-              "goal_diff": -14
             }
           ],
           "club_standing": null,
@@ -6335,10 +6491,10 @@
                 "clupik_id": 15878718,
                 "name": "LANUS"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 34,
+              "away_score": 66,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145706237,
@@ -6372,8 +6528,8 @@
                 "name": "SAN MARTIN"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Ganador de Semifinal 2"
+                "clupik_id": 15878718,
+                "name": "LANUS"
               },
               "home_score": null,
               "away_score": null,
@@ -6392,8 +6548,8 @@
                 "name": "SAN MARTIN"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Ganador de Semifinal 2"
+                "clupik_id": 15878718,
+                "name": "LANUS"
               },
               "home_score": null,
               "away_score": null,
@@ -6412,8 +6568,8 @@
                 "name": "SAN MARTIN"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Ganador de Semifinal 2"
+                "clupik_id": 15878718,
+                "name": "LANUS"
               },
               "home_score": null,
               "away_score": null,
@@ -6432,8 +6588,8 @@
                 "name": "CIUDAD B"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878717,
+                "name": "VELEZ B"
               },
               "home_score": null,
               "away_score": null,
@@ -6452,8 +6608,8 @@
                 "name": "CIUDAD B"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878717,
+                "name": "VELEZ B"
               },
               "home_score": null,
               "away_score": null,
@@ -6472,8 +6628,8 @@
                 "name": "CIUDAD B"
               },
               "away_club": {
-                "clupik_id": null,
-                "name": "Sin equipo"
+                "clupik_id": 15878717,
+                "name": "VELEZ B"
               },
               "home_score": null,
               "away_score": null,

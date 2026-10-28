@@ -101,6 +101,17 @@ def extract_tournament(
                                 pm.home_score = cm.home_score
                                 pm.away_score = cm.away_score
 
+                if bracket_dict and "rounds" in bracket_dict:
+                    for r in bracket_dict["rounds"]:
+                        for bm in r.get("matches", []):
+                            m_id = bm.get("match_id")
+                            if m_id and m_id in cal_by_id:
+                                cm = cal_by_id[m_id]
+                                if cm.scheduled_at and not bm.get("scheduled_at"):
+                                    bm["scheduled_at"] = cm.scheduled_at.strftime("%Y-%m-%d %H:%M:%S")
+                                if cm.venue and not bm.get("venue"):
+                                    bm["venue"] = cm.venue
+
             matches = playoff_matches
             standings = generate_playoff_standings(matches, tournament_id, phase_id, phase_name)
             club_standing = get_standing_for_club(standings, club_name)
