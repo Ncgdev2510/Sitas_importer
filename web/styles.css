@@ -1650,7 +1650,16 @@ tr.sitas-row .club-cell {
 .upcoming-card-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.upcoming-header-badges {
+  display: flex;
   align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
 }
 
 .upcoming-cat-badge {
@@ -1663,6 +1672,56 @@ tr.sitas-row .club-cell {
   color: #fb7185;
   border: 1px solid rgba(225, 29, 72, 0.4);
   letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.upcoming-stage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-heading);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+
+.upcoming-stage-badge svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.stage-gold {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.stage-silver {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.stage-bronze {
+  background: rgba(217, 119, 6, 0.15);
+  color: #fb923c;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+}
+
+.stage-blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.stage-default {
+  background: rgba(255, 255, 255, 0.07);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .upcoming-datetime {
@@ -1672,6 +1731,7 @@ tr.sitas-row .club-cell {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  white-space: nowrap;
 }
 
 .upcoming-teams {
@@ -1756,6 +1816,36 @@ tr.sitas-row .club-cell {
   color: #9f1239;
   border: 1px solid #fecdd3;
   font-weight: 800;
+}
+
+[data-theme="light"] .stage-gold {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+[data-theme="light"] .stage-silver {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+[data-theme="light"] .stage-bronze {
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+[data-theme="light"] .stage-blue {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+[data-theme="light"] .stage-default {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #e2e8f0;
 }
 
 [data-theme="light"] .upcoming-datetime {

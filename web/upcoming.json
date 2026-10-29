@@ -21,7 +21,7 @@
     {
       "id": 208,
       "division": "MENORES",
-      "round_num": "50 Puesto Ida",
+      "round_num": "5° Puesto Ida",
       "match_date": "31/10/2026",
       "time": "10:30",
       "category": "SUB 14 FLEX",
@@ -38,7 +38,7 @@
     {
       "id": 213,
       "division": "MENORES",
-      "round_num": "Copa Oro - Semifinal Iida",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "31/10/2026",
       "time": "10:30",
       "category": "SUB 14 FLEX",
@@ -55,7 +55,7 @@
     {
       "id": 204,
       "division": "MENORES",
-      "round_num": "Puesto del 5′ al 9°",
+      "round_num": "Puesto del 5° al 9°",
       "match_date": "31/10/2026",
       "time": "11:00",
       "category": "SUB 14",
@@ -89,7 +89,7 @@
     {
       "id": 203,
       "division": "MENORES",
-      "round_num": "Amistos0",
+      "round_num": "Amistoso",
       "match_date": "31/10/2026",
       "time": "11:30",
       "category": "SUB 10",
@@ -106,7 +106,7 @@
     {
       "id": 210,
       "division": "MENORES",
-      "round_num": "Copa Oro - Semifinal Iida",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "31/10/2026",
       "time": "11:30",
       "category": "SUB 14 FLEX",
@@ -123,7 +123,7 @@
     {
       "id": 205,
       "division": "MENORES",
-      "round_num": "Copa Oro -Semifinal Ida",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "31/10/2026",
       "time": "12:00",
       "category": "SUB 14",
@@ -140,7 +140,7 @@
     {
       "id": 217,
       "division": "MENORES",
-      "round_num": "Puesto del 5′ al 10°",
+      "round_num": "Puesto del 5° al 10°",
       "match_date": "31/10/2026",
       "time": "12:30",
       "category": "SUB 17 FLEX",
@@ -157,7 +157,7 @@
     {
       "id": 211,
       "division": "MENORES",
-      "round_num": "Copa Oro - Semifinal lIda",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "31/10/2026",
       "time": "13:00",
       "category": "SUB 17",
@@ -195,7 +195,7 @@
       "match_date": "31/10/2026",
       "time": "13:30",
       "category": "SUB 17",
-      "home_team": "ter o GEVP (Gan",
+      "home_team": "Ballester o GEVP (Ganador D)",
       "away_team": "SITAS",
       "venue": "BALLESTER",
       "ref1": "",
@@ -208,7 +208,7 @@
     {
       "id": 218,
       "division": "MENORES",
-      "round_num": "Copa Oro - Semifinal Iida",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "31/10/2026",
       "time": "14:30",
       "category": "SUB 17",
@@ -242,7 +242,7 @@
     {
       "id": 231,
       "division": "MAYORES",
-      "round_num": "59 al 10f Puesto",
+      "round_num": "5° al 10° Puesto",
       "match_date": "31/10/2026",
       "time": "18:00",
       "category": "PRIMERA A",
@@ -259,7 +259,7 @@
     {
       "id": 229,
       "division": "MAYORES",
-      "round_num": "Copa Bronce -Semifinal ida",
+      "round_num": "Copa Bronce - Semifinal ida",
       "match_date": "31/10/2026",
       "time": "18:45",
       "category": "PRIMERA B",
@@ -310,7 +310,7 @@
     {
       "id": 223,
       "division": "MAYORES",
-      "round_num": "Copa Bronce -Semifinal ida",
+      "round_num": "Copa Bronce - Semifinal ida",
       "match_date": "31/10/2026",
       "time": "20:00",
       "category": "PRIMERA B",
@@ -327,7 +327,7 @@
     {
       "id": 230,
       "division": "MAYORES",
-      "round_num": "Copa Oro - Semifinal Iida",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "31/10/2026",
       "time": "20:30",
       "category": "PRIMERA A",
@@ -344,7 +344,7 @@
     {
       "id": 227,
       "division": "MAYORES",
-      "round_num": "59 al 109 Puesto",
+      "round_num": "5° al 10° Puesto",
       "match_date": "31/10/2026",
       "time": "20:45",
       "category": "PRIMERA A",
@@ -361,7 +361,7 @@
     {
       "id": 224,
       "division": "MAYORES",
-      "round_num": "5° al 109 Puesto",
+      "round_num": "5° al 10° Puesto",
       "match_date": "31/10/2026",
       "time": "21:30",
       "category": "PRIMERA A",
@@ -514,7 +514,7 @@
     {
       "id": 219,
       "division": "MENORES",
-      "round_num": "Puesto del 5* al 10*",
+      "round_num": "Puesto del 5° al 10°",
       "match_date": "01/11/2026",
       "time": "16:30",
       "category": "SUB 17 FLEX",
@@ -531,7 +531,7 @@
     {
       "id": 233,
       "division": "MAYORES",
-      "round_num": "Copa Oro -Semifial Vuelta",
+      "round_num": "Copa Oro - Semifinal Vuelta",
       "match_date": "01/11/2026",
       "time": "18:00",
       "category": "SUB 20",
@@ -548,7 +548,7 @@
     {
       "id": 235,
       "division": "MAYORES",
-      "round_num": "Puesto del 9' al 11*",
+      "round_num": "Puesto del 9° al 11°",
       "match_date": "01/11/2026",
       "time": "18:30",
       "category": "SUB 20",
@@ -582,7 +582,7 @@
     {
       "id": 234,
       "division": "MAYORES",
-      "round_num": "Copa Oro -Semifial Iida",
+      "round_num": "Copa Oro - Semifinal Ida",
       "match_date": "01/11/2026",
       "time": "21:00",
       "category": "PRIMERA A",

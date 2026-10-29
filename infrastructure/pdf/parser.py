@@ -103,6 +103,18 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
     round_raw = line[:date_match.start()].strip()
     round_clean = re.sub(r"^FECHA\s*#?\s*", "", round_raw, flags=re.IGNORECASE).strip()
     round_clean = re.sub(r"3[9#]\s*Partido", "3° Partido", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"\bIida\b", "Ida", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"\blIda\b", "Ida", round_clean)
+    round_clean = re.sub(r"Semifial\b", "Semifinal", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"\bAmistos0\b", "Amistoso", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"50\s+Puesto", "5° Puesto", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"5[09′'*°º]?\s*al\s*10[9f°'*]?\s*Puesto", "5° al 10° Puesto", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto", "5° al 9° Puesto", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"Puesto\s+del\s+5[09′'*°º]?\s+al\s+10[9f°'*]?", "Puesto del 5° al 10°", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"Puesto\s+del\s+5[09′'*°º]?\s+al\s+9[9°'*]?", "Puesto del 5° al 9°", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"Puesto\s+del\s+9['*]\s+al\s+11['*]?", "Puesto del 9° al 11°", round_clean, flags=re.IGNORECASE)
+    round_clean = re.sub(r"-(?=[A-Za-z])", "- ", round_clean)
+    round_clean = re.sub(r"\s+", " ", round_clean).strip()
     round_val: Union[int, str] = round_clean
     if round_clean.isdigit():
         round_val = int(round_clean)

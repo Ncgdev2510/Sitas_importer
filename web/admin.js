@@ -266,6 +266,27 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================
   // Schedule Table & Filter Logic
   // ==========================================
+  function formatAdminRound(r) {
+    if (!r && r !== 0) return '';
+    let str = String(r).trim();
+    if (!str) return '';
+    if (/^\d+$/.test(str)) return `Fecha ${str}`;
+    return str
+      .replace(/\bIida\b/gi, 'Ida')
+      .replace(/\blIda\b/g, 'Ida')
+      .replace(/Semifial\b/gi, 'Semifinal')
+      .replace(/\bAmistos0\b/gi, 'Amistoso')
+      .replace(/50\s+Puesto/gi, '5° Puesto')
+      .replace(/5[09′'*°º]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
+      .replace(/5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto/gi, '5° al 9° Puesto')
+      .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+10[9f°'*]?/gi, 'Puesto del 5° al 10°')
+      .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+9[9°'*]?/gi, 'Puesto del 5° al 9°')
+      .replace(/Puesto\s+del\s+9['*]\s+al\s+11['*]?/gi, 'Puesto del 9° al 11°')
+      .replace(/3[9#]\s*Partido/gi, '3° Partido')
+      .replace(/-(?=[A-Za-z])/g, '- ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
   async function loadScheduleData() {
     try {
       const res = await fetch("/api/schedule/upcoming?sitas_only=0");
@@ -301,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (filtered.length === 0) {
       scheduleTbody.innerHTML = `
         <tr>
-          <td colspan="7" class="text-center text-muted" style="padding:32px;">
+          <td colspan="8" class="text-center text-muted" style="padding:32px;">
             No hay partidos en el cronograma para los filtros seleccionados.
           </td>
         </tr>
@@ -313,11 +334,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const isSitas = m.is_sitas;
       const homeClass = /sitas|sita5/i.test(m.home_team) ? "team-highlight" : "";
       const awayClass = /sitas|sita5/i.test(m.away_team) ? "team-highlight" : "";
+      const stageStr = formatAdminRound(m.round_num);
 
       return `
         <tr class="${isSitas ? 'sitas-row' : ''}">
           <td><span class="badge-div">${m.division}</span></td>
           <td><span class="badge-cat">${m.category}</span></td>
+          <td><span class="badge-stage">${stageStr || '-'}</span></td>
           <td>
             <strong>${m.match_date}</strong><br>
             <span class="text-muted" style="font-size:0.8rem;">⏰ ${m.time} hs</span>

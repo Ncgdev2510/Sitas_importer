@@ -744,6 +744,18 @@ input[type="file"] {
   color: var(--text-muted);
 }
 
+.badge-stage {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(37, 99, 235, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  white-space: nowrap;
+}
+
 .team-vs {
   font-weight: 600;
 }

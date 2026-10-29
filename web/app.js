@@ -1229,6 +1229,68 @@ function resolveMediaUrl(url) {
   return url;
 }
 
+function formatRound(r) {
+  if (!r && r !== 0) return '';
+  let str = String(r).trim();
+  if (!str) return '';
+
+  if (/^\d+$/.test(str)) {
+    return `Fecha ${str}`;
+  }
+
+  // Normalización y corrección de OCR en instancias
+  str = str
+    .replace(/\bIida\b/gi, 'Ida')
+    .replace(/\blIda\b/g, 'Ida')
+    .replace(/Semifial\b/gi, 'Semifinal')
+    .replace(/\bAmistos0\b/gi, 'Amistoso')
+    .replace(/50\s+Puesto/gi, '5° Puesto')
+    .replace(/5[09′'*°º]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
+    .replace(/5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto/gi, '5° al 9° Puesto')
+    .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+10[9f°'*]?/gi, 'Puesto del 5° al 10°')
+    .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+9[9°'*]?/gi, 'Puesto del 5° al 9°')
+    .replace(/Puesto\s+del\s+9['*]\s+al\s+11['*]?/gi, 'Puesto del 9° al 11°')
+    .replace(/3[9#]\s*Partido/gi, '3° Partido')
+    .replace(/-(?=[A-Za-z])/g, '- ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return str;
+}
+
+function getStageBadgeHtml(roundNum) {
+  const roundStr = formatRound(roundNum);
+  if (!roundStr) return '';
+
+  const upper = roundStr.toUpperCase();
+  let stageClass = 'stage-default';
+  let icon = 'flag';
+
+  if (upper.includes('ORO') || upper.includes('FINAL') || upper.includes('SEMI')) {
+    stageClass = 'stage-gold';
+    icon = 'trophy';
+  } else if (upper.includes('PLATA')) {
+    stageClass = 'stage-silver';
+    icon = 'trophy';
+  } else if (upper.includes('BRONCE') || upper.includes('3°') || upper.includes('TERCER')) {
+    stageClass = 'stage-bronze';
+    icon = 'trophy';
+  } else if (upper.includes('AMISTOSO')) {
+    stageClass = 'stage-blue';
+    icon = 'activity';
+  } else if (upper.startsWith('FECHA')) {
+    stageClass = 'stage-default';
+    icon = 'calendar';
+  }
+
+  return `
+    <span class="upcoming-stage-badge ${stageClass}" title="Instancia: ${roundStr}">
+      <i data-lucide="${icon}"></i>
+      ${roundStr}
+    </span>
+  `;
+}
+
 async function loadUpcomingSchedule() {
   const grid = document.getElementById('upcoming-matches-grid');
   const roundInfo = document.getElementById('upcoming-round-info');
@@ -1267,21 +1329,38 @@ async function loadUpcomingSchedule() {
       return;
     }
 
-    if (matches[0] && roundInfo) {
-      const r = matches[0].round_num;
-      const rStr = r ? (/^\d+$/.test(String(r).trim()) ? `Fecha ${r}` : String(r)) : '';
-      roundInfo.innerHTML = `<i data-lucide="calendar"></i> ${rStr ? rStr + ' — ' : ''}${matches[0].match_date || ''}`;
+    // Encabezado del cronograma: solo unificar la fecha/instancia si todas las categorías coinciden
+    if (roundInfo && matches.length > 0) {
+      const uniqueDates = [...new Set(matches.map((m) => (m.match_date || '').trim()).filter(Boolean))];
+      let datesStr = '';
+      if (uniqueDates.length === 1) {
+        datesStr = uniqueDates[0];
+      } else if (uniqueDates.length > 1) {
+        datesStr = uniqueDates.join(' y ');
+      }
+
+      const uniqueRounds = [...new Set(matches.map((m) => formatRound(m.round_num)).filter(Boolean))];
+
+      if (uniqueRounds.length === 1) {
+        roundInfo.innerHTML = `<i data-lucide="calendar"></i> ${uniqueRounds[0]} — ${datesStr || 'Próxima Fecha'}`;
+      } else {
+        roundInfo.innerHTML = `<i data-lucide="calendar"></i> ${datesStr ? 'Fin de Semana — ' + datesStr : 'Cronograma Oficial'}`;
+      }
     }
 
     grid.innerHTML = matches.map((m) => {
       const isHome = /sitas|sita5/i.test(m.home_team);
       const isAway = /sitas|sita5/i.test(m.away_team);
       const venueStr = m.venue ? m.venue : (isHome ? 'SITAS' : m.home_team);
+      const stageBadgeHtml = getStageBadgeHtml(m.round_num);
 
       return `
         <div class="upcoming-card">
           <div class="upcoming-card-header">
-            <span class="upcoming-cat-badge">${m.category}</span>
+            <div class="upcoming-header-badges">
+              <span class="upcoming-cat-badge">${m.category}</span>
+              ${stageBadgeHtml}
+            </div>
             <span class="upcoming-datetime">
               <i data-lucide="clock" style="width:14px;height:14px;"></i>
               ${m.match_date} · ${m.time} hs
