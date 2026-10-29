@@ -35,6 +35,7 @@ from infrastructure.db.queries import (
     get_upcoming_matches,
     save_upcoming_matches,
     clear_upcoming_matches,
+    delete_upcoming_match,
     seed_default_admin,
     verify_user,
     get_user_by_id,
@@ -160,11 +161,15 @@ def upload_pdf_schedule():
     if not matches:
         return jsonify({"error": "No se encontraron partidos válidos en el archivo enviado."}), 422
 
+    # Modo de guardado: 'replace' (por defecto) o 'append' (sumar sin borrar los anteriores)
+    mode = request.form.get("mode", "replace")
+    clear_previous = (mode != "append")
+
     # Opción de publicar directamente en la base
     publish = request.form.get("publish", "1") in ("1", "true", "True")
     if publish:
         batch_id = datetime.now().strftime("import_%Y%m%d_%H%M%S")
-        saved_count = save_upcoming_matches(matches, batch_id=batch_id, clear_previous=True)
+        saved_count = save_upcoming_matches(matches, batch_id=batch_id, clear_previous=clear_previous)
         # Mantener archivo estático sincronizado para GitHub Pages
         export_upcoming_for_frontend(WEB_DIR / "upcoming.json")
     else:
@@ -179,6 +184,16 @@ def upload_pdf_schedule():
         "saved_to_db": saved_count,
         "matches": matches,
     })
+
+
+@app.route("/api/schedule/matches/<int:match_id>", methods=["DELETE"])
+def delete_schedule_match(match_id: int):
+    if not is_authenticated():
+        return jsonify({"error": "No autorizado"}), 401
+    delete_upcoming_match(match_id)
+    # Mantener archivo estático sincronizado para GitHub Pages
+    export_upcoming_for_frontend(WEB_DIR / "upcoming.json")
+    return jsonify({"success": True, "message": "Partido eliminado correctamente"})
 
 
 @app.route("/api/schedule/clear", methods=["POST"])

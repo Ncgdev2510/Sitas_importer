@@ -511,13 +511,31 @@ def save_upcoming_matches(
     clear_previous: bool = True,
     conn: sqlite3.Connection | None = None,
 ) -> int:
-    """Guarda los partidos importados de un cronograma PDF."""
+    """Guarda los partidos importados de un cronograma PDF. Permite anexar evitando duplicados."""
     c = conn or get_db_connection()
     if clear_previous:
         c.execute("DELETE FROM upcoming_matches")
 
     count = 0
     for m in matches:
+        if not clear_previous:
+            # Evitar insertar un partido duplicado si ya existe exactamente el mismo
+            existing = c.execute(
+                """
+                SELECT id FROM upcoming_matches
+                WHERE category = ? AND match_date = ? AND time = ? AND home_team = ? AND away_team = ?
+                """,
+                (
+                    m.get("category"),
+                    m.get("match_date"),
+                    m.get("time"),
+                    m.get("home_team"),
+                    m.get("away_team"),
+                ),
+            ).fetchone()
+            if existing:
+                continue
+
         c.execute(
             """
             INSERT INTO upcoming_matches (
@@ -547,6 +565,15 @@ def save_upcoming_matches(
     if conn is None:
         c.commit()
     return count
+
+
+def delete_upcoming_match(match_id: int, conn: sqlite3.Connection | None = None) -> bool:
+    """Elimina un partido puntual del cronograma de próximos partidos."""
+    c = conn or get_db_connection()
+    c.execute("DELETE FROM upcoming_matches WHERE id = ?", (match_id,))
+    if conn is None:
+        c.commit()
+    return True
 
 
 def get_upcoming_matches(

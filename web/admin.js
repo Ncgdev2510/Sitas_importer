@@ -235,6 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData();
     formData.append("pdf", selectedPdfFile);
     formData.append("publish", publishImmediately.checked ? "1" : "0");
+    const uploadMode = document.querySelector('input[name="upload-mode"]:checked')?.value || "replace";
+    formData.append("mode", uploadMode);
 
     try {
       const res = await fetch("/api/schedule/upload-pdf", {
@@ -299,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (filtered.length === 0) {
       scheduleTbody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-center text-muted" style="padding:32px;">
+          <td colspan="7" class="text-center text-muted" style="padding:32px;">
             No hay partidos en el cronograma para los filtros seleccionados.
           </td>
         </tr>
@@ -330,6 +332,11 @@ document.addEventListener("DOMContentLoaded", () => {
             ${m.observations ? `<span class="badge-div" style="background:rgba(245,158,11,0.15); color:#F59E0B;">${m.observations}</span>` : '-'}
             ${m.ref1 ? `<div style="font-size:0.75rem; color:#94A3B8; margin-top:2px;">Árbitros: ${m.ref1} ${m.ref2 ? '/ ' + m.ref2 : ''}</div>` : ''}
           </td>
+          <td style="text-align:center;">
+            <button type="button" class="btn btn-outline-danger btn-xs btn-delete-match" data-id="${m.id}" title="Eliminar partido del cronograma" style="padding:3px 7px; font-size:0.75rem; cursor:pointer;">
+              🗑️
+            </button>
+          </td>
         </tr>
       `;
     }).join("");
@@ -337,6 +344,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   filterSitasOnly.addEventListener("change", renderScheduleTable);
   filterDivision.addEventListener("change", renderScheduleTable);
+
+  scheduleTbody.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".btn-delete-match");
+    if (!btn) return;
+    const matchId = btn.dataset.id;
+    if (!matchId) return;
+
+    if (!confirm("¿Deseas eliminar este partido del cronograma activo?")) return;
+
+    try {
+      btn.disabled = true;
+      const res = await fetch(`/api/schedule/matches/${matchId}`, { method: "DELETE" });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("Partido eliminado con éxito", "success");
+        loadScheduleData();
+      } else {
+        showToast(data.error || "Error al eliminar partido", "error");
+      }
+    } catch (err) {
+      showToast("Error de conexión al eliminar partido", "error");
+    }
+  });
 
   btnClearSchedule.addEventListener("click", async () => {
     if (!confirm("¿Estás seguro de que deseás borrar todo el cronograma actual?")) return;
