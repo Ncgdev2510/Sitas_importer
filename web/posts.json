@@ -1,7 +1,21 @@
 {
   "success": true,
-  "count": 1,
+  "count": 2,
   "posts": [
+    {
+      "id": 3,
+      "title": "Sábado 7/11 Noche de bingo tradicional y musical  🎶🎵",
+      "category": "Social y Eventos",
+      "summary": "🎉 ¡NOCHE DE BINGO EN SITAS CESTOBALL! 🎉\r\n\r\nTradicional + Musical 🎶\r\n\r\n📅 Sábado 7 de noviembre\r\n 🕗 20:00 hs\r\n 📍 Club SITAS - Camping Cubierto\r\n\r\nUna no...",
+      "content": "🎉 ¡NOCHE DE BINGO EN SITAS CESTOBALL! 🎉\r\n\r\nTradicional + Musical 🎶\r\n\r\n📅 Sábado 7 de noviembre\r\n 🕗 20:00 hs\r\n 📍 Club SITAS - Camping Cubierto\r\n\r\nUna noche para encontrarnos, divertirnos y compartir entre todas las categorías, familias, amigos e invitados.\r\n\r\n🎟️ Entrada $10.000 ✅ Incluye 2 cartones para la primera tirada\r\n\r\n🏆 Premios • 🎶 Música • 🍽️ Comidas riquísimas • 🤗 Mucha diversión\r\n\r\n¡Sumate y ayudanos a seguir creciendo juntos!\r\n\r\n💚❤️ ¡Te esperamos! ❤️💚",
+      "image_url": "/uploads/post_20261029_154653_48fc6d4e.jpeg",
+      "author_id": 1,
+      "published": 1,
+      "published_at": "2026-10-29 18:46:53",
+      "created_at": "2026-10-29 18:46:53",
+      "updated_at": "2026-10-29 18:46:53",
+      "author_name": "admin"
+    },
     {
       "id": 2,
       "title": "Nuevo logo!",
