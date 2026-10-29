@@ -165,23 +165,18 @@
 
     <!-- Filters and Category Tabs -->
     <section class="filter-section">
-      <div class="category-scroll-container" id="category-pills" role="tablist" aria-label="Categorías">
-        <button class="pill active" data-category="ALL" role="tab" aria-selected="true">
-          <i data-lucide="layout-grid"></i> Todas las Categorías
-        </button>
-        <!-- Injected via JavaScript -->
+      <div class="category-grid-container" id="category-pills" role="tablist" aria-label="Categorías">
+        <!-- Injected dynamically in 2 rows via JavaScript -->
       </div>
 
       <div class="filter-toolbar">
         <div class="search-box">
           <i data-lucide="search"></i>
-          <input type="text" id="search-input" placeholder="Buscar rival, torneo o fase...">
+          <input type="text" id="search-input" placeholder="Buscar rival, partido o fase...">
         </div>
 
         <div class="edition-filters" id="edition-filters">
-          <button class="filter-btn active" data-edition="ALL">Todos</button>
-          <button class="filter-btn" data-edition="APERTURA">Apertura</button>
-          <button class="filter-btn" data-edition="CLAUSURA">Clausura</button>
+          <!-- Injected dynamically via JS based on selected category -->
         </div>
 
         <div class="toggle-control">
@@ -194,28 +189,14 @@
       </div>
     </section>
 
-    <!-- Content Workspace -->
-    <div class="content-grid">
-      <!-- Left Sidebar: Tournaments Navigator -->
-      <aside class="tournaments-sidebar" aria-label="Listado de torneos">
-        <div class="sidebar-header">
-          <div class="sidebar-title-group">
-            <h2>Torneos</h2>
-            <span class="counter-badge" id="tournament-count">0</span>
-          </div>
-          <span class="sidebar-swipe-hint"><i data-lucide="chevrons-right"></i> Deslizá categorías</span>
-        </div>
-        <div class="tournament-list" id="tournament-nav-list" role="list">
-          <!-- Injected via JS -->
-        </div>
-      </aside>
-
-      <!-- Right Main View: Selected Tournament Dashboard -->
+    <!-- Content Workspace (Full Width) -->
+    <div class="content-workspace">
+      <!-- Main View: Selected Tournament Dashboard (Full Width) -->
       <section class="tournament-dashboard" id="tournament-view" aria-label="Detalle de torneo">
         <div class="empty-state" id="empty-state">
           <i data-lucide="shield-alert" class="empty-icon"></i>
-          <h3>Selecciona un torneo</h3>
-          <p>Elige una categoría o torneo del panel lateral para ver la tabla de posiciones y el fixture de partidos.</p>
+          <h3>Selecciona una categoría</h3>
+          <p>Elige una categoría y edición en la barra superior para ver la tabla de posiciones, fixture y cuadro eliminatorio.</p>
         </div>
 
         <div class="dashboard-content" id="dashboard-content" style="display: none;">

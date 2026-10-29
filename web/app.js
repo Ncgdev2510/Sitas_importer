@@ -10,8 +10,8 @@ const state = {
   targetClub: 'SITAS',
   currentScope: 'METRO', // 'METRO' | 'NACIONAL'
   selectedSeason: '2026',
-  selectedCategory: 'ALL',
-  selectedEdition: 'ALL',
+  selectedCategory: 'PRIMERA A',
+  selectedEdition: 'CLAUSURA',
   searchQuery: '',
   onlySitasMatches: true,
   selectedTournamentId: null,
@@ -199,187 +199,185 @@ function populateSeasons() {
     .join('');
 }
 
-// Populate Categories according to current scope (Metro vs Nacional)
+// Populate Categories in 2 Rows (Grid layout without horizontal scroll)
 function populateCategories() {
   if (state.currentScope === 'METRO') {
     if (DOM.editionFilters) DOM.editionFilters.style.display = 'flex';
 
-    const metroCategories = [
-      'PRIMERA A',
-      'PRIMERA B',
-      'PRIMERA MASCULINO',
-      'SUB 20',
-      'SUB 17',
-      'SUB 17 FLEX',
-      'SUB 14',
-      'SUB 14 FLEX',
-      'SUB 12',
-      'SUB 10',
-      'MAXI 30',
-    ];
+    // Fila 1: Adultas / Mayores (5 categorías)
+    const row1 = ['PRIMERA A', 'PRIMERA B', 'PRIMERA MASCULINO', 'SUB 20', 'MAXI 30'];
+    // Fila 2: Formativas / Juveniles (6 categorías)
+    const row2 = ['SUB 17', 'SUB 17 FLEX', 'SUB 14', 'SUB 14 FLEX', 'SUB 12', 'SUB 10'];
 
-    let html = `
-      <button class="pill ${state.selectedCategory === 'ALL' ? 'active' : ''}" data-category="ALL" role="tab">
-        <i data-lucide="layout-grid"></i> Todas las Categorías
+    if (![...row1, ...row2].includes(state.selectedCategory)) {
+      state.selectedCategory = 'PRIMERA A';
+    }
+
+    const renderPill = (cat) => `
+      <button class="pill ${state.selectedCategory === cat ? 'active' : ''}" data-category="${cat}" role="tab" aria-selected="${state.selectedCategory === cat}">
+        ${cat}
       </button>
     `;
 
-    metroCategories.forEach((cat) => {
-      html += `
-        <button class="pill ${state.selectedCategory === cat ? 'active' : ''}" data-category="${cat}" role="tab">
-          ${cat}
-        </button>
-      `;
-    });
+    DOM.categoryPills.innerHTML = `
+      <div class="category-grid-row category-row-1">
+        ${row1.map(renderPill).join('')}
+      </div>
+      <div class="category-grid-row category-row-2">
+        ${row2.map(renderPill).join('')}
+      </div>
+    `;
 
-    DOM.categoryPills.innerHTML = html;
+    renderEditionFilters();
   } else {
     // Competencias Nacionales
     if (DOM.editionFilters) DOM.editionFilters.style.display = 'none';
 
-    const nationalFilters = [
-      { id: 'ALL', label: 'Todas las Nacionales', icon: 'trophy' },
-      { id: 'LIGA', label: 'Ligas Nacionales (Clubes)', icon: 'shield' },
-      { id: 'ARGENTINO', label: 'Campeonatos Argentinos', icon: 'flag' },
+    const ligas = [
+      { id: 'LIGA NACIONAL MAYORES FEMENINA', label: 'Liga Nac. Mayores Fem', icon: 'trophy' },
+      { id: 'LIGA NACIONAL PRIMERA MASCULINO', label: 'Liga Nac. Masc', icon: 'trophy' },
+      { id: 'LIGA NACIONAL SUB 17', label: 'Liga Nac. Sub 17', icon: 'trophy' },
+      { id: 'LIGA NACIONAL SUB 14', label: 'Liga Nac. Sub 14', icon: 'trophy' },
     ];
 
-    let html = '';
-    nationalFilters.forEach((f) => {
-      html += `
-        <button class="pill ${state.selectedCategory === f.id ? 'active' : ''}" data-category="${f.id}" role="tab">
-          <i data-lucide="${f.icon}"></i> ${f.label}
-        </button>
-      `;
-    });
+    const argentinos = [
+      { id: 'ARGENTINO MAYORES FEMENINO', label: 'Argentino Mayores Fem', icon: 'flag' },
+      { id: 'ARGENTINO MAYORES MASCULINO', label: 'Argentino Mayores Masc', icon: 'flag' },
+      { id: 'ARGENTINO SUB 17', label: 'Argentino Sub 17', icon: 'flag' },
+      { id: 'ARGENTINO SUB 14', label: 'Argentino Sub 14', icon: 'flag' },
+    ];
 
-    DOM.categoryPills.innerHTML = html;
+    const allNacIds = [...ligas, ...argentinos].map((x) => x.id);
+    if (!allNacIds.includes(state.selectedCategory)) {
+      state.selectedCategory = 'LIGA NACIONAL MAYORES FEMENINA';
+    }
+
+    const renderNacPill = (item) => `
+      <button class="pill ${state.selectedCategory === item.id ? 'active' : ''}" data-category="${item.id}" role="tab" aria-selected="${state.selectedCategory === item.id}">
+        <i data-lucide="${item.icon}"></i> ${item.label}
+      </button>
+    `;
+
+    DOM.categoryPills.innerHTML = `
+      <div class="category-grid-row category-row-1" title="Ligas Nacionales de Clubes">
+        ${ligas.map(renderNacPill).join('')}
+      </div>
+      <div class="category-grid-row category-row-2" title="Campeonatos Argentinos de Selecciones">
+        ${argentinos.map(renderNacPill).join('')}
+      </div>
+    `;
   }
 
   if (window.lucide) window.lucide.createIcons();
+  resolveActiveTournament();
 }
 
-// Filtered Tournaments
-function getFilteredTournaments() {
-  if (!state.data?.tournaments) return [];
+// Dynamic Edition Filters according to available editions for current category
+function renderEditionFilters() {
+  if (!DOM.editionFilters || state.currentScope !== 'METRO') return;
 
-  return state.data.tournaments.filter((t) => {
-    const isNat = isNationalTournament(t);
+  const tournaments = (state.data?.tournaments || []).filter(
+    (t) =>
+      !isNationalTournament(t) &&
+      t.category === state.selectedCategory &&
+      (!state.selectedSeason || t.season === state.selectedSeason)
+  );
 
-    // 1. Scope filter
-    if (state.currentScope === 'METRO' && isNat) return false;
-    if (state.currentScope === 'NACIONAL' && !isNat) return false;
+  const availableEditions = [];
+  const standardOrder = ['APERTURA', 'CLASIFICATORIO', 'CLAUSURA'];
 
-    // 2. Season filter
-    const matchSeason = !state.selectedSeason || t.season === state.selectedSeason;
-    if (!matchSeason) return false;
-
-    // 3. Category / Sub-type filter
-    if (state.currentScope === 'METRO') {
-      if (state.selectedCategory !== 'ALL' && t.category !== state.selectedCategory) {
-        return false;
-      }
-      if (state.selectedEdition !== 'ALL') {
-        const ed = (t.edition || '').toUpperCase();
-        const nm = (t.name || '').toUpperCase();
-        if (!ed.includes(state.selectedEdition) && !nm.includes(state.selectedEdition)) {
-          return false;
-        }
-      }
-    } else {
-      // NACIONAL filter
+  standardOrder.forEach((edKey) => {
+    const hasEd = tournaments.some((t) => {
+      const ed = (t.edition || '').toUpperCase();
       const nm = (t.name || '').toUpperCase();
-      const cat = (t.category || '').toUpperCase();
-      if (state.selectedCategory === 'LIGA') {
-        if (!nm.includes('LIGA') && !cat.includes('LIGA')) return false;
-      } else if (state.selectedCategory === 'ARGENTINO') {
-        if (!nm.includes('ARGENTINO') && !cat.includes('ARGENTINO')) return false;
-      }
-    }
-
-    // 4. Search query
-    if (state.searchQuery) {
-      const q = state.searchQuery.toLowerCase();
-      const inName = (t.name || '').toLowerCase().includes(q);
-      const inCat = (t.category || '').toLowerCase().includes(q);
-      const inClubs = (t.phases || []).some((p) =>
-        (p.standings || []).some((s) => (s.club_name || '').toLowerCase().includes(q))
-      );
-      if (!inName && !inCat && !inClubs) return false;
-    }
-
-    return true;
+      return ed.includes(edKey) || nm.includes(edKey);
+    });
+    if (hasEd) availableEditions.push(edKey);
   });
-}
 
-// Render Tournaments in Sidebar
-function renderTournamentsList() {
-  const tournaments = getFilteredTournaments();
-  DOM.tournamentCount.textContent = tournaments.length;
-
-  if (tournaments.length === 0) {
-    DOM.tournamentNavList.innerHTML = `
-      <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.88rem;">
-        No se encontraron torneos para los filtros seleccionados.
-      </div>
-    `;
-    DOM.emptyState.style.display = 'flex';
-    DOM.dashboardContent.style.display = 'none';
-    return;
+  if (availableEditions.length === 0) {
+    tournaments.forEach((t) => {
+      const ed = (t.edition || '').toUpperCase().trim();
+      if (ed && !availableEditions.includes(ed)) availableEditions.push(ed);
+    });
   }
 
-  DOM.tournamentNavList.innerHTML = tournaments
-    .map((t) => {
-      const isSelected = t.id === state.selectedTournamentId;
-      const isFinished = (t.status || '').toLowerCase().includes('final');
+  // Preserve selected edition or default to CLAUSURA
+  if (!availableEditions.includes(state.selectedEdition)) {
+    state.selectedEdition = availableEditions.includes('CLAUSURA')
+      ? 'CLAUSURA'
+      : (availableEditions[availableEditions.length - 1] || 'CLAUSURA');
+  }
 
-      let displayCat = t.category || t.name;
-      let displayEd = t.edition || t.season;
-
-      if (isNationalTournament(t)) {
-        if (displayCat.includes('LIGA NACIONAL')) {
-          displayEd = 'LIGA NACIONAL';
-        } else if (displayCat.includes('ARGENTINO')) {
-          displayEd = 'CAMPEONATO';
-        }
-      }
-
+  DOM.editionFilters.innerHTML = availableEditions
+    .map((ed) => {
+      const label = ed.charAt(0) + ed.slice(1).toLowerCase();
+      const isActive = state.selectedEdition === ed;
       return `
-        <div class="tournament-nav-item ${isSelected ? 'active' : ''}" data-id="${t.id}" role="button">
-          <div class="t-item-header">
-            <span class="t-item-category">${displayCat}</span>
-            <span class="t-item-edition">${displayEd}</span>
-          </div>
-          <div class="t-item-status">
-            <span class="status-dot ${isFinished ? 'finished' : ''}"></span>
-            ${t.status || 'Finalizada'} • ${t.phases?.length || 1} fases
-          </div>
-        </div>
+        <button class="filter-btn ${isActive ? 'active' : ''}" data-edition="${ed}">
+          ${label}
+        </button>
       `;
     })
     .join('');
+}
 
-  // Auto-select first if none selected or not in current list
-  const currentExists = tournaments.some((t) => t.id === state.selectedTournamentId);
-  if (!currentExists && tournaments.length > 0) {
-    selectTournament(tournaments[0].id);
-  } else if (state.selectedTournamentId) {
-    selectTournament(state.selectedTournamentId);
+// Resolve and auto-select tournament (1 Category + 1 Edition = 1 Exact Tournament)
+function resolveActiveTournament() {
+  if (!state.data?.tournaments) return;
+
+  let tournament = null;
+
+  if (state.currentScope === 'METRO') {
+    tournament = state.data.tournaments.find((t) => {
+      if (isNationalTournament(t)) return false;
+      const matchSeason = !state.selectedSeason || t.season === state.selectedSeason;
+      const matchCat = t.category === state.selectedCategory;
+      const ed = (t.edition || '').toUpperCase();
+      const nm = (t.name || '').toUpperCase();
+      const matchEd = ed.includes(state.selectedEdition) || nm.includes(state.selectedEdition);
+      return matchSeason && matchCat && matchEd;
+    });
+
+    // Fallback: match by category
+    if (!tournament) {
+      tournament = state.data.tournaments.find((t) => {
+        if (isNationalTournament(t)) return false;
+        const matchSeason = !state.selectedSeason || t.season === state.selectedSeason;
+        return matchSeason && t.category === state.selectedCategory;
+      });
+    }
+  } else {
+    // NACIONAL scope
+    tournament = state.data.tournaments.find((t) => {
+      if (!isNationalTournament(t)) return false;
+      const matchSeason = !state.selectedSeason || t.season === state.selectedSeason;
+      const cat = (t.category || '').toUpperCase();
+      const nm = (t.name || '').toUpperCase();
+      const sel = (state.selectedCategory || '').toUpperCase();
+      return matchSeason && (cat.includes(sel) || nm.includes(sel) || sel.includes(cat));
+    });
+
+    if (!tournament) {
+      tournament = state.data.tournaments.find(isNationalTournament);
+    }
+  }
+
+  if (tournament) {
+    selectTournament(tournament.id);
+  } else {
+    if (DOM.emptyState) DOM.emptyState.style.display = 'flex';
+    if (DOM.dashboardContent) DOM.dashboardContent.style.display = 'none';
   }
 }
 
-// Select a Tournament
+// Alias for backwards compatibility
+const renderTournamentsList = resolveActiveTournament;
+
+// Select a Tournament & Render Full-Width Dashboard
 function selectTournament(tournamentId) {
   state.selectedTournamentId = tournamentId;
   state.selectedPhaseIndex = 0;
-
-  // Highlight in sidebar & smooth scroll into view
-  document.querySelectorAll('.tournament-nav-item').forEach((el) => {
-    const isCur = Number(el.dataset.id) === tournamentId;
-    el.classList.toggle('active', isCur);
-    if (isCur) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  });
 
   const tournament = state.data.tournaments.find((t) => t.id === tournamentId);
   if (!tournament) return;
@@ -520,6 +518,17 @@ function renderPhaseData(tournament) {
         m.home_club_name.toUpperCase().includes(state.targetClub) ||
         m.away_club_name.toUpperCase().includes(state.targetClub) ||
         (isNationalTournament(tournament) && (m.home_club_name.toUpperCase().includes('CAPITAL') || m.away_club_name.toUpperCase().includes('CAPITAL')))
+    );
+  }
+
+  if (state.searchQuery) {
+    const q = state.searchQuery.toLowerCase();
+    matches = matches.filter(
+      (m) =>
+        (m.home_club_name || '').toLowerCase().includes(q) ||
+        (m.away_club_name || '').toLowerCase().includes(q) ||
+        (m.round_name || '').toLowerCase().includes(q) ||
+        (m.venue || '').toLowerCase().includes(q)
     );
   }
 
@@ -1079,59 +1088,67 @@ function setupEventListeners() {
   DOM.scopeTabMetro.addEventListener('click', () => {
     if (state.currentScope === 'METRO') return;
     state.currentScope = 'METRO';
-    state.selectedCategory = 'ALL';
-    state.selectedEdition = 'ALL';
+    state.selectedCategory = 'PRIMERA A';
+    state.selectedEdition = 'CLAUSURA';
     DOM.scopeTabMetro.classList.add('active');
     DOM.scopeTabMetro.setAttribute('aria-selected', 'true');
     DOM.scopeTabNacional.classList.remove('active');
     DOM.scopeTabNacional.setAttribute('aria-selected', 'false');
     populateCategories();
-    renderTournamentsList();
   });
 
   DOM.scopeTabNacional.addEventListener('click', () => {
     if (state.currentScope === 'NACIONAL') return;
     state.currentScope = 'NACIONAL';
-    state.selectedCategory = 'ALL';
+    state.selectedCategory = 'LIGA NACIONAL MAYORES FEMENINA';
+    state.selectedEdition = 'ALL';
     DOM.scopeTabNacional.classList.add('active');
     DOM.scopeTabNacional.setAttribute('aria-selected', 'true');
     DOM.scopeTabMetro.classList.remove('active');
     DOM.scopeTabMetro.setAttribute('aria-selected', 'false');
     populateCategories();
-    renderTournamentsList();
   });
 
   // Season Picker
   DOM.seasonSelect.addEventListener('change', (e) => {
     state.selectedSeason = e.target.value;
     updateKPIs();
-    renderTournamentsList();
+    populateCategories();
   });
 
   // Category Pills
   DOM.categoryPills.addEventListener('click', (e) => {
     const pill = e.target.closest('.pill');
     if (!pill) return;
-    document.querySelectorAll('.pill').forEach((p) => p.classList.remove('active'));
+    document.querySelectorAll('.pill').forEach((p) => {
+      p.classList.remove('active');
+      p.setAttribute('aria-selected', 'false');
+    });
     pill.classList.add('active');
+    pill.setAttribute('aria-selected', 'true');
     state.selectedCategory = pill.dataset.category;
-    renderTournamentsList();
+    
+    if (state.currentScope === 'METRO') {
+      renderEditionFilters();
+    }
+    resolveActiveTournament();
   });
 
-  // Search Input
-  DOM.searchInput.addEventListener('input', (e) => {
+  // Search Input (filters matches in active tournament)
+  DOM.searchInput?.addEventListener('input', (e) => {
     state.searchQuery = e.target.value.trim();
-    renderTournamentsList();
+    const tournament = state.data?.tournaments?.find((t) => t.id === state.selectedTournamentId);
+    if (tournament) renderPhaseData(tournament);
   });
 
-  // Edition Filter Buttons (Apertura / Clausura)
-  DOM.editionFilters.addEventListener('click', (e) => {
+  // Edition Filter Buttons (Apertura / Clausura / Clasificatorio)
+  DOM.editionFilters?.addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-btn');
     if (!btn) return;
-    document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+    document.querySelectorAll('.edition-filters .filter-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     state.selectedEdition = btn.dataset.edition;
-    renderTournamentsList();
+    resolveActiveTournament();
   });
 
   // Only SITAS Toggle
@@ -1141,8 +1158,8 @@ function setupEventListeners() {
     if (tournament) renderPhaseData(tournament);
   });
 
-  // Tournament Sidebar Selection
-  DOM.tournamentNavList.addEventListener('click', (e) => {
+  // Tournament Sidebar Selection (if exists)
+  DOM.tournamentNavList?.addEventListener('click', (e) => {
     const item = e.target.closest('.tournament-nav-item');
     if (!item) return;
     selectTournament(Number(item.dataset.id));
