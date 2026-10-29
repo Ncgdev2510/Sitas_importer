@@ -1379,7 +1379,6 @@ async function loadNewsFeed() {
             <span class="news-category-tag">${p.category || 'General'}</span>
           </div>
           <div class="news-card-body">
-            <span class="news-date">📅 ${dateStr} ${p.author_name ? '· ' + p.author_name : ''}</span>
             <h3 class="news-title">${p.title}</h3>
             <p class="news-summary">${p.summary || p.content}</p>
             <span class="news-read-more">Leer artículo completo →</span>
@@ -1453,8 +1452,7 @@ window.openArticleModal = function(postIndex) {
 
   title.textContent = post.title;
   cat.textContent = post.category || 'General';
-  const dateStr = post.published_at ? new Date(post.published_at).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-  date.textContent = `${dateStr} ${post.author_name ? '· Publicado por ' + post.author_name : ''}`;
+  if (date) date.style.display = 'none';
 
   const resolvedImg = resolveMediaUrl(post.image_url);
   if (resolvedImg) {
