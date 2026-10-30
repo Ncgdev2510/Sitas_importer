@@ -85,3 +85,9 @@ sitas_importer/
 ## 🚀 Publicación Gratuita en GitHub Pages (con Dominio Personalizado)
 
 El proyecto está configurado para publicarse de forma **100% gratuita, ultrarrápida y con SSL automático** en GitHub Pages mediante GitHub Actions.
+
+Script de sincronización automática (sync_youtube_streams.py):
+
+Permite actualizar los streams del canal en cualquier momento ejecutando:
+bash
+## python sync_youtube_streams.py

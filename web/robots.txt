@@ -1,0 +1,12 @@
+# robots.txt para sitascestoball.com.ar
+User-agent: *
+Allow: /
+
+# Evitar rastreo e indexación del panel y archivos administrativos
+Disallow: /admin.html
+Disallow: /admin.js
+Disallow: /admin.css
+
+# Ubicación del mapa del sitio para Google Search Console y buscadores
+Sitemap: https://sitascestoball.com.ar/sitemap.xml
+
