@@ -53,9 +53,9 @@
       <nav class="nav-links">
         <a href="#section-upcoming" class="nav-link"><i data-lucide="calendar-clock"></i> Próxima Fecha</a>
         <a href="#section-tournaments" class="nav-link active"><i data-lucide="shield"></i> Torneos</a>
+        <a href="#section-streams" class="nav-link"><i data-lucide="youtube"></i> En Vivo</a>
         <a href="#section-carousel" class="nav-link"><i data-lucide="camera"></i> Galería</a>
         <a href="#section-news" class="nav-link"><i data-lucide="newspaper"></i> Noticias</a>
-       
       </nav>
 
       <div class="header-actions">
@@ -316,6 +316,67 @@
         </div>
       </section>
     </div>
+
+    <!-- SECCIÓN: TRANSMISIONES EN VIVO Y YOUTUBE -->
+    <section class="streams-section" id="section-streams" aria-label="Transmisiones y Partidos en Vivo de SITAS">
+      <div class="section-heading">
+        <div class="heading-title-wrap">
+          <span class="heading-badge stream-live-badge"><span class="live-dot"></span> EN VIVO Y TRANSMISIONES</span>
+          <h2>Transmisiones en Vivo de SITAS Cestoball</h2>
+          <p class="heading-desc">Seguí los partidos y coberturas en directo a través de nuestro canal oficial de YouTube.</p>
+        </div>
+        <div class="heading-action-wrap">
+          <a href="https://www.youtube.com/@sitascesto/streams" target="_blank" rel="noopener noreferrer" class="btn-yt-channel" title="Abrir transmisiones en YouTube">
+            <i data-lucide="youtube"></i>
+            <span>Canal @sitascesto</span>
+            <i data-lucide="external-link" class="btn-ext-icon"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="streams-layout">
+        <!-- Columna Principal: Reproductor Embebido -->
+        <div class="stream-main-card">
+          <div class="stream-player-container">
+            <iframe 
+              id="stream-video-iframe"
+              src="https://www.youtube.com/embed/oJhDWHlyZvs?rel=0" 
+              title="Última transmisión en vivo - Cestoball SITAS" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="stream-info-bar">
+            <div class="stream-info-text">
+              <div class="stream-meta-row">
+                <span class="stream-status-pill" id="stream-status-pill"><i data-lucide="radio"></i> Transmisión Oficial</span>
+                <span class="stream-cat-pill" id="stream-category-pill">En Vivo / Grabado</span>
+              </div>
+              <h3 class="stream-current-title" id="stream-current-title">Cestoball SITAS — Última Transmisión en Vivo</h3>
+            </div>
+            <div class="stream-action-btns">
+              <a id="stream-yt-direct-link" href="https://www.youtube.com/watch?v=oJhDWHlyZvs" target="_blank" rel="noopener noreferrer" class="btn-stream-action" title="Abrir video en YouTube">
+                <i data-lucide="play-circle"></i>
+                <span>Ver en YouTube</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        
+          <!-- Lista de transmisiones recientes seleccionables -->
+          <div class="stream-recent-box">
+            <div class="stream-recent-header">
+              <i data-lucide="video"></i>
+              <span>Transmisiones Recientes</span>
+            </div>
+            <div class="stream-recent-list" id="stream-recent-list">
+              <!-- Cargado dinámicamente -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- SECCIÓN: MOMENTOS SITAS (CARRUSEL DE FOTOS) -->
     <section class="carousel-section" id="section-carousel" aria-label="Galería de Fotos de SITAS">
