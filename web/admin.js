@@ -352,8 +352,20 @@ document.addEventListener("DOMContentLoaded", () => {
           </td>
           <td><strong>${m.venue || '-'}</strong></td>
           <td>
-            ${m.observations ? `<span class="badge-div" style="background:rgba(245,158,11,0.15); color:#F59E0B;">${m.observations}</span>` : '-'}
-            ${m.ref1 ? `<div style="font-size:0.75rem; color:#94A3B8; margin-top:2px;">Árbitros: ${m.ref1} ${m.ref2 ? '/ ' + m.ref2 : ''}</div>` : ''}
+            ${(() => {
+              let r1 = (m.ref1 || '').trim();
+              let r2 = (m.ref2 || '').trim();
+              let obs = (m.observations || '').trim();
+              if (!r2 && obs && /[\(\[\{][A-Za-z0-9\u03b2][\)\]\}]\s*$/.test(obs) && !/(localia|horarios|disponibilidad|presenta|gana|torneo|sede|lleguen|jugadoras)/i.test(obs)) {
+                r2 = obs;
+                obs = '';
+              }
+              const refs = [r1, r2].filter(Boolean);
+              return `
+                ${obs ? `<span class="badge-div" style="background:rgba(245,158,11,0.15); color:#F59E0B;">${obs}</span>` : '-'}
+                ${refs.length ? `<div style="font-size:0.75rem; color:#94A3B8; margin-top:2px;">Árbitros: ${refs.join(' / ')}</div>` : ''}
+              `;
+            })()}
           </td>
           <td style="text-align:center;">
             <button type="button" class="btn btn-outline-danger btn-xs btn-delete-match" data-id="${m.id}" title="Eliminar partido del cronograma" style="padding:3px 7px; font-size:0.75rem; cursor:pointer;">

@@ -1383,8 +1383,20 @@ async function loadUpcomingSchedule() {
               <i data-lucide="map-pin" style="width:14px;height:14px;color:var(--accent-gold);"></i>
               <span>Sede: <strong>${venueStr}</strong></span>
             </div>
-            ${m.ref1 ? `<div style="font-size:0.75rem;opacity:0.8;">Árbitros: ${m.ref1} ${m.ref2 ? '/ ' + m.ref2 : ''}</div>` : ''}
-            ${m.observations ? `<div class="upcoming-obs-badge">ℹ️ ${m.observations}</div>` : ''}
+            ${(() => {
+              let r1 = (m.ref1 || '').trim();
+              let r2 = (m.ref2 || '').trim();
+              let obs = (m.observations || '').trim();
+              if (!r2 && obs && /[\(\[\{][A-Za-z0-9\u03b2][\)\]\}]\s*$/.test(obs) && !/(localia|horarios|disponibilidad|presenta|gana|torneo|sede|lleguen|jugadoras)/i.test(obs)) {
+                r2 = obs;
+                obs = '';
+              }
+              const refs = [r1, r2].filter(Boolean);
+              return `
+                ${refs.length ? `<div style="font-size:0.75rem;opacity:0.8;">Árbitros: ${refs.join(' / ')}</div>` : ''}
+                ${obs ? `<div class="upcoming-obs-badge">ℹ️ ${obs}</div>` : ''}
+              `;
+            })()}
           </div>
         </div>
       `;
