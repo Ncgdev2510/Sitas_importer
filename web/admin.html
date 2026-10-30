@@ -80,6 +80,10 @@
           <span class="tab-icon">📰</span>
           <span>Noticias y Fotos</span>
         </button>
+        <button class="tab-btn" data-tab="tab-carousel">
+          <span class="tab-icon">📸</span>
+          <span>Carrusel de Fotos</span>
+        </button>
         <button class="tab-btn" data-tab="tab-sync">
           <span class="tab-icon">🔄</span>
           <span>Sincronización Clupik</span>
@@ -321,6 +325,76 @@
             <div class="card-body">
               <div id="posts-admin-list" class="posts-admin-list">
                 <p class="text-muted text-center">Cargando publicaciones...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- TAB 4: CARRUSEL DE FOTOS -->
+      <section id="tab-carousel" class="tab-content">
+        <div class="content-header">
+          <div>
+            <h1>Carrusel de Fotos</h1>
+            <p>Subí y administrá las fotos del carrusel interactivo que se desliza automáticamente en la web.</p>
+          </div>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Columna Izquierda: Formulario de Carga -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Subir Foto al Carrusel</h3>
+            </div>
+            <div class="card-body">
+              <form id="carousel-form">
+                <div class="form-group">
+                  <label for="carousel-image">Foto / Imagen <span class="text-danger">*</span></label>
+                  <input type="file" id="carousel-image" name="image" accept="image/png, image/jpeg, image/webp" class="form-control" required>
+                  <small class="form-hint" style="color:var(--text-muted); font-size:0.75rem; display:block; margin-top:4px;">
+                    Formatos: PNG, JPG, JPEG, WEBP. Se recomiendan fotos horizontales.
+                  </small>
+                </div>
+
+                <div id="carousel-preview-wrap" style="display:none; margin: 12px 0; text-align:center;">
+                  <img id="carousel-preview-img" src="" alt="Vista previa" style="max-height:160px; max-width:100%; border-radius:var(--radius-md); border:1px solid var(--border); object-fit:cover;">
+                </div>
+
+                <div class="form-group">
+                  <label for="carousel-title">Título / Epígrafe (opcional)</label>
+                  <input type="text" id="carousel-title" name="title" class="form-control" placeholder="Ej: Festejo en cancha de Ballester">
+                </div>
+
+                <div class="form-group">
+                  <label for="carousel-subtitle">Categoría / Etiqueta (opcional)</label>
+                  <input type="text" id="carousel-subtitle" name="subtitle" class="form-control" placeholder="Ej: Primera A, Sub 17, Entrenamiento">
+                </div>
+
+                <div class="form-group">
+                  <label for="carousel-order">Orden de aparición (opcional)</label>
+                  <input type="number" id="carousel-order" name="sort_order" class="form-control" value="0" min="0">
+                </div>
+
+                <button type="submit" id="btn-save-carousel" class="btn btn-primary btn-block" style="margin-top:10px;">
+                  <span>📸 Subir al Carrusel</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Galería de Fotos Actuales -->
+          <div class="card">
+            <div class="card-header table-header-flex">
+              <div>
+                <h3>Fotos en el Carrusel</h3>
+                <p class="card-subtitle" style="color:var(--text-muted); font-size:0.8rem;">Fotos activas en la rotación continua.</p>
+              </div>
+              <span class="badge-role" id="carousel-count-badge">0 fotos</span>
+            </div>
+            <div class="card-body">
+              <div id="carousel-admin-grid" class="carousel-admin-grid">
+                <p class="text-muted text-center" style="padding:20px;">Cargando fotos del carrusel...</p>
               </div>
             </div>
           </div>

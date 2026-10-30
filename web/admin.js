@@ -112,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userRoleBadge.textContent = `${user.username} (${user.role.toUpperCase()})`;
     loadScheduleData();
     loadPostsData();
+    loadCarouselData();
     checkBackendSyncStatus();
   }
 
@@ -173,6 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (contentEl) contentEl.classList.add("active");
       if (targetTab === "tab-clupik") {
         checkBackendSyncStatus();
+      } else if (targetTab === "tab-carousel") {
+        loadCarouselData();
       }
     });
   });
@@ -799,6 +802,144 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+
+  // ==========================================
+  // CARRUSEL DE FOTOS ADMIN
+  // ==========================================
+  const carouselForm = document.getElementById("carousel-form");
+  const carouselImageInput = document.getElementById("carousel-image");
+  const carouselPreviewWrap = document.getElementById("carousel-preview-wrap");
+  const carouselPreviewImg = document.getElementById("carousel-preview-img");
+  const carouselAdminGrid = document.getElementById("carousel-admin-grid");
+  const carouselCountBadge = document.getElementById("carousel-count-badge");
+  const btnSaveCarousel = document.getElementById("btn-save-carousel");
+
+  if (carouselImageInput) {
+    carouselImageInput.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          if (carouselPreviewImg) {
+            carouselPreviewImg.src = re.target.result;
+            if (carouselPreviewWrap) carouselPreviewWrap.style.display = "block";
+          }
+        };
+        reader.readAsDataURL(file);
+      } else {
+        if (carouselPreviewWrap) carouselPreviewWrap.style.display = "none";
+      }
+    });
+  }
+
+  async function loadCarouselData() {
+    if (!carouselAdminGrid) return;
+    try {
+      const res = await fetch("/api/carousel?all=1");
+      if (res.ok) {
+        const data = await res.json();
+        const photos = data.photos || [];
+        if (carouselCountBadge) {
+          carouselCountBadge.textContent = `${photos.length} ${photos.length === 1 ? 'foto' : 'fotos'}`;
+        }
+        renderCarouselAdminList(photos);
+      } else {
+        carouselAdminGrid.innerHTML = `<p class="text-muted text-center" style="grid-column:1/-1; padding:20px;">Error al cargar las fotos del carrusel.</p>`;
+      }
+    } catch (err) {
+      console.warn("Error al cargar fotos del carrusel:", err);
+      carouselAdminGrid.innerHTML = `<p class="text-muted text-center" style="grid-column:1/-1; padding:20px;">Error de conexión al cargar el carrusel.</p>`;
+    }
+  }
+
+  function renderCarouselAdminList(photos) {
+    if (!carouselAdminGrid) return;
+    if (!photos || photos.length === 0) {
+      carouselAdminGrid.innerHTML = `
+        <div style="grid-column:1/-1; text-align:center; padding:30px; color:var(--text-muted);">
+          <div style="font-size:2rem; margin-bottom:8px;">📸</div>
+          <p>No hay fotos cargadas en el carrusel todavía.</p>
+          <p style="font-size:0.8rem;">Subí una foto utilizando el formulario de la izquierda.</p>
+        </div>
+      `;
+      return;
+    }
+
+    carouselAdminGrid.innerHTML = photos.map(p => `
+      <div class="carousel-admin-card" data-id="${p.id}">
+        <button type="button" class="carousel-admin-delete" onclick="window.deleteCarouselPhotoById(${p.id})" title="Eliminar foto del carrusel">
+          🗑️
+        </button>
+        <div class="carousel-admin-thumb-wrap">
+          <img src="${p.image_url}" alt="${p.title || 'Foto carrusel'}" class="carousel-admin-thumb" loading="lazy">
+        </div>
+        <div class="carousel-admin-info">
+          <div>
+            <div class="carousel-admin-title" title="${p.title || 'Sin título'}">${p.title || 'Sin título'}</div>
+            ${p.subtitle ? `<div class="carousel-admin-sub">${p.subtitle}</div>` : ''}
+          </div>
+          <div class="carousel-admin-order">Orden: ${p.sort_order || 0}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  if (carouselForm) {
+    carouselForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!carouselImageInput.files || !carouselImageInput.files[0]) {
+        showToast("Por favor seleccioná una foto para subir", "warning");
+        return;
+      }
+
+      const formData = new FormData(carouselForm);
+      if (btnSaveCarousel) {
+        btnSaveCarousel.disabled = true;
+        btnSaveCarousel.innerHTML = `<span>⏳ Subiendo foto...</span>`;
+      }
+
+      try {
+        const res = await fetch("/api/carousel", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(data.message || "Foto agregada al carrusel con éxito", "success");
+          carouselForm.reset();
+          if (carouselPreviewWrap) carouselPreviewWrap.style.display = "none";
+          loadCarouselData();
+        } else {
+          showToast(data.error || "Error al subir la foto", "error");
+        }
+      } catch (err) {
+        showToast("Error de conexión al subir la foto", "error");
+      } finally {
+        if (btnSaveCarousel) {
+          btnSaveCarousel.disabled = false;
+          btnSaveCarousel.innerHTML = `<span>📸 Subir al Carrusel</span>`;
+        }
+      }
+    });
+  }
+
+  window.deleteCarouselPhotoById = async function(photoId) {
+    if (!confirm("¿Seguro que deseás eliminar esta foto del carrusel?")) return;
+    try {
+      const res = await fetch(`/api/carousel/${photoId}`, { method: "DELETE" });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast("Foto eliminada del carrusel", "warning");
+        loadCarouselData();
+      } else {
+        showToast(data.error || "No se pudo eliminar la foto", "error");
+      }
+    } catch (e) {
+      showToast("Error de red al eliminar la foto", "error");
+    }
+  };
+
 
   // Run Session check on load
   checkSession();

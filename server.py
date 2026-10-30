@@ -42,6 +42,11 @@ from infrastructure.db.queries import (
     export_data_for_frontend,
     export_upcoming_for_frontend,
     export_posts_for_frontend,
+    get_carousel_photos,
+    add_carousel_photo,
+    delete_carousel_photo,
+    update_carousel_photo,
+    export_carousel_for_frontend,
 )
 
 from infrastructure.pdf.parser import parse_schedule_pdf
@@ -346,6 +351,72 @@ def remove_post(post_id: int):
     export_posts_for_frontend(WEB_DIR / "posts.json")
     return jsonify({"success": True, "message": "Publicación eliminada correctamente"})
 
+
+
+
+
+# ==========================================
+# Endpoints de Carrusel de Fotos
+# ==========================================
+@app.route("/api/carousel", methods=["GET"])
+def list_carousel_photos():
+    show_all = request.args.get("all", "0") in ("1", "true", "True")
+    photos = get_carousel_photos(active_only=not show_all)
+    return jsonify({"success": True, "count": len(photos), "photos": photos})
+
+
+@app.route("/api/carousel", methods=["POST"])
+def upload_carousel_photo():
+    if not is_authenticated():
+        return jsonify({"error": "No autorizado"}), 401
+
+    title = request.form.get("title", "").strip()
+    subtitle = request.form.get("subtitle", "").strip()
+    sort_order_raw = request.form.get("sort_order", "0").strip()
+    sort_order = int(sort_order_raw) if sort_order_raw.isdigit() else 0
+    image_url = request.form.get("image_url", "").strip()
+
+    if "image" in request.files:
+        file = request.files["image"]
+        if file and file.filename and allowed_file(file.filename, ALLOWED_EXTENSIONS_IMG):
+            ext = file.filename.rsplit(".", 1)[1].lower()
+            safe_name = f"carousel_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{secrets.token_hex(4)}.{ext}"
+            file_path = UPLOADS_DIR / safe_name
+            file.save(str(file_path))
+            image_url = f"/uploads/{safe_name}"
+
+    if not image_url:
+        return jsonify({"error": "Debe seleccionar un archivo de imagen válido (.png, .jpg, .jpeg, .webp)"}), 400
+
+    photo_id = add_carousel_photo(
+        image_url=image_url,
+        title=title,
+        subtitle=subtitle,
+        sort_order=sort_order,
+    )
+    export_carousel_for_frontend(WEB_DIR / "carousel.json")
+
+    return jsonify({
+        "success": True,
+        "photo_id": photo_id,
+        "image_url": image_url,
+        "title": title,
+        "subtitle": subtitle,
+        "message": "Foto agregada al carrusel con éxito",
+    })
+
+
+@app.route("/api/carousel/<int:photo_id>", methods=["DELETE"])
+def remove_carousel_photo(photo_id: int):
+    if not is_authenticated():
+        return jsonify({"error": "No autorizado"}), 401
+
+    success = delete_carousel_photo(photo_id)
+    if not success:
+        return jsonify({"error": "Foto no encontrada"}), 404
+
+    export_carousel_for_frontend(WEB_DIR / "carousel.json")
+    return jsonify({"success": True, "message": "Foto eliminada del carrusel con éxito"})
 
 
 # ==========================================

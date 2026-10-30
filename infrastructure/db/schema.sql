@@ -142,3 +142,19 @@ CREATE TABLE IF NOT EXISTS upcoming_matches (
 CREATE INDEX IF NOT EXISTS idx_upcoming_is_sitas ON upcoming_matches(is_sitas);
 CREATE INDEX IF NOT EXISTS idx_upcoming_category ON upcoming_matches(category);
 
+
+
+-- ==========================================
+-- Módulo Admin Panel: Carrusel de Fotos
+-- ==========================================
+CREATE TABLE IF NOT EXISTS carousel_photos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    subtitle TEXT,
+    image_url TEXT NOT NULL,
+    sort_order INTEGER DEFAULT 0,
+    active BOOLEAN DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_carousel_active ON carousel_photos(active, sort_order);

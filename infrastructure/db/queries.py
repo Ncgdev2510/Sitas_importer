@@ -349,6 +349,26 @@ def export_posts_for_frontend(
     return out_file
 
 
+def export_carousel_for_frontend(
+    output_path: Path | str = "web/carousel.json",
+    conn: sqlite3.Connection | None = None,
+) -> Path:
+    """
+    Genera un archivo JSON estático con las fotos activas del carrusel para GitHub Pages.
+    """
+    c = conn or get_db_connection()
+    photos = get_carousel_photos(active_only=True, conn=c)
+    payload = {
+        "success": True,
+        "count": len(photos),
+        "photos": photos,
+    }
+    out_file = Path(output_path)
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    return out_file
+
+
 def export_all_static_data(
     web_dir: Path | str = "web",
     club_name: str = "SITAS",
@@ -364,6 +384,7 @@ def export_all_static_data(
         "data": export_data_for_frontend(base_web / "data.json", club_name=club_name, conn=c),
         "upcoming": export_upcoming_for_frontend(base_web / "upcoming.json", conn=c),
         "posts": export_posts_for_frontend(base_web / "posts.json", conn=c),
+        "carousel": export_carousel_for_frontend(base_web / "carousel.json", conn=c),
     }
 
 
@@ -600,3 +621,76 @@ def clear_upcoming_matches(conn: sqlite3.Connection | None = None) -> None:
     if conn is None:
         c.commit()
 
+
+
+# ==========================================
+# Módulo de Carrusel de Fotos
+# ==========================================
+def get_carousel_photos(active_only: bool = True, conn: sqlite3.Connection | None = None) -> list[dict[str, Any]]:
+    c = conn or get_db_connection()
+    query = "SELECT * FROM carousel_photos WHERE 1=1"
+    if active_only:
+        query += " AND active = 1"
+    query += " ORDER BY sort_order ASC, id DESC"
+    rows = c.execute(query).fetchall()
+    return [dict(r) for r in rows]
+
+
+def add_carousel_photo(
+    image_url: str,
+    title: str = "",
+    subtitle: str = "",
+    sort_order: int = 0,
+    conn: sqlite3.Connection | None = None,
+) -> int:
+    c = conn or get_db_connection()
+    cur = c.execute(
+        """
+        INSERT INTO carousel_photos (image_url, title, subtitle, sort_order, active)
+        VALUES (?, ?, ?, ?, 1)
+        """,
+        (image_url, title.strip(), subtitle.strip(), sort_order),
+    )
+    if conn is None:
+        c.commit()
+    return cur.lastrowid
+
+
+def delete_carousel_photo(photo_id: int, conn: sqlite3.Connection | None = None) -> bool:
+    c = conn or get_db_connection()
+    cur = c.execute("DELETE FROM carousel_photos WHERE id = ?", (photo_id,))
+    if conn is None:
+        c.commit()
+    return cur.rowcount > 0
+
+
+def update_carousel_photo(
+    photo_id: int,
+    title: str | None = None,
+    subtitle: str | None = None,
+    sort_order: int | None = None,
+    active: bool | None = None,
+    conn: sqlite3.Connection | None = None,
+) -> bool:
+    c = conn or get_db_connection()
+    fields = []
+    params = []
+    if title is not None:
+        fields.append("title = ?")
+        params.append(title.strip())
+    if subtitle is not None:
+        fields.append("subtitle = ?")
+        params.append(subtitle.strip())
+    if sort_order is not None:
+        fields.append("sort_order = ?")
+        params.append(sort_order)
+    if active is not None:
+        fields.append("active = ?")
+        params.append(1 if active else 0)
+    if not fields:
+        return False
+    params.append(photo_id)
+    cur = c.execute(f"UPDATE carousel_photos SET {', '.join(fields)} WHERE id = ?", params)
+    if conn is None:
+        c.commit()
+    return cur.rowcount > 0

@@ -19,7 +19,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
 
-from infrastructure.db.queries import export_all_static_data, get_posts, get_upcoming_matches
+from infrastructure.db.queries import export_all_static_data, get_posts, get_upcoming_matches, get_carousel_photos
 
 
 def main():
@@ -38,6 +38,7 @@ def main():
 
     posts_count = len(get_posts(limit=100, published_only=True))
     upcoming_count = len(get_upcoming_matches(sitas_only=False))
+    carousel_count = len(get_carousel_photos(active_only=True))
 
     print("\n[+] Archivos generados con éxito:")
     for key, path in results.items():
@@ -47,6 +48,8 @@ def main():
             extra_info = f"({posts_count} noticias publicadas)"
         elif key == "upcoming":
             extra_info = f"({upcoming_count} partidos programados)"
+        elif key == "carousel":
+            extra_info = f"({carousel_count} fotos en carrusel)"
         print(f"    - {path.name:<16} -> {size_kb:>7} KB  {extra_info}")
 
     print("\n[OK] Listo. Tu carpeta 'web' está 100% preparada para publicarse en GitHub Pages.")

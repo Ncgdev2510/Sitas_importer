@@ -106,8 +106,9 @@ async function init() {
     }
   }
 
-  // Cargar módulos dinámicos (Próxima fecha y Noticias)
+  // Cargar módulos dinámicos (Próxima fecha, Carrusel y Noticias)
   loadUpcomingSchedule();
+  loadPhotoCarousel();
   loadNewsFeed();
   setupScrollSpy();
 
@@ -1541,6 +1542,9 @@ window.openArticleModal = function(postIndex) {
   const text = document.getElementById('article-modal-text');
   const btnClose = document.getElementById('article-modal-close');
 
+  if (!modal) return;
+  modal.classList.remove('modal-gallery-mode');
+
   title.textContent = post.title;
   cat.textContent = post.category || 'General';
   if (date) date.style.display = 'none';
@@ -1554,11 +1558,143 @@ window.openArticleModal = function(postIndex) {
   }
 
   text.textContent = post.content;
+  text.style.display = 'block';
   modal.style.display = 'flex';
 
-  btnClose.onclick = () => { modal.style.display = 'none'; };
-  modal.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+  const closeModal = () => {
+    modal.classList.remove('modal-gallery-mode');
+    modal.style.display = 'none';
+  };
+
+  if (btnClose) btnClose.onclick = closeModal;
+  modal.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
 };
+
+
+// ==========================================
+// Módulo: Carrusel de Fotos (Momentos SITAS)
+// ==========================================
+let loadedCarouselPhotos = [];
+
+async function loadPhotoCarousel() {
+  const track = document.getElementById('carousel-track');
+  const section = document.getElementById('section-carousel');
+  if (!track || !section) return;
+
+  try {
+    let photos = [];
+
+    // Intento 1: API dinámica
+    try {
+      const res = await fetch('/api/carousel');
+      if (res.ok) {
+        const data = await res.json();
+        photos = data.photos || [];
+      } else {
+        throw new Error('API no disponible');
+      }
+    } catch {
+      // Intento 2: Fallback estático para GitHub Pages
+      const resStatic = await fetch('carousel.json');
+      if (resStatic.ok) {
+        const dataStatic = await resStatic.json();
+        photos = dataStatic.photos || [];
+      }
+    }
+
+    loadedCarouselPhotos = photos;
+
+    if (!photos || photos.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+
+    // Para lograr un loop infinito continuo y fluido en cualquier resolución,
+    // aseguramos al menos 8 elementos antes de duplicar para el marquee
+    let list = [...photos];
+    while (list.length < 8) {
+      list = list.concat(photos);
+    }
+    const fullTrack = list.concat(list);
+
+    track.innerHTML = fullTrack.map((p) => {
+      const resolvedImg = resolveMediaUrl(p.image_url) || p.image_url;
+      const titleEsc = (p.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const subEsc = (p.subtitle || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `
+        <div class="carousel-card" onclick="openCarouselModal('${resolvedImg.replace(/'/g, "\\'")}', '${titleEsc}', '${subEsc}')">
+          <img src="${resolvedImg}" alt="${p.title || 'Foto SITAS'}" class="carousel-img" loading="lazy">
+          ${(p.title || p.subtitle) ? `
+            <div class="carousel-overlay">
+              ${p.subtitle ? `<span class="carousel-pill">${p.subtitle}</span>` : ''}
+              ${p.title ? `<span class="carousel-title">${p.title}</span>` : ''}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  } catch (err) {
+    console.warn('No se pudo cargar el carrusel de fotos:', err);
+    if (section) section.style.display = 'none';
+  }
+}
+
+window.openCarouselModal = function(imgUrl, title, subtitle) {
+  const modal = document.getElementById('article-modal');
+  const modalTitle = document.getElementById('article-modal-title');
+  const modalCat = document.getElementById('article-modal-category');
+  const modalImg = document.getElementById('article-modal-img');
+  const modalText = document.getElementById('article-modal-text');
+  const btnClose = document.getElementById('article-modal-close');
+
+  if (!modal) return;
+
+  modal.classList.add('modal-gallery-mode');
+
+  if (modalTitle) modalTitle.textContent = title || 'Momentos SITAS';
+  if (modalCat) modalCat.textContent = subtitle || 'Galería';
+  if (modalImg) {
+    modalImg.src = imgUrl;
+    modalImg.style.display = 'block';
+  }
+  if (modalText) {
+    modalText.textContent = '';
+    modalText.style.display = 'none';
+  }
+
+  modal.style.display = 'flex';
+
+  const closeModal = () => {
+    modal.classList.remove('modal-gallery-mode');
+    modal.style.display = 'none';
+  };
+
+  if (btnClose) btnClose.onclick = closeModal;
+  modal.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
+};
+
+// Cerrar modales con la tecla Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const articleModal = document.getElementById('article-modal');
+    if (articleModal && articleModal.style.display !== 'none') {
+      articleModal.classList.remove('modal-gallery-mode');
+      articleModal.style.display = 'none';
+    }
+    const h2hModal = document.getElementById('h2h-modal');
+    if (h2hModal && h2hModal.style.display !== 'none') {
+      h2hModal.style.display = 'none';
+    }
+  }
+});
 
 // Boot
 window.addEventListener('DOMContentLoaded', init);
