@@ -115,7 +115,7 @@
       <div class="brand">
         <img src="assets/sitas_logo.png" alt="SITAS Cestoball Logo" class="brand-crest-img">
         <div class="brand-text">
-          <h1>SITAS <span>CESTOBALL</span></h1>
+          <span class="brand-title">SITAS <span>CESTOBALL</span></span>
           <p class="subtitle">Para nuestra hinchada</p>
         </div>
       </div>
@@ -123,7 +123,7 @@
       <nav class="nav-links">
         <a href="#section-upcoming" class="nav-link"><i data-lucide="calendar-clock"></i> Próxima Fecha</a>
         <a href="#section-tournaments" class="nav-link active"><i data-lucide="shield"></i> Torneos</a>
-        <a href="#section-streams" class="nav-link"><i data-lucide="youtube"></i> En Vivo</a>
+        <a href="#section-streams" class="nav-link"><i data-lucide="video"></i> En Vivo <span class="nav-live-dot" title="Transmisiones en vivo"></span></a>
         <a href="#section-carousel" class="nav-link"><i data-lucide="camera"></i> Galería</a>
         <a href="#section-news" class="nav-link"><i data-lucide="newspaper"></i> Noticias</a>
       </nav>
@@ -147,21 +147,59 @@
   <!-- Main Content -->
   <main class="container main-layout">
 
-    <!-- BLOQUE INSTITUCIONAL Y SEMÁNTICO (SEO & Identidad) -->
-    <article class="institutional-strip" aria-label="Información institucional de SITAS Cestoball">
-      <div class="institutional-icon-wrap">
-        <i data-lucide="shield-check"></i>
+    <!-- SECCIÓN HERO INSTITUCIONAL (Protagonista con H1 y Preparado para Video MP4) -->
+    <header class="hero-block" id="hero-banner" aria-label="Presentación oficial de SITAS Cestoball">
+      <!-- Media Backdrop para el futuro video mp4 -->
+      <div class="hero-media-backdrop" aria-hidden="true">
+        <!-- 
+        Para activar el video de fondo:
+        1. Guarda tu archivo mp4 como assets/hero_video.mp4
+        2. Descomenta la siguiente etiqueta <video>:
+        <video class="hero-video-bg" autoplay muted loop playsinline poster="assets/og-image.jpg">
+          <source src="assets/hero_video.mp4" type="video/mp4">
+        </video>
+        -->
+        <div class="hero-overlay-gradient"></div>
+        <div class="hero-glow-accent"></div>
       </div>
-      <div class="institutional-text">
-        <h2 class="institutional-title">
-          <span>Cestoball del Club SITAS</span>
-          <span class="institutional-fed-badge">Afiliado a la Federación de Cestoball de Capital Federal</span>
-        </h2>
-        <p class="institutional-desc">
-          Portal oficial de estadísticas, fixture y resultados del <strong>Cestoball del Club SITAS</strong> (<em>Sociedad Italiana de Tiro al Segno</em>) de <strong>El Palomar</strong>. Seguí las posiciones, partidos y transmisiones en vivo de todas las categorías de nuestra hinchada.
+
+      <div class="hero-body">
+        <!-- Badge Oficial de la Federación -->
+        <div class="hero-badge-wrap">
+          <span class="hero-fed-badge">
+            <i data-lucide="shield-check"></i>
+            Afiliado a la Federación de Cestoball de Capital Federal
+          </span>
+        </div>
+
+        <!-- H1 Principal del Sitio (SEO & Identidad Institucional) -->
+        <h1 class="hero-main-title">
+          Cestoball <span class="hero-brand-highlight">SITAS</span>
+          <span class="hero-club-tag">Club SITAS &bull; Sociedad Italiana de Tiro al Segno (El Palomar)</span>
+        </h1>
+
+        <p class="hero-description-lead">
+          Portal oficial de estadísticas, fixture de partidos, tablas de posiciones y transmisiones en vivo de <strong>Cestoball SITAS</strong> en <strong>El Palomar</strong>. Seguí las posiciones, fixture semanal y el minuto a minuto de todas nuestras categorías.
         </p>
+
+        <!-- Accesos rápidos / Acciones clave -->
+        <div class="hero-quick-actions">
+          <a href="#section-upcoming" class="hero-btn hero-btn-primary">
+            <i data-lucide="calendar-clock"></i>
+            <span>Próxima Fecha</span>
+          </a>
+          <a href="#section-tournaments" class="hero-btn hero-btn-secondary">
+            <i data-lucide="shield"></i>
+            <span>Torneos y Posiciones</span>
+          </a>
+          <a href="#section-streams" class="hero-btn hero-btn-outline">
+            <i data-lucide="video"></i>
+            <span>Ver en Vivo</span>
+            <span class="hero-live-dot"></span>
+          </a>
+        </div>
       </div>
-    </article>
+    </header>
 
     <!-- SECCIÓN 1: PRÓXIMA FECHA / CRONOGRAMA SEMANAL -->
     <section class="upcoming-section" id="section-upcoming" aria-label="Próximos partidos del fin de semana">
@@ -413,7 +451,9 @@
         </div>
         <div class="heading-action-wrap">
           <a href="https://www.youtube.com/@sitascesto/streams" target="_blank" rel="noopener noreferrer" class="btn-yt-channel" title="Abrir transmisiones en YouTube">
-            <i data-lucide="youtube"></i>
+            <svg class="yt-svg-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
             <span>Canal @sitascesto</span>
             <i data-lucide="external-link" class="btn-ext-icon"></i>
           </a>
