@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Clupik Sync
   const btnTriggerSync = document.getElementById("btn-trigger-sync");
+  const btnTriggerSyncQuick = document.getElementById("btn-trigger-sync-quick");
   const syncStatusIndicator = document.getElementById("sync-status-indicator");
   const syncLoadingCard = document.getElementById("sync-loading-card");
   const syncLiveTimer = document.getElementById("sync-live-timer");
@@ -644,7 +645,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnTriggerSync) {
       btnTriggerSync.disabled = true;
       btnTriggerSync.classList.add("is-loading");
-      btnTriggerSync.innerHTML = `
+    }
+    if (btnTriggerSyncQuick) {
+      btnTriggerSyncQuick.disabled = true;
+      btnTriggerSyncQuick.classList.add("is-loading");
+      btnTriggerSyncQuick.innerHTML = `
         <svg class="spinner-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/>
           <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
@@ -688,7 +693,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnTriggerSync) {
       btnTriggerSync.disabled = false;
       btnTriggerSync.classList.remove("is-loading");
-      btnTriggerSync.innerHTML = `<span class="btn-icon">🔄</span><span>Sincronizar Datos Ahora</span>`;
+      btnTriggerSync.innerHTML = `<span class="btn-icon">🔄</span><span>Sincronización Completa</span>`;
+    }
+    if (btnTriggerSyncQuick) {
+      btnTriggerSyncQuick.disabled = false;
+      btnTriggerSyncQuick.classList.remove("is-loading");
+      btnTriggerSyncQuick.innerHTML = `<span class="btn-icon">⚡</span><span>Sincronización Rápida (Resultados)</span>`;
     }
 
     if (syncSeasonSelect) syncSeasonSelect.disabled = false;
@@ -765,42 +775,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  if (btnTriggerSync) {
-    btnTriggerSync.addEventListener("click", async () => {
-      if (isSyncing || btnTriggerSync.disabled) return;
+  async function performSync(quick = false) {
+    if (isSyncing) return;
+    if (btnTriggerSync && btnTriggerSync.disabled) return;
+    if (btnTriggerSyncQuick && btnTriggerSyncQuick.disabled) return;
 
-      const season = syncSeasonSelect ? syncSeasonSelect.value : "2026";
-      const edition = syncEditionSelect ? syncEditionSelect.value : "CLAUSURA";
+    const season = syncSeasonSelect ? syncSeasonSelect.value : "2026";
+    const edition = syncEditionSelect ? syncEditionSelect.value : "CLAUSURA";
+    const modeLabel = quick ? "Rápida (solo torneos en curso y fases activas)" : "Completa";
 
-      startSyncUI(0, season, edition);
-      syncOutput.textContent = `Iniciando proceso de sincronización con Clupik...\nTemporada: ${season} | Filtro: ${edition}\nExtrayendo torneos ${edition} y Competencias Nacionales...\n`;
+    startSyncUI(0, season, edition);
+    syncOutput.textContent = `Iniciando sincronización con Clupik [Modo: ${modeLabel}]...\nTemporada: ${season} | Filtro: ${edition}\n`;
 
-      try {
-        const res = await fetch("/api/sync-clupik", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ season, edition })
-        });
-        const data = await res.json();
+    try {
+      const res = await fetch("/api/sync-clupik", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ season, edition, quick })
+      });
+      const data = await res.json();
 
-        if (res.ok && data.success) {
-          showToast(data.message || `Sincronización (${edition}) iniciada en segundo plano`, "info");
-          syncOutput.textContent += `[SISTEMA]: Tarea en segundo plano iniciada correctamente.\nTemporada: ${season} | Edición: ${edition}\nMonitoreando avance y conexión con Clupik...\n`;
-          startStatusPolling();
-        } else if (res.status === 409) {
-          showToast(data.error || "Ya hay una sincronización en curso.", "warning");
-          startStatusPolling();
-        } else {
-          stopSyncUI(false);
-          syncOutput.textContent += "\n[ERROR]: " + (data.error || "Falló al iniciar la sincronización") + "\n" + (data.details || "");
-          showToast(data.error || "Ocurrió un error al sincronizar con Clupik", "error");
-        }
-      } catch (err) {
+      if (res.ok && data.success) {
+        showToast(data.message || `Sincronización (${edition}) iniciada en segundo plano`, "info");
+        syncOutput.textContent += `[SISTEMA]: Tarea en segundo plano iniciada correctamente.\nTemporada: ${season} | Edición: ${edition} | Modo: ${modeLabel}\nMonitoreando avance con Clupik...\n`;
+        startStatusPolling();
+      } else if (res.status === 409) {
+        showToast(data.error || "Ya hay una sincronización en curso.", "warning");
+        startStatusPolling();
+      } else {
         stopSyncUI(false);
-        syncOutput.textContent += "\n[ERROR DE RED]: " + err.message;
-        showToast("Error de conexión durante la sincronización", "error");
+        syncOutput.textContent += "\n[ERROR]: " + (data.error || "Falló al iniciar la sincronización") + "\n" + (data.details || "");
+        showToast(data.error || "Ocurrió un error al sincronizar con Clupik", "error");
       }
-    });
+    } catch (err) {
+      stopSyncUI(false);
+      syncOutput.textContent += "\n[ERROR DE RED]: " + err.message;
+      showToast("Error de conexión durante la sincronización", "error");
+    }
+  }
+
+  if (btnTriggerSyncQuick) {
+    btnTriggerSyncQuick.addEventListener("click", () => performSync(true));
+  }
+  if (btnTriggerSync) {
+    btnTriggerSync.addEventListener("click", () => performSync(false));
   }
 
 

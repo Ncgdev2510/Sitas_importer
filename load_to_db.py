@@ -267,9 +267,15 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
 
     stats = {
         "tournaments": 0,
+        "tournaments_updated": 0,
+        "tournaments_skipped": 0,
         "phases": 0,
+        "phases_updated": 0,
+        "phases_skipped": 0,
         "standings": 0,
         "matches": 0,
+        "matches_updated": 0,
+        "matches_skipped": 0,
         "clubs": 0,
     }
 
@@ -282,6 +288,19 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
             if not clupik_id:
                 continue
 
+            is_t_updated = t_item.get("updated", True)
+            if not is_t_updated:
+                stats["tournaments"] += 1
+                stats["tournaments_skipped"] += 1
+                for p_item in t_item.get("phases", []):
+                    stats["phases"] += 1
+                    stats["phases_skipped"] += 1
+                    stats["standings"] += len(p_item.get("standings", []))
+                    m_count = len(p_item.get("matches", []))
+                    stats["matches"] += m_count
+                    stats["matches_skipped"] += m_count
+                continue
+
             season = t_meta.get("season") or "Sin temporada"
             category = t_meta.get("category")
             edition = t_meta.get("edition")
@@ -292,11 +311,23 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
                 conn, clupik_id, season, category, edition, manager_name, status=status
             )
             stats["tournaments"] += 1
+            stats["tournaments_updated"] += 1
 
             for p_item in t_item.get("phases", []):
                 phase_info = p_item.get("phase", {})
                 clupik_phase_id = phase_info.get("phase_id")
                 phase_name = phase_info.get("name", "Fase")
+
+                is_p_updated = p_item.get("updated", True)
+                if not is_p_updated:
+                    stats["phases"] += 1
+                    stats["phases_skipped"] += 1
+                    stats["standings"] += len(p_item.get("standings", []))
+                    m_count = len(p_item.get("matches", []))
+                    stats["matches"] += m_count
+                    stats["matches_skipped"] += m_count
+                    continue
+
                 is_active = phase_info.get("is_active", False)
                 is_playoff = p_item.get("is_playoff", False) or any(
                     w in phase_name.upper() for w in ["COPA", "PLAYOFF", "ORO", "PLATA", "BRONCE"]
@@ -311,6 +342,7 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
                     conn, db_tournament_id, clupik_phase_id, phase_name, is_active, is_playoff, bracket_json
                 )
                 stats["phases"] += 1
+                stats["phases_updated"] += 1
 
                 # Clasificación
                 for s in p_item.get("standings", []):
@@ -348,6 +380,7 @@ def load_data_file(json_file: Path | str, db_path: Path | str | None = None) -> 
                         m,
                     )
                     stats["matches"] += 1
+                    stats["matches_updated"] += 1
 
         # Contar total de clubes registrados
         club_count = conn.execute("SELECT COUNT(*) FROM clubs").fetchone()[0]

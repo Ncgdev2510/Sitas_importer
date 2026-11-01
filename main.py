@@ -47,6 +47,30 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 logger = logging.getLogger(__name__)
 
 
+def get_known_participating_tournament_ids(club_name: str = "SITAS", db_path: Path | None = None) -> set[int]:
+    """Retorna los clupik_id de torneos en los que ya sabemos que el club participa según la DB."""
+    try:
+        from infrastructure.db.database import get_db_connection, DEFAULT_DB_PATH
+        conn = get_db_connection(db_path or DEFAULT_DB_PATH)
+        needle = f"%{club_name.strip()}%"
+        rows = conn.execute(
+            """
+            SELECT DISTINCT t.clupik_id FROM tournaments t 
+            WHERE t.id IN (
+                SELECT tournament_id FROM standings s JOIN clubs c ON c.id = s.club_id WHERE c.name LIKE ?
+                UNION
+                SELECT tournament_id FROM matches m JOIN clubs c ON (c.id = m.home_club_id OR c.id = m.away_club_id) WHERE c.name LIKE ?
+            )
+            """,
+            (needle, needle),
+        ).fetchall()
+        conn.close()
+        return {r[0] for r in rows if r[0] is not None}
+    except Exception as exc:
+        logger.debug("No se pudieron cargar torneos conocidos de la base: %s", exc)
+        return set()
+
+
 def extract_tournament(
     client: ClupikClient,
     tournament_id: int,
@@ -54,6 +78,8 @@ def extract_tournament(
     base_html: str | None = None,
     phase_cache: dict[int, str] | None = None,
     status: str = "",
+    quick: bool = False,
+    existing_phases_map: dict[int, dict] | None = None,
 ) -> dict:
     """Baja ranking + calendario de todas las fases de un torneo y filtra por club."""
     if base_html is None:
@@ -70,6 +96,25 @@ def extract_tournament(
     for phase in phases:
         phase_id = phase["phase_id"]
         phase_name = phase["name"]
+
+        # OPCION B: Si estamos en modo Quick y la fase regular ya está 100% jugada, la reutilizamos sin consultar Clupik
+        if quick and existing_phases_map and phase_id in existing_phases_map:
+            cached_p = existing_phases_map[phase_id]
+            cached_matches = cached_p.get("matches", [])
+            is_regular_finished = (
+                not cached_p.get("is_playoff")
+                and len(cached_matches) > 0
+                and all(m.get("played") for m in cached_matches)
+            )
+            if is_regular_finished:
+                logger.info(
+                    "    -> Fase regular '%s' (id=%s) ya está 100%% jugada (%s partidos). Se preserva sin re-descargar (Quick Sync).",
+                    phase_name, phase_id, len(cached_matches)
+                )
+                cached_copy = dict(cached_p)
+                cached_copy["updated"] = False
+                result["phases"].append(cached_copy)
+                continue
 
         if phase["is_active"]:
             ranking_html = base_html
@@ -141,6 +186,7 @@ def extract_tournament(
             "club_standing": asdict(club_standing) if club_standing else None,
             "matches": [asdict(m) for m in matches],
             "club_matches": [asdict(m) for m in club_matches],
+            "updated": True,
         })
 
         if club_standing:
@@ -255,10 +301,27 @@ def run_by_manager(
     include_all: bool = False,
     edition_filter: str | None = "CLAUSURA",
     season: str = "2026",
+    quick: bool = False,
+    force: bool = False,
+    db_path: Path | None = None,
 ) -> None:
     logger.info("Descargando listado de torneos del manager %s...", manager_id)
     tournaments = parse_tournament_list(client.get_tournament_list(manager_id))
     logger.info("Encontrados %s torneos en la Federación/Manager.", len(tournaments))
+
+    # Cargar datos previos de output_path para preservar torneos/fases omitidos
+    existing_map: dict[int, dict] = {}
+    if output_path.exists():
+        try:
+            existing_data = json.loads(output_path.read_text(encoding="utf-8"))
+            for t_item in existing_data.get("tournaments", []):
+                t_id = t_item.get("tournament", {}).get("tournament_id")
+                if t_id:
+                    existing_map[t_id] = t_item
+        except Exception as exc:
+            logger.debug("No se pudo leer archivo de salida previo: %s", exc)
+
+    known_participating_ids = get_known_participating_tournament_ids(club_name, db_path)
 
     # Filtrar según directiva (Clausura + Nacionales en 2026 para máxima velocidad)
     target_tournaments = [t for t in tournaments if should_sync_tournament(t, edition_filter, season)]
@@ -269,30 +332,82 @@ def run_by_manager(
     result: dict = {"club": club_name, "manager_id": manager_id, "tournaments": []}
 
     for t in target_tournaments:
-        logger.info("Verificando participación en %s (id=%s)...", t.name, t.clupik_id)
+        t_status = (t.status or "").strip().lower()
+        is_finished = t_status in ("finalizada", "finalizado")
+
+        # OPCION A: Si el torneo está marcado como Finalizada y ya lo tenemos en base local, lo omitimos
+        if is_finished and t.clupik_id in existing_map and not force:
+            logger.info("  -> Torneo '%s' (id=%s) ya está FINALIZADO en base local. Omitiendo scraping...", t.name, t.clupik_id)
+            cached_tournament = dict(existing_map[t.clupik_id])
+            cached_tournament["updated"] = False
+            result["tournaments"].append(cached_tournament)
+            continue
+
+        existing_phases_map = {}
+        if t.clupik_id in existing_map:
+            for p in existing_map[t.clupik_id].get("phases", []):
+                p_id = p.get("phase", {}).get("phase_id")
+                if p_id:
+                    existing_phases_map[p_id] = p
+
+        # Verificamos si ya sabemos que el club participa para ahorrar llamadas HTTP de chequeo innecesarias
+        known_participant = (t.clupik_id in known_participating_ids) or (
+            t.clupik_id in existing_map and any(
+                p.get("club_standing") or p.get("club_matches")
+                for p in existing_map[t.clupik_id].get("phases", [])
+            )
+        )
+
+        logger.info("Procesando torneo %s (id=%s)...", t.name, t.clupik_id)
         try:
             if include_all:
-                result["tournaments"].append(
-                    extract_tournament(client, t.clupik_id, club_name, status=t.status)
+                extracted = extract_tournament(
+                    client,
+                    t.clupik_id,
+                    club_name,
+                    status=t.status,
+                    quick=quick,
+                    existing_phases_map=existing_phases_map,
                 )
+                extracted["updated"] = True
+                result["tournaments"].append(extracted)
+            elif known_participant:
+                logger.info("  -> %s participa en %s (confirmado por base de datos).", club_name, t.name)
+                extracted = extract_tournament(
+                    client,
+                    t.clupik_id,
+                    club_name,
+                    status=t.status,
+                    quick=quick,
+                    existing_phases_map=existing_phases_map,
+                )
+                extracted["updated"] = True
+                result["tournaments"].append(extracted)
             else:
                 participates, base_html, phase_cache = check_club_participation(client, t, club_name)
                 if participates:
                     logger.info("  -> %s participa en %s. Descargando detalle completo...", club_name, t.name)
-                    result["tournaments"].append(
-                        extract_tournament(
-                            client,
-                            t.clupik_id,
-                            club_name,
-                            base_html=base_html,
-                            phase_cache=phase_cache,
-                            status=t.status,
-                        )
+                    extracted = extract_tournament(
+                        client,
+                        t.clupik_id,
+                        club_name,
+                        base_html=base_html,
+                        phase_cache=phase_cache,
+                        status=t.status,
+                        quick=quick,
+                        existing_phases_map=existing_phases_map,
                     )
+                    extracted["updated"] = True
+                    result["tournaments"].append(extracted)
                 else:
                     logger.info("  -> %s no participa, se omite.", club_name)
         except Exception as exc:  # no dejamos que un torneo roto tire abajo todo el batch
             logger.warning("  -> error procesando torneo %s: %s", t.clupik_id, exc)
+            if t.clupik_id in existing_map:
+                logger.info("  -> Preservando versión previa de torneo %s tras error.", t.clupik_id)
+                fallback = dict(existing_map[t.clupik_id])
+                fallback["updated"] = False
+                result["tournaments"].append(fallback)
 
     output_path.write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     logger.info(
@@ -309,6 +424,10 @@ if __name__ == "__main__":
     group.add_argument("--manager-id", type=int, help="ID del manager/federación; descubre los torneos automáticamente")
     parser.add_argument("--club", type=str, default="SITAS")
     parser.add_argument("--include-all", action="store_true", help="Descarga todos los torneos del manager")
+    parser.add_argument("--edition", type=str, default="CLAUSURA", help="Filtro de edición (CLAUSURA, APERTURA, ALL)")
+    parser.add_argument("--season", type=str, default="2026", help="Temporada (2026, 2027)")
+    parser.add_argument("--quick", action="store_true", help="Modo rápido: omite torneos y fases ya finalizadas")
+    parser.add_argument("--force", action="store_true", help="Fuerza descarga de torneos finalizados")
     parser.add_argument("--output", type=Path, default=Path("sitas_data.json"))
     args = parser.parse_args()
 
@@ -317,4 +436,14 @@ if __name__ == "__main__":
     if args.tournament_id:
         run_by_tournament(client, args.tournament_id, args.club, args.output)
     else:
-        run_by_manager(client, args.manager_id, args.club, args.output, include_all=args.include_all)
+        run_by_manager(
+            client,
+            args.manager_id,
+            args.club,
+            args.output,
+            include_all=args.include_all,
+            edition_filter=None if args.edition.upper() == "ALL" else args.edition,
+            season=args.season,
+            quick=args.quick,
+            force=args.force,
+        )

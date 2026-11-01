@@ -195,11 +195,12 @@ class ClupikClient:
             raise RuntimeError(f"Ranking de torneo {tournament_id} no encontrado (404)")
         return html
 
-    def get_calendar(self, tournament_id: int, phase_id: int) -> str | None:
-        html = self.get(f"/es/tournament/{tournament_id}/calendar/{phase_id}/all", allow_404=True)
-        if html is None:
-            html = self.get(f"/es/tournament/{tournament_id}/calendar/{phase_id}", allow_404=True)
-        return html
+    def get_calendar(self, tournament_id: int, phase_id: int, all_matches: bool = True) -> str | None:
+        if all_matches:
+            html = self.get(f"/es/tournament/{tournament_id}/calendar/{phase_id}/all", allow_404=True)
+            if html is not None:
+                return html
+        return self.get(f"/es/tournament/{tournament_id}/calendar/{phase_id}", allow_404=True)
 
     def get_ranking_export_xls(self, tournament_id: int, phase_id: int) -> bytes | None:
         """

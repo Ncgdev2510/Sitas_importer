@@ -34,9 +34,10 @@ python server.py
 - Modal de lectura interactivo y responsivo para los socios y familias en el portal web.
 
 ### 3. 🔄 Sincronizador One-Click con Clupik
-- Botón interactivo en el CPanel para sincronizar posiciones y fixtures de todos los torneos 2026 (Metropolitanos y Nacionales).
+- **⚡ Sincronización Rápida (Recomendada para fines de semana):** Omite torneos ya finalizados (ej. Ligas Nacionales cerradas) y fases 100% jugadas. Enfocada exclusivamente en torneos en curso y fases activas / eliminatorias, reduciendo los tiempos de descarga de ~3.5 minutos a solo segundos.
+- **🔄 Sincronización Completa:** Re-descarga y re-evalúa todo el catálogo de torneos y fases activas.
 - Resuelve automáticamente los desafíos antibot (Proof-of-Work SHA-256) sin intervención manual.
-- Terminal interactiva en vivo con logs de progreso.
+- Terminal interactiva en vivo con logs de progreso y desglose de partidos actualizados vs históricos preservados.
 
 ---
 
@@ -91,3 +92,13 @@ Script de sincronización automática (sync_youtube_streams.py):
 Permite actualizar los streams del canal en cualquier momento ejecutando:
 bash
 ## python sync_youtube_streams.py
+
+Por Línea de Comandos:
+
+Modo Rápido:
+
+python sync.py --quick
+
+Modo Completo / Forzado:
+
+python sync.py --force

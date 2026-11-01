@@ -456,7 +456,7 @@ def sync_status():
     })
 
 
-def _run_sync_worker(edition: str, season: str) -> None:
+def _run_sync_worker(edition: str, season: str, quick: bool = False, force: bool = False) -> None:
     """Ejecuta sync.py en un subproceso en segundo plano sin bloquear el servidor web ni causar timeouts 504."""
     try:
         cmd = [
@@ -465,6 +465,10 @@ def _run_sync_worker(edition: str, season: str) -> None:
             "--edition", edition,
             "--season", season,
         ]
+        if quick:
+            cmd.append("--quick")
+        if force:
+            cmd.append("--force")
         result = subprocess.run(
             cmd,
             cwd=str(BASE_DIR),
@@ -502,8 +506,14 @@ def trigger_sync():
     if not is_authenticated():
         return jsonify({"error": "No autorizado"}), 401
 
-    edition = request.form.get("edition") or (request.get_json(silent=True) or {}).get("edition", "CLAUSURA")
-    season = request.form.get("season") or (request.get_json(silent=True) or {}).get("season", "2026")
+    payload = request.get_json(silent=True) or {}
+    edition = request.form.get("edition") or payload.get("edition", "CLAUSURA")
+    season = request.form.get("season") or payload.get("season", "2026")
+    raw_quick = request.form.get("quick") if request.form.get("quick") is not None else payload.get("quick", False)
+    raw_force = request.form.get("force") if request.form.get("force") is not None else payload.get("force", False)
+
+    quick = str(raw_quick).lower() in ("true", "1", "yes") if isinstance(raw_quick, (str, int, bool)) else bool(raw_quick)
+    force = str(raw_force).lower() in ("true", "1", "yes") if isinstance(raw_force, (str, int, bool)) else bool(raw_force)
 
     with SYNC_LOCK:
         if SYNC_STATE["running"]:
@@ -521,19 +531,22 @@ def trigger_sync():
         SYNC_STATE["start_time"] = time.time()
         SYNC_STATE["season"] = season
         SYNC_STATE["edition"] = edition
+        SYNC_STATE["quick"] = quick
         SYNC_STATE["last_error"] = None
         SYNC_STATE["last_output"] = None
 
     # Ejecutar en segundo plano en un hilo independiente para respuesta inmediata (202) y 0 timeouts
-    worker_thread = threading.Thread(target=_run_sync_worker, args=(edition, season), daemon=True)
+    worker_thread = threading.Thread(target=_run_sync_worker, args=(edition, season, quick, force), daemon=True)
     worker_thread.start()
 
+    mode_label = "rápida (resultados recientes)" if quick else "completa"
     return jsonify({
         "success": True,
-        "message": f"Sincronización {season} ({edition}) iniciada en segundo plano con éxito.",
+        "message": f"Sincronización {mode_label} {season} ({edition}) iniciada en segundo plano con éxito.",
         "running": True,
         "season": season,
         "edition": edition,
+        "quick": quick,
     }), 202
 
 

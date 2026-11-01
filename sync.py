@@ -37,11 +37,15 @@ def sync_all(
     web_data_path: Path = Path("web/data.json"),
     edition: str | None = "CLAUSURA",
     season: str = "2026",
+    quick: bool = False,
+    force: bool = False,
 ) -> None:
     start_time = time.monotonic()
+    mode_str = "Rápida ⚡ (Torneos en curso y fases activas)" if quick else ("Completa Forzada 🔄" if force else "Inteligente 🚀 (Omite torneos finalizados)")
     print("\n" + "=" * 60)
     print("  INICIANDO SINCRONIZACION CON CLUPIK")
     print(f"  Temporada: {season} | Edición: {edition or 'Todas'}")
+    print(f"  Modo: {mode_str}")
     print("=" * 60)
 
     client = ClupikClient()
@@ -51,7 +55,10 @@ def sync_all(
         logger.info("[1/3] Descargando torneo puntual %s...", tournament_id)
         run_by_tournament(client, tournament_id, club_name, json_path)
     else:
-        logger.info("[1/3] Descargando torneos del manager %s para club %s (Edición: %s)...", manager_id, club_name, edition)
+        logger.info(
+            "[1/3] Descargando torneos del manager %s para club %s (Edición: %s, Modo: %s)...",
+            manager_id, club_name, edition, "Quick" if quick else "Normal",
+        )
         run_by_manager(
             client,
             manager_id,
@@ -60,6 +67,9 @@ def sync_all(
             include_all=False,
             edition_filter=edition,
             season=season,
+            quick=quick,
+            force=force,
+            db_path=db_path,
         )
 
     # Paso 2: Cargar / Actualizar Base de Datos
@@ -76,10 +86,20 @@ def sync_all(
     print("\n" + "=" * 60)
     print("  SINCRONIZACION COMPLETADA EXITOSAMENTE")
     print("=" * 60)
+    print(f"  - Modo de ejecución: {mode_str}")
     print(f"  - Tiempo total: {elapsed} segundos")
-    print(f"  - Torneos en base de datos: {stats.get('tournaments', 0)}")
-    print(f"  - Fases procesadas: {stats.get('phases', 0)}")
-    print(f"  - Partidos actualizados: {stats.get('matches', 0)}")
+    print(
+        f"  - Torneos en base de datos: {stats.get('tournaments', 0)} "
+        f"({stats.get('tournaments_updated', 0)} actualizados, {stats.get('tournaments_skipped', 0)} finalizados preservados)"
+    )
+    print(
+        f"  - Fases procesadas: {stats.get('phases', 0)} "
+        f"({stats.get('phases_updated', 0)} actualizadas, {stats.get('phases_skipped', 0)} completadas preservadas)"
+    )
+    print(f"  - Partidos actualizados con Clupik: {stats.get('matches_updated', stats.get('matches', 0))}")
+    if stats.get("matches_skipped", 0) > 0:
+        print(f"  - Partidos históricos preservados sin cambios: {stats.get('matches_skipped', 0)}")
+    print(f"  - Total de partidos en catálogo: {stats.get('matches', 0)}")
     print(f"  - Archivo web listo: {export_path} ({export_path.stat().st_size} bytes)")
     print("  - Archivos estáticos listos para GitHub Pages en: web/")
     print("  - Dashboard disponible en: http://localhost:8000\n")
@@ -92,6 +112,8 @@ if __name__ == "__main__":
     parser.add_argument("--club", type=str, default="SITAS", help="Nombre del club a filtrar")
     parser.add_argument("--edition", type=str, default="CLAUSURA", help="Filtro de edición (CLAUSURA, APERTURA o ALL)")
     parser.add_argument("--season", type=str, default="2026", help="Temporada (2026, 2027)")
+    parser.add_argument("--quick", action="store_true", help="Modo rápido: omite torneos finalizados y fases 100%% jugadas")
+    parser.add_argument("--force", action="store_true", help="Fuerza re-descarga de torneos finalizados")
     parser.add_argument("--output", type=Path, default=Path("sitas_data.json"), help="Ruta del JSON intermedio")
     args = parser.parse_args()
 
@@ -102,5 +124,7 @@ if __name__ == "__main__":
         edition=None if args.edition.upper() == "ALL" else args.edition,
         season=args.season,
         json_path=args.output,
+        quick=args.quick,
+        force=args.force,
     )
 

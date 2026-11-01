@@ -438,10 +438,14 @@
               </div>
             </div>
             
-            <div class="sync-actions-row">
-              <button id="btn-trigger-sync" class="btn btn-success btn-lg">
+            <div class="sync-actions-row" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+              <button id="btn-trigger-sync-quick" class="btn btn-success btn-lg" title="Modo Rápido: omite torneos finalizados y fases completas. Ideal para actualizar resultados del fin de semana en segundos.">
+                <span class="btn-icon">⚡</span>
+                <span>Sincronización Rápida (Resultados)</span>
+              </button>
+              <button id="btn-trigger-sync" class="btn btn-ghost btn-lg" title="Sincronización completa de todos los torneos y fases.">
                 <span class="btn-icon">🔄</span>
-                <span>Sincronizar Datos Ahora</span>
+                <span>Sincronización Completa</span>
               </button>
               <div id="sync-status-indicator" class="sync-status">
                 <span class="status-dot online"></span>
