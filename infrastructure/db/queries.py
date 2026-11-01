@@ -398,7 +398,9 @@ def seed_default_admin(conn: sqlite3.Connection | None = None) -> None:
     c = conn or get_db_connection()
     row = c.execute("SELECT id FROM users WHERE username = 'admin'").fetchone()
     if not row:
-        pw_hash = generate_password_hash("sitas2026")
+        import os
+        default_pwd = os.environ.get("ADMIN_PASSWORD", "sitas2026")
+        pw_hash = generate_password_hash(default_pwd)
         c.execute(
             "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",
             ("admin", pw_hash, "admin"),

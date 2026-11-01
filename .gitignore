@@ -22,6 +22,12 @@ env/
 Thumbs.db
 desktop.ini
 
+# Database
+*.db
+*.sqlite
+*.sqlite3
+sitas.db
+
 # Logs & temp
 *.log
 *.tmp

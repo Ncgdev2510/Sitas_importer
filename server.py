@@ -57,7 +57,7 @@ UPLOADS_DIR = WEB_DIR / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder=str(WEB_DIR), static_url_path="")
-app.secret_key = os.environ.get("SECRET_KEY", "sitas_cestoball_secret_key_2026")
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024  # 32MB max upload
 ALLOWED_EXTENSIONS_IMG = {"png", "jpg", "jpeg", "webp", "gif"}
 ALLOWED_EXTENSIONS_PDF = {"pdf"}

@@ -29,6 +29,10 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Remove admin panel from public Pages artifact
+        run: |
+          rm -f ./web/admin.html ./web/admin.js ./web/admin.css
+
       - name: Upload static web files
         uses: actions/upload-pages-artifact@v3
         with:
