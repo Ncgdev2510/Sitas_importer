@@ -16,8 +16,15 @@ from __future__ import annotations
 
 import argparse
 import logging
+import sys
 import time
 from pathlib import Path
+
+# Configurar stdout/stderr en UTF-8 para evitar errores de encoding en consolas Windows (cp1252)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 from infrastructure.clupik.client import ClupikClient
 from main import run_by_manager, run_by_tournament

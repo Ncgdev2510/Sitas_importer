@@ -469,11 +469,16 @@ def _run_sync_worker(edition: str, season: str, quick: bool = False, force: bool
             cmd.append("--quick")
         if force:
             cmd.append("--force")
+        sub_env = dict(os.environ)
+        sub_env["PYTHONIOENCODING"] = "utf-8"
         result = subprocess.run(
             cmd,
             cwd=str(BASE_DIR),
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
+            env=sub_env,
             timeout=1800,  # 30 minutos de tiempo seguro para sincronizaciones completas
         )
         with SYNC_LOCK:
