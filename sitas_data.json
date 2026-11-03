@@ -6500,11 +6500,11 @@
                       {
                         "match_id": 145706193,
                         "game_number": 1,
-                        "home_score": null,
-                        "away_score": null,
+                        "home_score": 38,
+                        "away_score": 88,
                         "home_winner": false,
-                        "away_winner": false,
-                        "played": false
+                        "away_winner": true,
+                        "played": true
                       },
                       {
                         "match_id": 145706240,
@@ -6525,9 +6525,9 @@
                         "played": false
                       }
                     ],
-                    "home_score": null,
-                    "away_score": null,
-                    "played": false,
+                    "home_score": 0,
+                    "away_score": 1,
+                    "played": true,
                     "is_finished": false,
                     "scheduled_at": null,
                     "venue": null
@@ -6642,14 +6642,14 @@
                 "clupik_id": 15878717,
                 "name": "VELEZ B"
               },
-              "played": 2,
-              "won": 0,
+              "played": 3,
+              "won": 1,
               "drawn": 0,
               "lost": 2,
-              "points": 2,
-              "goals_for": 94,
-              "goals_against": 140,
-              "goal_diff": -46
+              "points": 4,
+              "goals_for": 182,
+              "goals_against": 178,
+              "goal_diff": 4
             },
             {
               "tournament_id": 1339117,
@@ -6660,14 +6660,14 @@
                 "clupik_id": 15878715,
                 "name": "CIUDAD B"
               },
-              "played": 2,
+              "played": 3,
               "won": 0,
               "drawn": 0,
-              "lost": 2,
-              "points": 2,
-              "goals_for": 62,
-              "goals_against": 159,
-              "goal_diff": -97
+              "lost": 3,
+              "points": 3,
+              "goals_for": 100,
+              "goals_against": 247,
+              "goal_diff": -147
             }
           ],
           "club_standing": null,
@@ -6867,10 +6867,10 @@
                 "clupik_id": 15878717,
                 "name": "VELEZ B"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 38,
+              "away_score": 88,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145706240,
@@ -25337,7 +25337,7 @@
               "played": true
             }
           ],
-          "updated": true
+          "updated": false
         }
       ],
       "updated": true
