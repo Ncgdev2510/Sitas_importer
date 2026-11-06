@@ -1731,6 +1731,7 @@ async function loadStreamsSection() {
   const currentTitle = document.getElementById('stream-current-title');
   const directLink = document.getElementById('stream-yt-direct-link');
   const categoryPill = document.getElementById('stream-category-pill');
+  const statusPill = document.getElementById('stream-status-pill');
 
   if (!iframe && !recentList) return;
 
@@ -1739,31 +1740,37 @@ async function loadStreamsSection() {
     streams_url: "https://www.youtube.com/@sitascesto/streams",
     channel_name: "Cestoball SITAS",
     handle: "@sitascesto",
-    latest_video_id: "oJhDWHlyZvs",
+    latest_video_id: "W7RW6GS4KlM",
     videos: [
       {
-        id: "oJhDWHlyZvs",
-        title: "Cestoball SITAS — Última Transmisión en Vivo",
+        id: "W7RW6GS4KlM",
+        title: "Cestoball SITAS está en vivo",
         badge: "MÁS RECIENTE",
-        category: "Transmisión en Vivo"
+        category: "Transmisión Oficial"
       },
       {
-        id: "6nCQ7jRHlu4",
-        title: "Cuartos de Final Sub17 Clausura 2026 Sitas vs Hacoaj",
-        badge: "PLAYOFF SUB-17",
-        category: "Playoffs Clausura"
+        id: "3jxs-_BKc_U",
+        title: "Cestoball | Sitas (1) vs Velez (0) | Sub 20 | Semifinal vuelta",
+        badge: "PLAYOFF / DEFINICIÓN",
+        category: "Categoría Sub-20"
+      },
+      {
+        id: "oJhDWHlyZvs",
+        title: "Cestoball | Sitas (0) vs Velez (1) | Maxi 30 | Semifinal vuelta Copa de Plata Torneo Clausura 2026",
+        badge: "PLAYOFF / DEFINICIÓN",
+        category: "Transmisión Oficial"
       },
       {
         id: "y154fKgzTfo",
-        title: "Cestoball SITAS — Transmisión de Partido",
+        title: "Cestoball | Sitas B vs Ciudad B | Sub 20 | Puesto 9° al 11° | Torneo Clausura 2026",
         badge: "TRANSMISIÓN",
-        category: "Cestoball SITAS"
+        category: "Categoría Sub-20"
       },
       {
-        id: "amfaFc9nE3A",
-        title: "Cestoball SITAS — Transmisión en Directo",
-        badge: "TRANSMISIÓN",
-        category: "Cestoball SITAS"
+        id: "6nCQ7jRHlu4",
+        title: "Cestoball | Sitas vs Hacoaj | Sub 17 | Cuartos de Final Torneo Clausura 2026",
+        badge: "PLAYOFF / DEFINICIÓN",
+        category: "Categoría Sub-17"
       }
     ]
   };
@@ -1780,23 +1787,37 @@ async function loadStreamsSection() {
     // Fallback por defecto si no está disponible streams.json
   }
 
-  function selectStream(video, btnEl) {
+  function selectStream(video, btnEl, autoplay = false) {
+    if (!video || !video.id) return;
+
     if (iframe) {
-      iframe.src = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`;
+      const targetSrc = `https://www.youtube.com/embed/${video.id}?rel=0${autoplay ? '&autoplay=1' : ''}`;
+      const currentSrc = iframe.getAttribute('src') || iframe.src || '';
+      if (autoplay || !currentSrc.includes(video.id)) {
+        iframe.src = targetSrc;
+      }
+      iframe.title = `${video.title || 'Transmisión en vivo'} - Cestoball SITAS`;
     }
     if (currentTitle) {
-      currentTitle.textContent = video.title;
+      currentTitle.textContent = video.title || 'Cestoball SITAS — Transmisión en Vivo';
     }
     if (directLink) {
       directLink.href = `https://www.youtube.com/watch?v=${video.id}`;
     }
     if (categoryPill) {
-      categoryPill.textContent = video.category || video.badge || 'Transmisión Oficial';
+      categoryPill.textContent = video.category || 'Transmisión Oficial';
+    }
+    if (statusPill && video.badge) {
+      statusPill.innerHTML = `<i data-lucide="radio"></i> ${escapeHtml(video.badge)}`;
     }
 
     if (recentList) {
       recentList.querySelectorAll('.stream-item-btn').forEach(b => b.classList.remove('active-stream'));
       if (btnEl) btnEl.classList.add('active-stream');
+    }
+
+    if (window.lucide) {
+      window.lucide.createIcons();
     }
   }
 
@@ -1824,9 +1845,15 @@ async function loadStreamsSection() {
     const buttons = recentList.querySelectorAll('.stream-item-btn');
     buttons.forEach((btn, index) => {
       btn.addEventListener('click', () => {
-        selectStream(streamData.videos[index], btn);
+        selectStream(streamData.videos[index], btn, true);
       });
     });
+
+    // Cargar automáticamente en el reproductor principal el video más reciente (sin autoplay forzado)
+    const firstVideo = streamData.videos[0];
+    if (firstVideo) {
+      selectStream(firstVideo, buttons[0], false);
+    }
   }
 
   if (window.lucide) {

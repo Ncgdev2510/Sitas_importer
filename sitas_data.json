@@ -4738,7 +4738,7 @@
               "played": true
             }
           ],
-          "updated": false
+          "updated": true
         },
         {
           "phase": {
@@ -6560,11 +6560,11 @@
                       {
                         "match_id": 145706192,
                         "game_number": 1,
-                        "home_score": null,
-                        "away_score": null,
-                        "home_winner": false,
+                        "home_score": 86,
+                        "away_score": 58,
+                        "home_winner": true,
                         "away_winner": false,
-                        "played": false
+                        "played": true
                       },
                       {
                         "match_id": 145706238,
@@ -6585,9 +6585,9 @@
                         "played": false
                       }
                     ],
-                    "home_score": null,
-                    "away_score": null,
-                    "played": false,
+                    "home_score": 1,
+                    "away_score": 0,
+                    "played": true,
                     "is_finished": false,
                     "scheduled_at": null,
                     "venue": null
@@ -6606,14 +6606,14 @@
                 "clupik_id": 15878720,
                 "name": "SAN MARTIN"
               },
-              "played": 2,
-              "won": 2,
+              "played": 3,
+              "won": 3,
               "drawn": 0,
               "lost": 0,
-              "points": 4,
-              "goals_for": 159,
-              "goals_against": 62,
-              "goal_diff": 97
+              "points": 6,
+              "goals_for": 245,
+              "goals_against": 120,
+              "goal_diff": 125
             },
             {
               "tournament_id": 1339117,
@@ -6624,14 +6624,14 @@
                 "clupik_id": 15878718,
                 "name": "LANUS"
               },
-              "played": 2,
+              "played": 3,
               "won": 2,
               "drawn": 0,
-              "lost": 0,
-              "points": 4,
-              "goals_for": 140,
-              "goals_against": 94,
-              "goal_diff": 46
+              "lost": 1,
+              "points": 5,
+              "goals_for": 198,
+              "goals_against": 180,
+              "goal_diff": 18
             },
             {
               "tournament_id": 1339117,
@@ -6807,10 +6807,10 @@
                 "clupik_id": 15878718,
                 "name": "LANUS"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 86,
+              "away_score": 58,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145706238,
@@ -10105,7 +10105,7 @@
             }
           ],
           "club_matches": [],
-          "updated": false
+          "updated": true
         }
       ],
       "updated": true
@@ -11909,7 +11909,7 @@
               "played": true
             }
           ],
-          "updated": false
+          "updated": true
         },
         {
           "phase": {
@@ -15177,7 +15177,7 @@
               "played": true
             }
           ],
-          "updated": false
+          "updated": true
         },
         {
           "phase": {
@@ -24266,7 +24266,7 @@
               "played": true
             }
           ],
-          "updated": false
+          "updated": true
         },
         {
           "phase": {
@@ -25337,7 +25337,7 @@
               "played": true
             }
           ],
-          "updated": false
+          "updated": true
         }
       ],
       "updated": true

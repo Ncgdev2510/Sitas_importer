@@ -18,6 +18,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 WEB_DIR = BASE_DIR / "web"
 STREAMS_JSON_PATH = WEB_DIR / "streams.json"
+INDEX_HTML_PATH = WEB_DIR / "index.html"
 
 CHANNEL_HANDLE = "@sitascesto"
 CHANNEL_URL = f"https://www.youtube.com/{CHANNEL_HANDLE}"
@@ -91,6 +92,94 @@ def fetch_latest_streams(max_videos: int = 6) -> list[dict]:
     return videos_data
 
 
+def update_index_html(latest_video: dict, html_path: Path | None = None) -> bool:
+    """
+    Actualiza el reproductor embebido principal de index.html con el partido más reciente.
+    """
+    target_path = html_path or INDEX_HTML_PATH
+    if not target_path.exists() or not latest_video:
+        return False
+
+    try:
+        content = target_path.read_text(encoding="utf-8")
+        vid_id = latest_video.get("id", "")
+        title = latest_video.get("title", "Cestoball SITAS — Transmisión en Vivo")
+        category = latest_video.get("category", "Transmisión Oficial")
+        badge = latest_video.get("badge", "MÁS RECIENTE")
+
+        if not vid_id:
+            return False
+
+        # 1. Actualizar iframe src y title
+        def _replace_iframe(match: re.Match) -> str:
+            tag = match.group(0)
+            tag = re.sub(
+                r'src="https://www\.youtube\.com/embed/[^"?]+(?:\?[^"]*)?"',
+                f'src="https://www.youtube.com/embed/{vid_id}?rel=0"',
+                tag,
+            )
+            tag = re.sub(
+                r'title="[^"]*"',
+                f'title="{title} - Cestoball SITAS"',
+                tag,
+            )
+            return tag
+
+        content = re.sub(
+            r'<iframe\b[^>]*?id="stream-video-iframe"[^>]*?>',
+            _replace_iframe,
+            content,
+            flags=re.IGNORECASE,
+        )
+
+        # 2. Actualizar título h3
+        content = re.sub(
+            r'(<h3\b[^>]*?id="stream-current-title"[^>]*?>)[^<]*(</h3>)',
+            rf'\g<1>{title}\g<2>',
+            content,
+            flags=re.IGNORECASE,
+        )
+
+        # 3. Actualizar enlace directo a YouTube
+        def _replace_link(match: re.Match) -> str:
+            tag = match.group(0)
+            return re.sub(
+                r'href="https://www\.youtube\.com/watch\?v=[^"&]+"',
+                f'href="https://www.youtube.com/watch?v={vid_id}"',
+                tag,
+            )
+
+        content = re.sub(
+            r'<a\b[^>]*?id="stream-yt-direct-link"[^>]*?>',
+            _replace_link,
+            content,
+            flags=re.IGNORECASE,
+        )
+
+        # 4. Actualizar píldora de categoría
+        content = re.sub(
+            r'(<span\b[^>]*?id="stream-category-pill"[^>]*?>)[^<]*(</span>)',
+            rf'\g<1>{category}\g<2>',
+            content,
+            flags=re.IGNORECASE,
+        )
+
+        # 5. Actualizar píldora de estado (badge)
+        content = re.sub(
+            r'(<span\b[^>]*?id="stream-status-pill"[^>]*?>\s*<i[^>]*?></i>\s*)[^<]*(</span>)',
+            rf'\g<1>{badge}\g<2>',
+            content,
+            flags=re.IGNORECASE,
+        )
+
+        target_path.write_text(content, encoding="utf-8")
+        print(f"[OK] {target_path.name} sincronizado con el último partido: {title} ({vid_id})")
+        return True
+    except Exception as e:
+        print(f"[!] No se pudo actualizar {target_path.name}: {e}")
+        return False
+
+
 def update_streams_file() -> None:
     print(f"[*] Consultando transmisiones en {STREAMS_URL}...")
     try:
@@ -116,6 +205,9 @@ def update_streams_file() -> None:
         print(f"[OK] {STREAMS_JSON_PATH.name} actualizado con {len(videos)} transmisiones:")
         for idx, v in enumerate(videos, 1):
             print(f"     {idx}. [{v['id']}] {v['title']} ({v['badge']})")
+
+        # Sincronizar también el reproductor principal en index.html
+        update_index_html(videos[0])
 
     except Exception as e:
         print(f"[!] Error al sincronizar transmisiones: {e}")

@@ -3,8 +3,14 @@
   "streams_url": "https://www.youtube.com/@sitascesto/streams",
   "channel_name": "Cestoball SITAS",
   "handle": "@sitascesto",
-  "latest_video_id": "3jxs-_BKc_U",
+  "latest_video_id": "W7RW6GS4KlM",
   "videos": [
+    {
+      "id": "W7RW6GS4KlM",
+      "title": "Cestoball SITAS está en vivo",
+      "badge": "MÁS RECIENTE",
+      "category": "Transmisión Oficial"
+    },
     {
       "id": "3jxs-_BKc_U",
       "title": "Cestoball | Sitas (1) vs Velez (0) | Sub 20 | Semifinal vuelta",
@@ -28,12 +34,6 @@
       "title": "Cestoball | Sitas vs Hacoaj | Sub 17 | Cuartos de Final Torneo Clausura 2026",
       "badge": "PLAYOFF / DEFINICIÓN",
       "category": "Categoría Sub-17"
-    },
-    {
-      "id": "0EZzgUUjgOU",
-      "title": "Cestoball | Sitas vs Ballester | Sub 20 | Cuartos vuelta",
-      "badge": "PLAYOFF / DEFINICIÓN",
-      "category": "Categoría Sub-20"
     }
   ]
 }
