@@ -3,37 +3,37 @@
   "streams_url": "https://www.youtube.com/@sitascesto/streams",
   "channel_name": "Cestoball SITAS",
   "handle": "@sitascesto",
-  "latest_video_id": "W7RW6GS4KlM",
+  "latest_video_id": "peHh2vTuj3E",
   "videos": [
     {
-      "id": "W7RW6GS4KlM",
-      "title": "Cestoball SITAS está en vivo",
+      "id": "peHh2vTuj3E",
+      "title": "Cestoball SITAS — Transmisión de Partido",
       "badge": "MÁS RECIENTE",
       "category": "Transmisión Oficial"
     },
     {
-      "id": "3jxs-_BKc_U",
-      "title": "Cestoball | Sitas (1) vs Velez (0) | Sub 20 | Semifinal vuelta",
-      "badge": "PLAYOFF / DEFINICIÓN",
-      "category": "Categoría Sub-20"
-    },
-    {
-      "id": "oJhDWHlyZvs",
-      "title": "Cestoball | Sitas (0) vs Velez (1) | Maxi 30 | Semifinal vuelta Copa de Plata Torneo Clausura 2026",
-      "badge": "PLAYOFF / DEFINICIÓN",
+      "id": "6X4s1S0Vo-A",
+      "title": "Cestoball SITAS — Transmisión de Partido",
+      "badge": "TRANSMISIÓN",
       "category": "Transmisión Oficial"
     },
     {
-      "id": "y154fKgzTfo",
-      "title": "Cestoball | Sitas B vs Ciudad B | Sub 20 | Puesto 9° al 11° | Torneo Clausura 2026",
-      "badge": "TRANSMISIÓN",
-      "category": "Categoría Sub-20"
-    },
-    {
-      "id": "6nCQ7jRHlu4",
-      "title": "Cestoball | Sitas vs Hacoaj | Sub 17 | Cuartos de Final Torneo Clausura 2026",
+      "id": "uwyoRDaSgrw",
+      "title": "Copa oro Clausura 2026 Semifinales Sub17:  SITAS va CSVB",
       "badge": "PLAYOFF / DEFINICIÓN",
       "category": "Categoría Sub-17"
+    },
+    {
+      "id": "a1-PR6ItPq4",
+      "title": "Cestoball SITAS está en vivo",
+      "badge": "TRANSMISIÓN",
+      "category": "Transmisión Oficial"
+    },
+    {
+      "id": "W7RW6GS4KlM",
+      "title": "Cestoball SITAS está en vivo",
+      "badge": "TRANSMISIÓN",
+      "category": "Transmisión Oficial"
     }
   ]
 }
