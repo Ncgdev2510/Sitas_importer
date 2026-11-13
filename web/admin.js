@@ -256,6 +256,9 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedPdfFile = null;
         pdfFileInput.value = "";
         selectedFileInfo.style.display = "none";
+      } else if (res.status === 401) {
+        showToast("Tu sesión expiró. Por favor volvé a iniciar sesión.", "warning");
+        showLoginScreen();
       } else {
         showToast(data.error || "Error al procesar el archivo PDF", "error");
       }
