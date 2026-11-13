@@ -276,18 +276,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!str) return '';
     if (/^\d+$/.test(str)) return `Fecha ${str}`;
     return str
-      .replace(/\bIida\b/gi, 'Ida')
-      .replace(/\blIda\b/g, 'Ida')
-      .replace(/Semifial\b/gi, 'Semifinal')
+      .replace(/\b(Cope|Cap[ao])\b/gi, 'Copa')
+      .replace(/\bCopa\s+(?:de\s+)?(Cro|Ono|0ro|Qro|Dra|Dro|Ore|Opo|Oro)\b/gi, 'Copa Oro')
+      .replace(/\b(Cro|Ono|0ro|Qro)\b/gi, 'Oro')
+      .replace(/\bCopa\s+de\s+(Oro|Plata|Bronce)\b/gi, (_, p1) => `Copa ${p1.charAt(0).toUpperCase() + p1.slice(1).toLowerCase()}`)
+      .replace(/\b(Pueslo|Punsto|Pucsto|Puetso|Puosto)\b/gi, 'Puesto')
+      .replace(/\b(Iida|lIda|Ilda|1da|lda|ida)\b/gi, 'Ida')
+      .replace(/\b(Fina1|Flna1|Flnal)\b/gi, 'Final')
+      .replace(/\b(Semifial|Seminal)\b/gi, 'Semifinal')
       .replace(/\bAmistos0\b/gi, 'Amistoso')
-      .replace(/50\s+Puesto/gi, '5° Puesto')
-      .replace(/5[09′'*°º]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
+      .replace(/(?<!\d)([2-9])[029#\+′'*°º"ª]?\s*(?=Puesto|Partido)/gi, '$1° ')
+      .replace(/5[09′'*°ºe]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
       .replace(/5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto/gi, '5° al 9° Puesto')
-      .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+10[9f°'*]?/gi, 'Puesto del 5° al 10°')
-      .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+9[9°'*]?/gi, 'Puesto del 5° al 9°')
-      .replace(/Puesto\s+del\s+9['*]\s+al\s+11['*]?/gi, 'Puesto del 9° al 11°')
-      .replace(/3[9#]\s*Partido/gi, '3° Partido')
-      .replace(/-(?=[A-Za-z])/g, '- ')
+      .replace(/Puesto\s+del\s+5[09′'*°º]?\s*a[l1]\s*10[9f°'*]?/gi, 'Puesto del 5° al 10°')
+      .replace(/Puesto\s+del\s+5[09′'*°º]?\s*a[l1]\s*9[9°'*"]?/gi, 'Puesto del 5° al 9°')
+      .replace(/Puesto\s+del\s+9['*°º]?\s*a[l1]\s*11['*°º]?/gi, 'Puesto del 9° al 11°')
+      .replace(/\s*-\s*/g, ' - ')
+      .replace(/\b(Copa\s+(?:Oro|Plata|Bronce))\s+(?!-)(Final|Semifinal|Cuartos|\d+°)/gi, '$1 - $2')
       .replace(/\s+/g, ' ')
       .trim();
   }
@@ -799,6 +804,10 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast(data.message || `Sincronización (${edition}) iniciada en segundo plano`, "info");
         syncOutput.textContent += `[SISTEMA]: Tarea en segundo plano iniciada correctamente.\nTemporada: ${season} | Edición: ${edition} | Modo: ${modeLabel}\nMonitoreando avance con Clupik...\n`;
         startStatusPolling();
+      } else if (res.status === 401) {
+        stopSyncUI(false);
+        showToast("Tu sesión expiró tras el reinicio del servidor. Volvé a iniciar sesión.", "warning");
+        showLoginScreen();
       } else if (res.status === 409) {
         showToast(data.error || "Ya hay una sincronización en curso.", "warning");
         startStatusPolling();

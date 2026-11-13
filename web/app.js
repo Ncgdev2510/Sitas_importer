@@ -137,6 +137,10 @@ function getClubLogoUrl(clubName) {
     return 'assets/clubs/sitas.png';
   }
   const slug = clubName.toLowerCase()
+    .replace(/\b(cludad|cudad|cuidad)\b/g, 'ciudad')
+    .replace(/\b(hacoa\]|hacoal|hacoai)\b/g, 'hacoaj')
+    .replace(/\b(ballesier|ballster)\b/g, 'ballester')
+    .replace(/\b(hernindez|hemandez)\b/g, 'hernandez')
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]/g, '');
   return `assets/clubs/${slug}.png`;
@@ -1253,22 +1257,38 @@ function formatRound(r) {
 
   // Normalización y corrección de OCR en instancias
   str = str
-    .replace(/\bIida\b/gi, 'Ida')
-    .replace(/\blIda\b/g, 'Ida')
-    .replace(/Semifial\b/gi, 'Semifinal')
+    .replace(/\b(Cope|Cap[ao])\b/gi, 'Copa')
+    .replace(/\bCopa\s+(?:de\s+)?(Cro|Ono|0ro|Qro|Dra|Dro|Ore|Opo|Oro)\b/gi, 'Copa Oro')
+    .replace(/\b(Cro|Ono|0ro|Qro)\b/gi, 'Oro')
+    .replace(/\bCopa\s+de\s+(Oro|Plata|Bronce)\b/gi, (_, p1) => `Copa ${p1.charAt(0).toUpperCase() + p1.slice(1).toLowerCase()}`)
+    .replace(/\b(Pueslo|Punsto|Pucsto|Puetso|Puosto)\b/gi, 'Puesto')
+    .replace(/\b(Iida|lIda|Ilda|1da|lda|ida)\b/gi, 'Ida')
+    .replace(/\b(Fina1|Flna1|Flnal)\b/gi, 'Final')
+    .replace(/\b(Semifial|Seminal)\b/gi, 'Semifinal')
     .replace(/\bAmistos0\b/gi, 'Amistoso')
-    .replace(/50\s+Puesto/gi, '5° Puesto')
-    .replace(/5[09′'*°º]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
+    .replace(/(?<!\d)([2-9])[029#\+′'*°º"ª]?\s*(?=Puesto|Partido)/gi, '$1° ')
+    .replace(/5[09′'*°ºe]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
     .replace(/5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto/gi, '5° al 9° Puesto')
-    .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+10[9f°'*]?/gi, 'Puesto del 5° al 10°')
-    .replace(/Puesto\s+del\s+5[09′'*°º]?\s+al\s+9[9°'*]?/gi, 'Puesto del 5° al 9°')
-    .replace(/Puesto\s+del\s+9['*]\s+al\s+11['*]?/gi, 'Puesto del 9° al 11°')
-    .replace(/3[9#]\s*Partido/gi, '3° Partido')
-    .replace(/-(?=[A-Za-z])/g, '- ')
+    .replace(/Puesto\s+del\s+5[09′'*°º]?\s*a[l1]\s*10[9f°'*]?/gi, 'Puesto del 5° al 10°')
+    .replace(/Puesto\s+del\s+5[09′'*°º]?\s*a[l1]\s*9[9°'*"]?/gi, 'Puesto del 5° al 9°')
+    .replace(/Puesto\s+del\s+9['*°º]?\s*a[l1]\s*11['*°º]?/gi, 'Puesto del 9° al 11°')
+    .replace(/\s*-\s*/g, ' - ')
+    .replace(/\b(Copa\s+(?:Oro|Plata|Bronce))\s+(?!-)(Final|Semifinal|Cuartos|\d+°)/gi, '$1 - $2')
     .replace(/\s+/g, ' ')
     .trim();
 
   return str;
+}
+
+function formatClubDisplayName(name) {
+  if (!name) return '';
+  return String(name)
+    .replace(/\b(Cludad|CIudad|Cudad|Cuidad)\b/gi, 'Ciudad')
+    .replace(/\b(Hacoa\]|Hacoal|Hacoai)\b/gi, 'Hacoaj')
+    .replace(/\b(Ballesier|Ballster)\b/gi, 'Ballester')
+    .replace(/\b(Hernindez|Hemandez)\b/gi, 'Hernandez')
+    .replace(/\b5ocial\s+Parque\b/gi, 'Social Parque')
+    .trim();
 }
 
 function getStageBadgeHtml(roundNum) {
@@ -1367,11 +1387,13 @@ async function loadUpcomingSchedule() {
       const venueStr = m.venue ? m.venue : (isHome ? 'SITAS' : m.home_team);
       const stageBadgeHtml = getStageBadgeHtml(m.round_num);
 
+      const homeDisplay = formatClubDisplayName(m.home_team);
+      const awayDisplay = formatClubDisplayName(m.away_team);
       const safeCat = escapeHtml(m.category);
       const safeDate = escapeHtml(m.match_date);
       const safeTime = escapeHtml(m.time);
-      const safeHome = escapeHtml(m.home_team);
-      const safeAway = escapeHtml(m.away_team);
+      const safeHome = escapeHtml(homeDisplay);
+      const safeAway = escapeHtml(awayDisplay);
       const safeVenue = escapeHtml(venueStr);
 
       return `
@@ -1389,11 +1411,11 @@ async function loadUpcomingSchedule() {
 
           <div class="upcoming-teams">
             <div class="upcoming-team-line ${isHome ? 'sitas' : ''}">
-              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(m.home_team)}${safeHome}</span>
+              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(homeDisplay)}${safeHome}</span>
               ${isHome ? '<span class="tag tag-category" style="font-size:0.65rem;">LOCAL</span>' : ''}
             </div>
             <div class="upcoming-team-line ${isAway ? 'sitas' : ''}">
-              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(m.away_team)}${safeAway}</span>
+              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(awayDisplay)}${safeAway}</span>
               ${isAway ? '<span class="tag tag-category" style="font-size:0.65rem;">VISITANTE</span>' : ''}
             </div>
           </div>

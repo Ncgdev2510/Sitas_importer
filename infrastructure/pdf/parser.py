@@ -21,24 +21,35 @@ except Exception:
     _ocr_engine = None
 
 KNOWN_CATEGORIES = [
-    "SUB10", "SUB 10", "SUB12", "SUB 12", "SUB14 FLEX", "SUB 14 FLEX", "SUB14", "SUB 14",
-    "SUB17 FLEX", "SUB 17 FLEX", "SUB17", "SUB 17", "SUB20", "SUB 20",
-    "PRIMERA A", "PRIMERA B", "PRIMERAA", "PRIMERAB", "PRIMERA MASCULINO", "MASCULINO", "MASCUUNO", "MASCULUINO",
-    "MAXI 30", "MAXI30", "MAXI 35", "MAXI35", "MAXI 40", "MAXI40"
+    "SUB10", "SUB 10", "5UB10", "5UB 10",
+    "SUB12", "SUB 12", "5UB12", "5UB 12",
+    "SUB14 FLEX", "SUB 14 FLEX", "5UB14 FLEX", "5UB 14 FLEX",
+    "SUB14", "SUB 14", "5UB14", "5UB 14",
+    "SUB17 FLEX", "SUB 17 FLEX", "5UB17 FLEX", "5UB 17 FLEX",
+    "SUB17", "SUB 17", "5UB17", "5UB 17",
+    "SUB20", "SUB 20", "5UB20", "5UB 20",
+    "PRIMERA A", "PRIMERA B", "PRIMERAA", "PRIMERAB",
+    "PRIMERA MASCULINO", "MASCULINO", "MASCUUNO", "MASCULUINO",
+    "MAXI 30", "MAXI30", "MAX1 30", "MAX130",
+    "MAXI 35", "MAXI35", "MAX1 35", "MAX135",
+    "MAXI 40", "MAXI40", "MAX1 40", "MAX140",
 ]
 
 OBSERVATION_KEYWORDS = [
-    "por", "si gana", "gana", "bonaerenses", "reprogramado", "postergado", "cede",
-    "cancha", "local", "sede", "presenta", "no se presenta", "jugadoras", "judío",
-    "judio", "dia", "perdon", "torneo", "partido", "semana", "tienen que", "aviso", "susp",
+    "por", "si gana", "si ana", "gana", "bonaerenses", "reprogramado", "reprograma", "reprcgrama",
+    "postergado", "cede", "cancha", "local", "sede", "presenta", "no se presenta", "jugadoras",
+    "judío", "judio", "dia", "perdon", "torneo", "partido", "semana", "tienen que", "aviso", "susp",
     "invertimos", "cambiamos", "horarios", "disponibilidad", "esperar", "lleguen", "localia"
 ]
 
 
 def normalize_category(cat: str) -> str:
     cat = cat.upper().strip()
+    cat = re.sub(r"\b5UB\b", "SUB", cat)
+    cat = re.sub(r"\b5UB(\d+)", r"SUB \1", cat)
     cat = re.sub(r"\bSUB(\d+)", r"SUB \1", cat)
-    cat = re.sub(r"\bMAXI(\d+)", r"MAXI \1", cat)
+    cat = re.sub(r"\bMAX[I1L](\d+)", r"MAXI \1", cat)
+    cat = re.sub(r"\bMAX[I1L]\s+(\d+)", r"MAXI \1", cat)
     if "MASCUUNO" in cat or "MASCULUINO" in cat or cat == "MASCULINO":
         cat = "PRIMERA MASCULINO"
     elif cat == "PRIMERAA":
@@ -51,57 +62,140 @@ def normalize_category(cat: str) -> str:
 
 def normalize_team_name(name: str) -> str:
     name = name.strip()
-    # Corrección de errores OCR típicos
+    if not name:
+        return ""
+
+    # Corrección de errores OCR típicos para SITAS
     name = re.sub(r"\bSITA5\b", "SITAS", name, flags=re.IGNORECASE)
     name = re.sub(r"\bSITAS\s+8\b", "SITAS B", name, flags=re.IGNORECASE)
     name = re.sub(r"\bseS\b", "SITAS", name)
     name = re.sub(r"^sitas$", "SITAS", name, flags=re.IGNORECASE)
-    name = re.sub(r"^sitas\s+b$", "SITAS B", name, flags=re.IGNORECASE)
+    name = re.sub(r"^sitas\s+([a-z])$", lambda m: f"SITAS {m.group(1).upper()}", name, flags=re.IGNORECASE)
     name = re.sub(r"^sitas\s+flex$", "SITAS FLEX", name, flags=re.IGNORECASE)
 
+    # Typo Ciudad (Cludad, CIudad, Cudad, Cuidad, CIUDAD)
+    name = re.sub(r"\b(Cludad|CIudad|Cudad|Cuidad|Ciudsd|Ciudod|CIUDAD|ciudad)\b", "Ciudad", name, flags=re.IGNORECASE)
+    name = re.sub(r"^Ciudad\s+([a-z])$", lambda m: f"Ciudad {m.group(1).upper()}", name, flags=re.IGNORECASE)
+
     # Typo Velez
-    name = re.sub(r"^(zapan|za|Veiez|Vele2)$", "Velez", name, flags=re.IGNORECASE)
+    name = re.sub(r"^(zapan|za|Veiez|Vele2|V[eé]lez)$", "Velez", name, flags=re.IGNORECASE)
     name = re.sub(r"^g\s*zaa$", "Velez B", name, flags=re.IGNORECASE)
-    name = re.sub(r"^velez$", "Velez", name, flags=re.IGNORECASE)
-    name = re.sub(r"^velez\s+b$", "Velez B", name, flags=re.IGNORECASE)
+    name = re.sub(r"^v[eé]lez\s+([a-z])$", lambda m: f"Velez {m.group(1).upper()}", name, flags=re.IGNORECASE)
 
     # Typo Ballester
-    name = re.sub(r"^(Ballster|Bslester|Bellester|Blleter|BALLESTER)$", "Ballester", name, flags=re.IGNORECASE)
+    name = re.sub(r"\b(Ballesier|Ballster|Bslester|Bellester|Blleter|Balester|BALLESTER)\b", "Ballester", name, flags=re.IGNORECASE)
 
     # Typo Hernandez
-    name = re.sub(r"^(Hemandez|Hermindez)$", "Hernandez", name, flags=re.IGNORECASE)
+    name = re.sub(r"\b(Hernindez|Hemandez|Hermindez|Hern[aá]ndez|HERNANDEZ)\b", "Hernandez", name, flags=re.IGNORECASE)
 
     # Typo Social Parque
-    name = re.sub(r"^(Social\s+Prque|Socisl\s+Parque)$", "Social Parque", name, flags=re.IGNORECASE)
+    name = re.sub(r"\b(5ocial\s+Parque|Social\s+Prque|Socisl\s+Parque|SOCIAL\s+PARQUE)\b", "Social Parque", name, flags=re.IGNORECASE)
 
-    # Typo Hacoaj
-    name = re.sub(r"^Hecoaj$", "Hacoaj", name, flags=re.IGNORECASE)
+    # Typo Hacoaj (Hacoa], Hacoal, Hacoai, Hecoaj, HACOAJ, HACOAI)
+    name = re.sub(r"(?i)\b(?:Hacoa[\]jli1I]?|Hecoaj|HACOAJ|HACOAI|HACOAL)(?=\s|$)", "Hacoaj", name)
+    name = re.sub(r"^Hacoaj\s+([a-z])$", lambda m: f"Hacoaj {m.group(1).upper()}", name, flags=re.IGNORECASE)
+
+    # Typo Avellaneda
+    name = re.sub(r"\b(AVELLANEDA|Avellaneds|Avelaneda)\b", "Avellaneda", name, flags=re.IGNORECASE)
 
     # Typo GEVP
     name = re.sub(r"^dA39$", "GEVP", name, flags=re.IGNORECASE)
+    name = re.sub(r"^gevp$", "GEVP", name, flags=re.IGNORECASE)
+    name = re.sub(r"^gevp\s+([a-z])$", lambda m: f"GEVP {m.group(1).upper()}", name, flags=re.IGNORECASE)
 
     name = re.sub(r"3[\*\"#']\s*vs\s*6[\*\"#']", "3° vs 6°", name, flags=re.IGNORECASE)
     name = re.sub(r"3[\*\"#']\s*al\s*6[\*\"#']", "3° al 6°", name, flags=re.IGNORECASE)
-    return name
+    return re.sub(r"\s+", " ", name).strip()
 
 
 def normalize_venue_name(name: str) -> str:
     name = name.strip()
     if re.search(r"^(SITAS|SITA5|Sitas|sitas)$", name, flags=re.IGNORECASE):
         return "SITAS"
-    if re.search(r"^(VELEZ|Velez|zapan|za)$", name, flags=re.IGNORECASE):
+    if re.search(r"^(VELEZ|Velez|Veiez|Vele2|zapan|za)$", name, flags=re.IGNORECASE):
         return "VELEZ"
-    if re.search(r"^(BALLESTER|Ballester|BALESTER)$", name, flags=re.IGNORECASE):
+    if re.search(r"^(BALLESTER|Ballester|Ballesier|BALESTER)$", name, flags=re.IGNORECASE):
         return "BALLESTER"
     if re.search(r"^(AVELLANEDA|Avellaneda)$", name, flags=re.IGNORECASE):
         return "AVELLANEDA"
-    if re.search(r"^(CIUDAD|Ciudad)$", name, flags=re.IGNORECASE):
+    if re.search(r"^(CIUDAD|Ciudad|Cludad|CIudad|Cudad|Cuidad)$", name, flags=re.IGNORECASE):
         return "CIUDAD"
-    if re.search(r"^(HACOAJ|Hacoaj)$", name, flags=re.IGNORECASE):
+    if re.search(r"^(HACOAJ|HACOAI|HACOAL|Hacoaj|Hacoal|Hacoa\]?)$", name, flags=re.IGNORECASE):
         return "HACOAJ"
     if re.search(r"^(GEVP|Gevp)$", name, flags=re.IGNORECASE):
         return "GEVP"
+    if re.search(r"^(SOCIAL\s+PARQUE|5OCIAL\s+PARQUE|5ocial\s+Parque|Social\s+Parque)$", name, flags=re.IGNORECASE):
+        return "SOCIAL PARQUE"
+    if re.search(r"^(APV|Apv)$", name, flags=re.IGNORECASE):
+        return "APV"
     return name
+
+
+def normalize_round_name(round_raw: str) -> Union[int, str]:
+    """Normaliza la columna FECHA # / instancia (ej. Copa Oro - Final Ida, 3° Puesto Ida, Puesto del 5° al 10°)."""
+    s = re.sub(r"^FECHA\s*#?\s*", "", round_raw, flags=re.IGNORECASE).strip()
+    if not s:
+        return ""
+    if s.isdigit():
+        return int(s)
+
+    # Correcciones de Copa Oro / Plata / Bronce
+    s = re.sub(r"\b(Cope|Cap[ao])\b", "Copa", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bCopa\s+(?:de\s+)?(Cro|Ono|0ro|Qro|Dra|Dro|Ore|Opo|Oro)\b", "Copa Oro", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Cro|Ono|0ro|Qro)\b", "Oro", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bCopa\s+de\s+(Oro|Plata|Bronce)\b", lambda m: f"Copa {m.group(1).capitalize()}", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Piata|P1ata|Plala|Plata)\b", "Plata", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(8ronce|Brcnce|Bronce)\b", "Bronce", s, flags=re.IGNORECASE)
+
+    # Correcciones de Puesto / Partido / Final / Semifinal / Ida / Vuelta
+    s = re.sub(r"\b(Pueslo|Punsto|Pucsto|Puetso|Puosto|Puesto)\b", "Puesto", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Parlido|Partldo|Partdo|Partido)\b", "Partido", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Semifial|Seminal|Semifinal)\b", "Semifinal", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Fina1|Flna1|Flnal|Final)\b", "Final", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Iida|lIda|Ilda|1da|lda|ida|Ida)\b", "Ida", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Vue1ta|Vuetta|vuelta|Vuelta)\b", "Vuelta", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bAmistos[0o]\b", "Amistoso", s, flags=re.IGNORECASE)
+
+    # Ordinales antes de Puesto o Partido (ej. 39 Puesto -> 3° Puesto, 5# Puesto -> 5° Puesto, 72 Puesto -> 7° Puesto)
+    s = re.sub(r"(?<!\d)(1[0-5])[9f#\+′'*°º\"ª]?\s*(?=Puesto|Partido)", r"\1° ", s, flags=re.IGNORECASE)
+    s = re.sub(r"(?<!\d)1[9#\+′'*°º\"ª]?\s*(?=Puesto|Partido)", "1° ", s, flags=re.IGNORECASE)
+    s = re.sub(r"(?<!\d)([2-9])[029#\+′'*°º\"ª]?\s*(?=Puesto|Partido)", r"\1° ", s, flags=re.IGNORECASE)
+
+    # Expresiones "Puesto del X° al Y°" o "X° al Y° Puesto"
+    s = re.sub(r"(\d[^\s]*)\s*a[1lI]\s*(\d)", r"\1 al \2", s, flags=re.IGNORECASE)
+    s = re.sub(
+        r"Puesto\s+del\s+(\d{1,2})[09f#\+′'*°º\"ªe]?\s*al\s*(\d{1,2})[09f#\+′'*°º\"ª]?",
+        lambda m: f"Puesto del {5 if m.group(1) in ('50', '59') else int(m.group(1))}° al {10 if m.group(2) in ('10', '0') else (9 if m.group(2) == '99' else int(m.group(2)))}°",
+        s,
+        flags=re.IGNORECASE,
+    )
+    s = re.sub(
+        r"(?<!del\s)\b(\d{1,2})[09f#\+′'*°º\"ªe]?\s*al\s*(\d{1,2})[09f#\+′'*°º\"ª]?\s*Puesto",
+        lambda m: f"{5 if m.group(1) in ('50', '59') else int(m.group(1))}° al {10 if m.group(2) in ('10', '0') else int(m.group(2))}° Puesto",
+        s,
+        flags=re.IGNORECASE,
+    )
+
+    # Asegurar guión con espacios en "Copa Oro - Final Ida", etc.
+    s = re.sub(r"\s*-\s*", " - ", s)
+    s = re.sub(r"\b(Copa\s+(?:Oro|Plata|Bronce))\s+(?!-)(Final|Semifinal|Cuartos|\d+°)", r"\1 - \2", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+def normalize_observation(obs: str) -> str:
+    """Corrige errores típicos de OCR en la columna de Observaciones."""
+    obs = obs.strip()
+    if not obs:
+        return ""
+    obs = re.sub(r"\b(Cludad|CIudad|Cudad|Cuidad)\b", "Ciudad", obs, flags=re.IGNORECASE)
+    obs = re.sub(r"\bSi\s+ana\b", "Si gana", obs, flags=re.IGNORECASE)
+    obs = re.sub(r"\bsabedo\b", "sábado", obs, flags=re.IGNORECASE)
+    obs = re.sub(r"\breprcgrama\b", "reprograma", obs, flags=re.IGNORECASE)
+    obs = re.sub(r"\bllgan\s+la\s+jugadoras\b", "llegan las jugadoras", obs, flags=re.IGNORECASE)
+    obs = re.sub(r"\bllgan\b", "llegan", obs, flags=re.IGNORECASE)
+    obs = re.sub(r"\bHacoa\]", "Hacoaj", obs, flags=re.IGNORECASE)
+    return re.sub(r"\s+", " ", obs).strip()
 
 
 def is_sitas_team(team_name: str) -> bool:
@@ -190,25 +284,7 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
         return None
 
     round_raw = line[:date_match.start()].strip()
-    round_clean = re.sub(r"^FECHA\s*#?\s*", "", round_raw, flags=re.IGNORECASE).strip()
-    round_clean = re.sub(r"3[9#]\s*Partido", "3° Partido", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"\bIida\b", "Ida", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"\blIda\b", "Ida", round_clean)
-    round_clean = re.sub(r"Semifial\b", "Semifinal", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"Seminal\b", "Semifinal", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"\bAmistos0\b", "Amistoso", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"5[09′'*°º]?\s*Puesto", "5° Puesto", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"5[09′'*°ºe]?\s*al\s*(10|0)[9fe°'*]?\s*Puesto", "5° al 10° Puesto", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto", "5° al 9° Puesto", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"Puesto\s+del\s+5[09′'*°º]?\s+al\s+10[9f°'*]?", "Puesto del 5° al 10°", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"Puesto\s+del\s+5[09′'*°º]?\s+al\s+9[9°'*]?", "Puesto del 5° al 9°", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"Puesto\s+del\s+9['*]\s+al\s+11['*]?", "Puesto del 9° al 11°", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"Cope\b", "Copa", round_clean, flags=re.IGNORECASE)
-    round_clean = re.sub(r"-(?=[A-Za-z])", "- ", round_clean)
-    round_clean = re.sub(r"\s+", " ", round_clean).strip()
-    round_val: Union[int, str] = round_clean
-    if round_clean.isdigit():
-        round_val = int(round_clean)
+    round_val = normalize_round_name(round_raw)
 
     match_date = date_match.group(1).replace("-", "/")
     d_parts = match_date.split("/")
@@ -348,6 +424,7 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
         ref2 = normalize_referee_name(after_parts[1])
         obs = " ".join(after_parts[2:])
 
+    obs = normalize_observation(obs)
     is_sitas = is_sitas_team(home_team) or is_sitas_team(away_team)
 
     return {
@@ -364,6 +441,39 @@ def parse_schedule_line(line: str, current_division: str) -> Dict[str, Any] | No
         "observations": obs,
         "is_sitas": is_sitas
     }
+
+
+def _harmonize_dates(matches: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Corrige errores de OCR donde un mes de dos dígitos pierde un dígito
+    (ej. '14/1/2026' -> '14/01/2026' cuando todo el cronograma es de '11/2026').
+    """
+    if len(matches) < 3:
+        return matches
+
+    from collections import Counter
+    month_year_counts: Counter[tuple[str, str]] = Counter()
+    for m in matches:
+        d = (m.get("match_date") or "").split("/")
+        if len(d) == 3:
+            month_year_counts[(d[1], d[2])] += 1
+
+    if not month_year_counts:
+        return matches
+
+    (dom_month, dom_year), dom_count = month_year_counts.most_common(1)[0]
+    if dom_count < len(matches) * 0.6:
+        return matches
+
+    for m in matches:
+        d = (m.get("match_date") or "").split("/")
+        if len(d) == 3:
+            day, month, year = d
+            if year == dom_year and month != dom_month:
+                # Si el mes dominante es 10, 11 o 12 y el OCR leyó 01 o 02 (por pérdida de un '1')
+                if dom_month in ("10", "11", "12") and month in ("01", "02"):
+                    m["match_date"] = f"{day}/{dom_month}/{year}"
+    return matches
 
 
 def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
@@ -448,7 +558,7 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
             if match_data:
                 matches.append(match_data)
 
-    return matches
+    return _harmonize_dates(matches)
 
 
 def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Dict[str, Any]]:
@@ -520,4 +630,4 @@ def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Di
         if len(ocr_matches) > len(matches):
             matches = ocr_matches
 
-    return matches
+    return _harmonize_dates(matches)

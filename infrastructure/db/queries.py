@@ -612,7 +612,7 @@ def get_upcoming_matches(
     if division:
         query += " AND division = ?"
         params.append(division)
-    query += " ORDER BY substr(match_date, 7, 4) || '-' || substr(match_date, 4, 2) || '-' || substr(match_date, 1, 2) ASC, time ASC, category ASC, id ASC"
+    query += " ORDER BY substr(match_date, 7, 4) || '-' || substr(match_date, 4, 2) || '-' || substr(match_date, 1, 2) ASC, CASE WHEN length(time) = 4 AND substr(time, 2, 1) = ':' THEN '0' || time ELSE time END ASC, category ASC, id ASC"
     rows = c.execute(query, params).fetchall()
     return [dict(r) for r in rows]
 
