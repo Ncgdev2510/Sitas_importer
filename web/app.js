@@ -132,10 +132,19 @@ async function init() {
 // Club Logo Helper & Team Badge
 function getClubLogoUrl(clubName) {
   if (!clubName) return null;
-  const norm = clubName.toUpperCase();
+  const norm = clubName.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   if (norm.includes('SITAS')) {
     return 'assets/clubs/sitas.png';
   }
+  if (norm.includes('NAZARENO')) return 'assets/clubs/nazareno.png';
+  if (norm.includes('CENTRAL CORDOBA') || norm.includes('C.CORDOBA') || norm.includes('C. CORDOBA')) return 'assets/clubs/centralcordoba.png';
+  if (norm.includes('DEPORTIVO CUYO') || norm.includes('D.CUYO') || norm.includes('D. CUYO') || norm.includes('CUYO')) return 'assets/clubs/deportivocuyo.png';
+  if (norm.includes('ESTUDIANTES')) return 'assets/clubs/estudiantes.png';
+  if (norm.includes('HERCULES')) return 'assets/clubs/hercules.png';
+  if (norm.includes('JAIME ZAPATA') || norm.includes('J.ZAPATA') || norm.includes('J. ZAPATA')) return 'assets/clubs/jaimezapata.png';
+  if (norm.includes('LEONAS')) return 'assets/clubs/leonas.png';
+  if (norm.includes('SOCIAL PARQUE') || norm.includes('S.PARQUE') || norm.includes('S. PARQUE')) return 'assets/clubs/socialparque.png';
+
   const slug = clubName.toLowerCase()
     .replace(/\b(cludad|cudad|cuidad)\b/g, 'ciudad')
     .replace(/\b(hacoa\]|hacoal|hacoai)\b/g, 'hacoaj')
@@ -147,13 +156,13 @@ function getClubLogoUrl(clubName) {
 }
 
 function renderTeamBadge(clubName, externalLogoUrl = null) {
-  const norm = (clubName || '').toUpperCase();
-  if (norm.includes('SITAS')) {
-    return `<img src="assets/clubs/sitas.png" class="team-crest-sm" alt="" onerror="this.style.display='none'">`;
+  const localUrl = getClubLogoUrl(clubName);
+  if (!localUrl && !externalLogoUrl) return '';
+  if (localUrl && externalLogoUrl && localUrl !== externalLogoUrl) {
+    return `<img src="${escapeHtml(localUrl)}" class="team-crest-sm" alt="" referrerpolicy="no-referrer" onerror="if(this.dataset.fb){this.style.display='none';}else{this.dataset.fb='1';this.src='${escapeHtml(externalLogoUrl)}';}">`;
   }
-  const logoUrl = externalLogoUrl || getClubLogoUrl(clubName);
-  if (!logoUrl) return '';
-  return `<img src="${escapeHtml(logoUrl)}" class="team-crest-sm" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`;
+  const finalUrl = localUrl || externalLogoUrl;
+  return `<img src="${escapeHtml(finalUrl)}" class="team-crest-sm" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`;
 }
 
 // Check if a tournament is National (Liga Nacional or Argentino)
