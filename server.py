@@ -138,6 +138,23 @@ def upcoming_schedule():
     sitas_only = request.args.get("sitas_only", "0") in ("1", "true", "True")
     division = request.args.get("division")
     matches = get_upcoming_matches(sitas_only=sitas_only, division=division)
+
+    # Si el cronograma activo es de Competencia Nacional, sincronizar en el backend usando .env (oculto al cliente)
+    if matches and any("LIGA FEDERAL" in (m.get("category") or "") or "LIGA NACIONAL" in (m.get("category") or "") for m in matches):
+        try:
+            from sync_national_live import sync_national_schedule_file
+            upcoming_file = WEB_DIR / "upcoming.json"
+            if sync_national_schedule_file(upcoming_file):
+                synced_data = json.loads(upcoming_file.read_text(encoding="utf-8"))
+                all_synced = synced_data.get("matches", [])
+                if sitas_only:
+                    all_synced = [m for m in all_synced if m.get("is_sitas")]
+                if division:
+                    all_synced = [m for m in all_synced if m.get("division") == division]
+                matches = all_synced
+        except Exception:
+            pass
+
     return jsonify({
         "count": len(matches),
         "matches": matches,

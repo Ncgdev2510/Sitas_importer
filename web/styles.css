@@ -1759,6 +1759,85 @@ tr.sitas-row .club-cell {
   font-weight: 800;
 }
 
+.upcoming-score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.upcoming-score-badge.winner {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.45);
+}
+
+.upcoming-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.upcoming-live-torneo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(225, 29, 72, 0.16);
+  color: #fb7185;
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  transition: var(--transition);
+}
+
+.upcoming-live-torneo-btn:hover {
+  background: var(--sitas-red);
+  color: #ffffff;
+  border-color: var(--sitas-red);
+}
+
+.upcoming-stream-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.38);
+  align-self: flex-start;
+  transition: var(--transition);
+}
+
+.upcoming-stream-link:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
 .upcoming-venue-box {
   background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1903,6 +1982,47 @@ tr.sitas-row .club-cell {
   color: #1d4ed8;
   border: 1px solid #bfdbfe;
   font-weight: 700;
+}
+
+[data-theme="light"] .upcoming-score-badge {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+[data-theme="light"] .upcoming-score-badge.winner {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
+}
+
+[data-theme="light"] .upcoming-status-pill {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
+}
+
+[data-theme="light"] .upcoming-live-torneo-btn {
+  background: #ffe4e6;
+  color: #9f1239;
+  border-color: #fecdd3;
+}
+
+[data-theme="light"] .upcoming-live-torneo-btn:hover {
+  background: #e11d48;
+  color: #ffffff;
+  border-color: #e11d48;
+}
+
+[data-theme="light"] .upcoming-stream-link {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+[data-theme="light"] .upcoming-stream-link:hover {
+  background: #dc2626;
+  color: #ffffff;
 }
 
 

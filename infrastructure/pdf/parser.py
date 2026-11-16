@@ -496,6 +496,7 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
     except Exception:
         doc = pymupdf.open(stream=pdf_bytes)
     matches: List[Dict[str, Any]] = []
+    ocr_pages: List[tuple[int, int, List[Any]]] = []
     current_division = "MENORES"
 
     for page in doc:
@@ -504,6 +505,7 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
         res, _ = _ocr_engine(pix.tobytes("png"))
         if not res:
             continue
+        ocr_pages.append((pix.width, pix.height, res))
 
         items = []
         for box, text, _score in res:
@@ -558,7 +560,218 @@ def parse_schedule_with_ocr(pdf_bytes: bytes) -> List[Dict[str, Any]]:
             if match_data:
                 matches.append(match_data)
 
+        # Si el formato de Capital Federal no arrojó partidos pero la página actual es de Fase de Grupos Nacional,
+        # parsear directamente y evitar OCR innecesario en hojas posteriores de playoffs/cuadros.
+        if not matches and ocr_pages:
+            national_matches = _parse_national_schedule_from_ocr_pages(ocr_pages)
+            if len(national_matches) >= 8:
+                return national_matches
+
+    if not matches and ocr_pages:
+        national_matches = _parse_national_schedule_from_ocr_pages(ocr_pages)
+        if national_matches:
+            return national_matches
+
     return _harmonize_dates(matches)
+
+
+def _normalize_national_team_name(name: str) -> str:
+    """Normaliza nombres de clubes en fixtures de competencias nacionales (Liga Federal / Ligas Nacionales)."""
+    s = re.sub(r"\s+", " ", name).strip()
+    if not s:
+        return ""
+    mapping = {
+        "CENTRALCORDOBA": "Central Córdoba",
+        "CENTRAL CORDOBA": "Central Córdoba",
+        "CENTRAL CÓRDOBA": "Central Córdoba",
+        "HERCULES": "Hércules",
+        "HÉRCULES": "Hércules",
+        "LEONAS": "Leonas",
+        "SITAS": "SITAS",
+        "C.A.NAZARENO": "C.A. Nazareno",
+        "C.A. NAZARENO": "C.A. Nazareno",
+        "BOLIVAR": "Bolívar",
+        "BOLÍVAR": "Bolívar",
+        "VELEZ": "Vélez",
+        "VÉLEZ": "Vélez",
+        "BELGRANO": "Belgrano",
+        "COLON": "Colón",
+        "COLÓN": "Colón",
+        "JAIMEZAPATA": "Jaime Zapata",
+        "JAIME ZAPATA": "Jaime Zapata",
+        "DEFENSORESD.S.": "Defensores D.S.",
+        "DEFENSORES D.S.": "Defensores D.S.",
+        "ESTUDIANTES": "Estudiantes",
+        "LUZYFUERZA": "Luz y Fuerza",
+        "LUZ Y FUERZA": "Luz y Fuerza",
+        "LIBERTAD": "Libertad",
+        "SOCIALPARQUE": "Social Parque",
+        "SOCIAL PARQUE": "Social Parque",
+        "DEPORTIVOCUYO": "Deportivo Cuyo",
+        "DEPORTIVO CUYO": "Deportivo Cuyo",
+    }
+    upper = s.upper()
+    if upper in mapping:
+        return mapping[upper]
+    return normalize_team_name(s)
+
+
+def _normalize_national_venue_name(venue_raw: str) -> str:
+    """Normaliza nombres de canchas/sedes en fixtures nacionales."""
+    v = re.sub(r"\s+", " ", venue_raw).strip().upper()
+    if "JAIME" in v or "ZAPATA" in v:
+        return "Polideportivo Jaime Zapata"
+    if "CUNE" in v:
+        return "Club CUNE"
+    if "CPCE" in v:
+        return "Predio Social CPCE"
+    return venue_raw.strip()
+
+
+def _parse_national_schedule_from_ocr_pages(
+    ocr_pages: List[tuple[int, int, List[Any]]],
+    default_year: str = "2026",
+) -> List[Dict[str, Any]]:
+    """
+    Parsea exclusivamente los partidos de Fase de Grupos en fixtures de Competencias Nacionales
+    (como Liga Federal / Liga Nacional de la Confederación Argentina de Cestoball)
+    cuando el formato estándar de Capital Federal no aplica.
+    """
+    if not ocr_pages:
+        return []
+
+    all_texts_upper = " ".join(
+        t.upper()
+        for _w, _h, res in ocr_pages
+        for _box, t, _score in (res or [])
+    )
+
+    if "GRUPO" not in all_texts_upper or "PARTIDO" not in all_texts_upper:
+        return []
+
+    tournament_cat = "LIGA FEDERAL"
+    if "LIGANACIONAL" in all_texts_upper or "LIGA NACIONAL" in all_texts_upper:
+        if "SUB17" in all_texts_upper or "SUB 17" in all_texts_upper:
+            tournament_cat = "LIGA NACIONAL SUB 17"
+        elif "SUB14" in all_texts_upper or "SUB 14" in all_texts_upper:
+            tournament_cat = "LIGA NACIONAL SUB 14"
+        elif "MASC" in all_texts_upper:
+            tournament_cat = "LIGA NACIONAL MASCULINA"
+        else:
+            tournament_cat = "LIGA NACIONAL"
+    elif "ARGENTINO" in all_texts_upper:
+        tournament_cat = "CAMPEONATO ARGENTINO"
+
+    day_pattern = r"(LUNES|MARTES|MI[EÉ]RCOLES|JUEVES|VIERNES|S[AÁ]BADO|DOMINGO)"
+    group_line_re = re.compile(
+        r"GRUPO\s*([A-Z])\s*[-–]\s*Fecha\s*(\d+)\s*[-–]\s*Partido\s*(\d+)",
+        re.IGNORECASE,
+    )
+    header_dt_re = re.compile(
+        rf"^{day_pattern}\s*(?:(\d{{1,2}}/\d{{2}}))?\s*(\d{{1,2}}[\.:]\d{{2}})\s*h[sS]?\s*(.+)$",
+        re.IGNORECASE,
+    )
+
+    matches: List[Dict[str, Any]] = []
+
+    for page_w, _page_h, res in ocr_pages:
+        if not res:
+            continue
+
+        day_to_date: Dict[str, str] = {}
+        for _box, text, _score in res:
+            m_dt = header_dt_re.match(text.strip())
+            if m_dt and m_dt.group(2):
+                day_key = m_dt.group(1).upper()
+                day_to_date[day_key] = m_dt.group(2)
+
+        mid_x = page_w / 2.0
+        columns: List[List[tuple[float, float, float, float, str]]] = [[], []]
+
+        for box, text, _score in res:
+            t = text.strip()
+            if not t:
+                continue
+            x1, y1 = float(box[0][0]), float(box[0][1])
+            x2, y2 = float(box[2][0]), float(box[2][1])
+            x_center = (x1 + x2) / 2.0
+            y_center = (y1 + y2) / 2.0
+            col_idx = 0 if x_center < mid_x else 1
+            columns[col_idx].append((y_center, x_center, x1, x2, t))
+
+        for col_items in columns:
+            col_items.sort(key=lambda it: it[0])
+
+            for idx, (y_grp, _x_grp, _x1, _x2, text_grp) in enumerate(col_items):
+                m_grp = group_line_re.search(text_grp)
+                if not m_grp:
+                    continue
+
+                grp_letter = m_grp.group(1).upper()
+                fecha_num = m_grp.group(2)
+                partido_num = m_grp.group(3)
+
+                match_date = ""
+                time_str = "-"
+                venue = ""
+                for prev_idx in range(idx - 1, -1, -1):
+                    y_prev, _, _, _, t_prev = col_items[prev_idx]
+                    if y_grp - y_prev > 110:
+                        break
+                    m_dt = header_dt_re.match(t_prev)
+                    if m_dt:
+                        day_key = m_dt.group(1).upper()
+                        dd_mm = m_dt.group(2) or day_to_date.get(day_key, "")
+                        if dd_mm:
+                            d_parts = dd_mm.split("/")
+                            match_date = f"{d_parts[0].zfill(2)}/{d_parts[1].zfill(2)}/{default_year}"
+                        raw_time = m_dt.group(3).replace(".", ":")
+                        t_parts = raw_time.split(":")
+                        time_str = f"{int(t_parts[0]):02d}:{t_parts[1]}"
+                        venue = _normalize_national_venue_name(m_dt.group(4))
+                        break
+
+                team_candidates: List[tuple[float, str]] = []
+                for next_idx in range(idx + 1, len(col_items)):
+                    y_next, x_next, _, _, t_next = col_items[next_idx]
+                    dy = y_next - y_grp
+                    if dy < 20:
+                        continue
+                    if dy > 125:
+                        break
+                    if group_line_re.search(t_next) or header_dt_re.match(t_next):
+                        break
+                    if "GRUPO" in t_next.upper() and "FECHA" in t_next.upper():
+                        break
+                    clean_tok = re.sub(r"[^A-Za-zÁÉÍÓÚÑáéíóúñ\.]", "", t_next)
+                    if len(clean_tok) < 2:
+                        continue
+                    team_candidates.append((x_next, t_next))
+
+                if len(team_candidates) >= 2:
+                    team_candidates.sort(key=lambda tc: tc[0])
+                    home_team = _normalize_national_team_name(team_candidates[0][1])
+                    away_team = _normalize_national_team_name(team_candidates[-1][1])
+                else:
+                    continue
+
+                is_sitas = is_sitas_team(home_team) or is_sitas_team(away_team)
+                matches.append({
+                    "division": "MAYORES",
+                    "round_num": f"Grupo {grp_letter} - Fecha {fecha_num}",
+                    "match_date": match_date,
+                    "time": time_str,
+                    "category": tournament_cat,
+                    "home_team": home_team,
+                    "away_team": away_team,
+                    "venue": venue,
+                    "ref1": "",
+                    "ref2": "",
+                    "observations": f"Partido {partido_num}",
+                    "is_sitas": is_sitas,
+                })
+
+    return matches
 
 
 def parse_schedule_pdf(pdf_source: Union[str, Path, BinaryIO, bytes]) -> List[Dict[str, Any]]:

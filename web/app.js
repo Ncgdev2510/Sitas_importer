@@ -146,10 +146,14 @@ function getClubLogoUrl(clubName) {
   return `assets/clubs/${slug}.png`;
 }
 
-function renderTeamBadge(clubName) {
-  const logoUrl = getClubLogoUrl(clubName);
+function renderTeamBadge(clubName, externalLogoUrl = null) {
+  const norm = (clubName || '').toUpperCase();
+  if (norm.includes('SITAS')) {
+    return `<img src="assets/clubs/sitas.png" class="team-crest-sm" alt="" onerror="this.style.display='none'">`;
+  }
+  const logoUrl = externalLogoUrl || getClubLogoUrl(clubName);
   if (!logoUrl) return '';
-  return `<img src="${logoUrl}" class="team-crest-sm" alt="" onerror="this.style.display='none'">`;
+  return `<img src="${escapeHtml(logoUrl)}" class="team-crest-sm" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`;
 }
 
 // Check if a tournament is National (Liga Nacional or Argentino)
@@ -1362,6 +1366,8 @@ async function loadUpcomingSchedule() {
       return;
     }
 
+    const isNationalSchedule = matches.some((m) => /LIGA FEDERAL|LIGA NACIONAL|ARGENTINO/i.test(m.category || ''));
+
     // Encabezado del cronograma: solo unificar la fecha/instancia si todas las categorías coinciden
     if (roundInfo && matches.length > 0) {
       const uniqueDates = [...new Set(matches.map((m) => (m.match_date || '').trim()).filter(Boolean))];
@@ -1369,12 +1375,20 @@ async function loadUpcomingSchedule() {
       if (uniqueDates.length === 1) {
         datesStr = uniqueDates[0];
       } else if (uniqueDates.length > 1) {
-        datesStr = uniqueDates.join(' y ');
+        datesStr = uniqueDates.join(' al ');
       }
 
       const uniqueRounds = [...new Set(matches.map((m) => formatRound(m.round_num)).filter(Boolean))];
 
-      if (uniqueRounds.length === 1) {
+      if (isNationalSchedule) {
+        roundInfo.outerHTML = `
+          <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;" id="upcoming-round-info">
+            <span class="upcoming-meta-badge">
+              <i data-lucide="trophy"></i> Liga Federal — ${escapeHtml(datesStr || '19 al 23/11/2026')}
+            </span>
+          </div>
+        `;
+      } else if (uniqueRounds.length === 1) {
         roundInfo.innerHTML = `<i data-lucide="calendar"></i> ${escapeHtml(uniqueRounds[0])} — ${escapeHtml(datesStr || 'Próxima Fecha')}`;
       } else {
         roundInfo.innerHTML = `<i data-lucide="calendar"></i> ${escapeHtml(datesStr ? 'Fin de Semana — ' + datesStr : 'Cronograma Oficial')}`;
@@ -1396,12 +1410,17 @@ async function loadUpcomingSchedule() {
       const safeAway = escapeHtml(awayDisplay);
       const safeVenue = escapeHtml(venueStr);
 
+      const hasScore = Boolean((m.played || m.is_live) && m.home_score !== null && m.home_score !== undefined && m.away_score !== null && m.away_score !== undefined);
+      const homeWin = Boolean(m.played && hasScore && Number(m.home_score) > Number(m.away_score));
+      const awayWin = Boolean(m.played && hasScore && Number(m.away_score) > Number(m.home_score));
+
       return `
         <div class="upcoming-card">
           <div class="upcoming-card-header">
             <div class="upcoming-header-badges">
               <span class="upcoming-cat-badge">${safeCat}</span>
               ${stageBadgeHtml}
+              ${m.is_live ? '<span class="upcoming-status-pill" style="background:rgba(239,68,68,0.18);color:#f87171;border-color:rgba(239,68,68,0.4);">🔴 En Juego</span>' : (hasScore ? '<span class="upcoming-status-pill">Finalizado</span>' : '')}
             </div>
             <span class="upcoming-datetime">
               <i data-lucide="clock" style="width:14px;height:14px;"></i>
@@ -1411,12 +1430,16 @@ async function loadUpcomingSchedule() {
 
           <div class="upcoming-teams">
             <div class="upcoming-team-line ${isHome ? 'sitas' : ''}">
-              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(homeDisplay)}${safeHome}</span>
-              ${isHome ? '<span class="tag tag-category" style="font-size:0.65rem;">LOCAL</span>' : ''}
+              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(homeDisplay, m.home_logo)}${safeHome}</span>
+              ${hasScore
+                ? `<span class="upcoming-score-badge ${homeWin ? 'winner' : ''}">${escapeHtml(m.home_score)}</span>`
+                : (isHome ? '<span class="tag tag-category" style="font-size:0.65rem;">LOCAL</span>' : '')}
             </div>
             <div class="upcoming-team-line ${isAway ? 'sitas' : ''}">
-              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(awayDisplay)}${safeAway}</span>
-              ${isAway ? '<span class="tag tag-category" style="font-size:0.65rem;">VISITANTE</span>' : ''}
+              <span style="display:inline-flex;align-items:center;gap:0.4rem;">${renderTeamBadge(awayDisplay, m.away_logo)}${safeAway}</span>
+              ${hasScore
+                ? `<span class="upcoming-score-badge ${awayWin ? 'winner' : ''}">${escapeHtml(m.away_score)}</span>`
+                : (isAway ? '<span class="tag tag-category" style="font-size:0.65rem;">VISITANTE</span>' : '')}
             </div>
           </div>
 
@@ -1434,9 +1457,13 @@ async function loadUpcomingSchedule() {
                 obs = '';
               }
               const refs = [r1, r2].filter(Boolean).map(escapeHtml);
+              const streamBtn = m.streaming_url
+                ? `<a href="${escapeHtml(m.streaming_url)}" target="_blank" rel="noopener noreferrer" class="upcoming-stream-link"><i data-lucide="video" style="width:13px;height:13px;"></i> Ver Transmisión</a>`
+                : '';
               return `
                 ${refs.length ? `<div style="font-size:0.75rem;opacity:0.8;">Árbitros: ${refs.join(' / ')}</div>` : ''}
                 ${obs ? `<div class="upcoming-obs-badge">ℹ️ ${escapeHtml(obs)}</div>` : ''}
+                ${streamBtn}
               `;
             })()}
           </div>

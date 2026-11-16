@@ -3,6 +3,15 @@ name: Deploy SITAS Cestoball to GitHub Pages
 on:
   push:
     branches: ["main"]
+  # -------------------------------------------------------------------------
+  # CRON PARA COMPETENCIAS NACIONALES (Liga Federal / Ligas Nacionales)
+  # - Al finalizar el torneo nacional, comentá las 2 líneas de abajo (# schedule y # - cron)
+  #   para no ejecutar despliegues innecesarios cada 30 min durante el año.
+  # - En 2027, para un nuevo torneo nacional, solo descomentá estas 2 líneas y
+  #   actualizá el Secret CESTO_TORNEO_ID en GitHub con el ID del nuevo torneo.
+  # -------------------------------------------------------------------------
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 # Permisos requeridos para publicar en GitHub Pages
@@ -26,12 +35,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Sync National Tournament Live Results (Server-Side)
+        env:
+          CESTO_FIRESTORE_PROJECT_ID: ${{ secrets.CESTO_FIRESTORE_PROJECT_ID }}
+          CESTO_FIRESTORE_DB_ID: ${{ secrets.CESTO_FIRESTORE_DB_ID }}
+          CESTO_FIRESTORE_API_KEY: ${{ secrets.CESTO_FIRESTORE_API_KEY }}
+          CESTO_TORNEO_ID: ${{ secrets.CESTO_TORNEO_ID }}
+        run: |
+          python3 sync_national_live.py || true
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Remove admin panel from public Pages artifact
         run: |
-          rm -f ./web/admin.html ./web/admin.js ./web/admin.css
+          rm -f ./web/admin.html ./web/admin.js ./web/admin.css ./web/*.env ./.env
 
       - name: Upload static web files
         uses: actions/upload-pages-artifact@v3

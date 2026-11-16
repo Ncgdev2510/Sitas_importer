@@ -4,8 +4,12 @@ __pycache__/
 *$py.class
 server.py
 
-# Environments
+# Environments & Secrets (Never commit credentials)
 .env
+.env.*
+*.env
+*firebase*.json
+*credentials*.json
 .venv/
 venv/
 ENV/
