@@ -1274,12 +1274,14 @@ function formatRound(r) {
     .replace(/\bCopa\s+(?:de\s+)?(Cro|Ono|0ro|Qro|Dra|Dro|Ore|Opo|Oro)\b/gi, 'Copa Oro')
     .replace(/\b(Cro|Ono|0ro|Qro)\b/gi, 'Oro')
     .replace(/\bCopa\s+de\s+(Oro|Plata|Bronce)\b/gi, (_, p1) => `Copa ${p1.charAt(0).toUpperCase() + p1.slice(1).toLowerCase()}`)
-    .replace(/\b(Pueslo|Punsto|Pucsto|Puetso|Puosto)\b/gi, 'Puesto')
+    .replace(/\b(Pueslo|Punsto|Pucsto|Puetso|Puosto|Pvuesto)\b/gi, 'Puesto')
     .replace(/\b(Iida|lIda|Ilda|1da|lda|ida)\b/gi, 'Ida')
+    .replace(/\b(Vue1ta|Vuetta|Vuelita)\b/gi, 'Vuelta')
     .replace(/\b(Fina1|Flna1|Flnal)\b/gi, 'Final')
     .replace(/\b(Semifial|Seminal)\b/gi, 'Semifinal')
     .replace(/\bAmistos0\b/gi, 'Amistoso')
     .replace(/(?<!\d)([2-9])[029#\+′'*°º"ª]?\s*(?=Puesto|Partido)/gi, '$1° ')
+    .replace(/\ba[l1I]\s*g[\*°º'"ª]?(?=\s|$)/gi, 'al 9°')
     .replace(/5[09′'*°ºe]?\s*al\s*10[9f°'*]?\s*Puesto/gi, '5° al 10° Puesto')
     .replace(/5[09′'*°º]?\s*al\s*9[9°'*]?\s*Puesto/gi, '5° al 9° Puesto')
     .replace(/Puesto\s+del\s+5[09′'*°º]?\s*a[l1]\s*10[9f°'*]?/gi, 'Puesto del 5° al 10°')
@@ -1296,10 +1298,12 @@ function formatRound(r) {
 function formatClubDisplayName(name) {
   if (!name) return '';
   return String(name)
-    .replace(/\b(Cludad|CIudad|Cudad|Cuidad)\b/gi, 'Ciudad')
+    .replace(/\b[S5]ITA[S5]\b/gi, 'SITAS')
+    .replace(/\b(Cludad|CIudad|Cudad|Cuidad|Chadad|pepn)\b/gi, 'Ciudad')
+    .replace(/\bCiudad\s+6\b/gi, 'Ciudad B')
     .replace(/\b(Hacoa\]|Hacoal|Hacoai)\b/gi, 'Hacoaj')
     .replace(/\b(Ballesier|Ballster)\b/gi, 'Ballester')
-    .replace(/\b(Hernindez|Hemandez)\b/gi, 'Hernandez')
+    .replace(/\b(Hernindez|Hemandez|Hernander)\b/gi, 'Hernandez')
     .replace(/\b5ocial\s+Parque\b/gi, 'Social Parque')
     .trim();
 }

@@ -4,14 +4,10 @@ on:
   push:
     branches: ["main"]
   # -------------------------------------------------------------------------
-  # CRON PARA COMPETENCIAS NACIONALES (Liga Federal / Ligas Nacionales)
-  # - Al finalizar el torneo nacional, comentá las 2 líneas de abajo (# schedule y # - cron)
-  #   para no ejecutar despliegues innecesarios cada 30 min durante el año.
-  # - En 2027, para un nuevo torneo nacional, solo descomentá estas 2 líneas y
-  #   actualizá el Secret CESTO_TORNEO_ID en GitHub con el ID del nuevo torneo.
+  # CRON PARA COMPETENCIAS NACIONALES (Desactivado)
   # -------------------------------------------------------------------------
-  schedule:
-    - cron: "*/30 * * * *"
+  # schedule:
+  #   - cron: "*/30 * * * *"
   workflow_dispatch:
 
 # Permisos requeridos para publicar en GitHub Pages

@@ -65,16 +65,17 @@ def normalize_team_name(name: str) -> str:
     if not name:
         return ""
 
-    # Corrección de errores OCR típicos para SITAS
-    name = re.sub(r"\bSITA5\b", "SITAS", name, flags=re.IGNORECASE)
-    name = re.sub(r"\bSITAS\s+8\b", "SITAS B", name, flags=re.IGNORECASE)
+    # Corrección de errores OCR típicos para SITAS (ej. SITA5, 5ITA5, 5ITAS)
+    name = re.sub(r"\b[S5]ITA[S5]\b", "SITAS", name, flags=re.IGNORECASE)
+    name = re.sub(r"\bSITAS\s+[8B]\b", "SITAS B", name, flags=re.IGNORECASE)
     name = re.sub(r"\bseS\b", "SITAS", name)
     name = re.sub(r"^sitas$", "SITAS", name, flags=re.IGNORECASE)
     name = re.sub(r"^sitas\s+([a-z])$", lambda m: f"SITAS {m.group(1).upper()}", name, flags=re.IGNORECASE)
     name = re.sub(r"^sitas\s+flex$", "SITAS FLEX", name, flags=re.IGNORECASE)
 
-    # Typo Ciudad (Cludad, CIudad, Cudad, Cuidad, CIUDAD)
-    name = re.sub(r"\b(Cludad|CIudad|Cudad|Cuidad|Ciudsd|Ciudod|CIUDAD|ciudad)\b", "Ciudad", name, flags=re.IGNORECASE)
+    # Typo Ciudad (Cludad, CIudad, Cudad, Cuidad, Chadad, pepn [Ciudad invertido], CIUDAD)
+    name = re.sub(r"\b(Cludad|CIudad|Cudad|Cuidad|Ciudsd|Ciudod|Chadad|pepn|CIUDAD|ciudad)\b", "Ciudad", name, flags=re.IGNORECASE)
+    name = re.sub(r"^Ciudad\s+[68bB]$", "Ciudad B", name, flags=re.IGNORECASE)
     name = re.sub(r"^Ciudad\s+([a-z])$", lambda m: f"Ciudad {m.group(1).upper()}", name, flags=re.IGNORECASE)
 
     # Typo Velez
@@ -86,7 +87,7 @@ def normalize_team_name(name: str) -> str:
     name = re.sub(r"\b(Ballesier|Ballster|Bslester|Bellester|Blleter|Balester|BALLESTER)\b", "Ballester", name, flags=re.IGNORECASE)
 
     # Typo Hernandez
-    name = re.sub(r"\b(Hernindez|Hemandez|Hermindez|Hern[aá]ndez|HERNANDEZ)\b", "Hernandez", name, flags=re.IGNORECASE)
+    name = re.sub(r"\b(Hernindez|Hemandez|Hermindez|Hernander|Hern[aá]ndez|HERNANDEZ)\b", "Hernandez", name, flags=re.IGNORECASE)
 
     # Typo Social Parque
     name = re.sub(r"\b(5ocial\s+Parque|Social\s+Prque|Socisl\s+Parque|SOCIAL\s+PARQUE)\b", "Social Parque", name, flags=re.IGNORECASE)
@@ -110,7 +111,7 @@ def normalize_team_name(name: str) -> str:
 
 def normalize_venue_name(name: str) -> str:
     name = name.strip()
-    if re.search(r"^(SITAS|SITA5|Sitas|sitas)$", name, flags=re.IGNORECASE):
+    if re.search(r"^([S5]ITA[S5]|Sitas|sitas)$", name, flags=re.IGNORECASE):
         return "SITAS"
     if re.search(r"^(VELEZ|Velez|Veiez|Vele2|zapan|za)$", name, flags=re.IGNORECASE):
         return "VELEZ"
@@ -118,7 +119,7 @@ def normalize_venue_name(name: str) -> str:
         return "BALLESTER"
     if re.search(r"^(AVELLANEDA|Avellaneda)$", name, flags=re.IGNORECASE):
         return "AVELLANEDA"
-    if re.search(r"^(CIUDAD|Ciudad|Cludad|CIudad|Cudad|Cuidad)$", name, flags=re.IGNORECASE):
+    if re.search(r"^(CIUDAD|Ciudad|Cludad|CIudad|Cudad|Cuidad|Chadad|pepn)$", name, flags=re.IGNORECASE):
         return "CIUDAD"
     if re.search(r"^(HACOAJ|HACOAI|HACOAL|Hacoaj|Hacoal|Hacoa\]?)$", name, flags=re.IGNORECASE):
         return "HACOAJ"
@@ -126,6 +127,8 @@ def normalize_venue_name(name: str) -> str:
         return "GEVP"
     if re.search(r"^(SOCIAL\s+PARQUE|5OCIAL\s+PARQUE|5ocial\s+Parque|Social\s+Parque)$", name, flags=re.IGNORECASE):
         return "SOCIAL PARQUE"
+    if re.search(r"^(HERNANDEZ|Hernandez|Hernander|Hernindez|Hemandez)$", name, flags=re.IGNORECASE):
+        return "HERNANDEZ"
     if re.search(r"^(APV|Apv)$", name, flags=re.IGNORECASE):
         return "APV"
     return name
@@ -148,18 +151,21 @@ def normalize_round_name(round_raw: str) -> Union[int, str]:
     s = re.sub(r"\b(8ronce|Brcnce|Bronce)\b", "Bronce", s, flags=re.IGNORECASE)
 
     # Correcciones de Puesto / Partido / Final / Semifinal / Ida / Vuelta
-    s = re.sub(r"\b(Pueslo|Punsto|Pucsto|Puetso|Puosto|Puesto)\b", "Puesto", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Pueslo|Punsto|Pucsto|Puetso|Puosto|Pvuesto|Puesto)\b", "Puesto", s, flags=re.IGNORECASE)
     s = re.sub(r"\b(Parlido|Partldo|Partdo|Partido)\b", "Partido", s, flags=re.IGNORECASE)
     s = re.sub(r"\b(Semifial|Seminal|Semifinal)\b", "Semifinal", s, flags=re.IGNORECASE)
     s = re.sub(r"\b(Fina1|Flna1|Flnal|Final)\b", "Final", s, flags=re.IGNORECASE)
     s = re.sub(r"\b(Iida|lIda|Ilda|1da|lda|ida|Ida)\b", "Ida", s, flags=re.IGNORECASE)
-    s = re.sub(r"\b(Vue1ta|Vuetta|vuelta|Vuelta)\b", "Vuelta", s, flags=re.IGNORECASE)
+    s = re.sub(r"\b(Vue1ta|Vuetta|Vuelita|vuelta|Vuelta)\b", "Vuelta", s, flags=re.IGNORECASE)
     s = re.sub(r"\bAmistos[0o]\b", "Amistoso", s, flags=re.IGNORECASE)
 
     # Ordinales antes de Puesto o Partido (ej. 39 Puesto -> 3° Puesto, 5# Puesto -> 5° Puesto, 72 Puesto -> 7° Puesto)
     s = re.sub(r"(?<!\d)(1[0-5])[9f#\+′'*°º\"ª]?\s*(?=Puesto|Partido)", r"\1° ", s, flags=re.IGNORECASE)
     s = re.sub(r"(?<!\d)1[9#\+′'*°º\"ª]?\s*(?=Puesto|Partido)", "1° ", s, flags=re.IGNORECASE)
     s = re.sub(r"(?<!\d)([2-9])[029#\+′'*°º\"ª]?\s*(?=Puesto|Partido)", r"\1° ", s, flags=re.IGNORECASE)
+
+    # Corrección de "al g*" -> "al 9°"
+    s = re.sub(r"\ba[1lI]\s*g[\*°º'\"ª]?(?=\s|$)", "al 9°", s, flags=re.IGNORECASE)
 
     # Expresiones "Puesto del X° al Y°" o "X° al Y° Puesto"
     s = re.sub(r"(\d[^\s]*)\s*a[1lI]\s*(\d)", r"\1 al \2", s, flags=re.IGNORECASE)
@@ -202,8 +208,8 @@ def is_sitas_team(team_name: str) -> bool:
     """Verifica si el nombre del equipo corresponde a SITAS en cualquiera de sus variantes."""
     if not team_name:
         return False
-    # Detecta SITAS, Sitas, sitas, SITAS B, SITAS FLEX, SITA5 (OCR typo), seS, S.I.T.A.S.
-    return bool(re.search(r"\b(S\.?I\.?T\.?A\.?S\.?|SITA5|seS)\b", team_name, re.IGNORECASE))
+    # Detecta SITAS, Sitas, sitas, SITAS B, SITAS FLEX, SITA5, 5ITA5, 5ITAS (OCR typos), seS, S.I.T.A.S.
+    return bool(re.search(r"\b(S\.?I\.?T\.?A\.?S\.?|[S5]ITA[S5]|seS)\b", team_name, re.IGNORECASE))
 
 
 def normalize_referee_name(name: str) -> str:
@@ -225,6 +231,7 @@ def normalize_referee_name(name: str) -> str:
     name = re.sub(r"\bLofatz\b", "Lofiatz", name, flags=re.IGNORECASE)
     name = re.sub(r"\bEmile\b", "Emilce", name, flags=re.IGNORECASE)
     name = re.sub(r"\bEmiloe\b", "Emilce", name, flags=re.IGNORECASE)
+    name = re.sub(r"\bSerglo\b", "Sergio", name, flags=re.IGNORECASE)
     name = re.sub(r"\bNoma\b", "Norma", name, flags=re.IGNORECASE)
     name = re.sub(r"\bTurr[li]?\b", "Turri", name, flags=re.IGNORECASE)
     name = re.sub(r"\bTrr\b", "Turri", name, flags=re.IGNORECASE)
