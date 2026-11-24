@@ -144,6 +144,13 @@ function getClubLogoUrl(clubName) {
   if (norm.includes('JAIME ZAPATA') || norm.includes('J.ZAPATA') || norm.includes('J. ZAPATA')) return 'assets/clubs/jaimezapata.png';
   if (norm.includes('LEONAS')) return 'assets/clubs/leonas.png';
   if (norm.includes('SOCIAL PARQUE') || norm.includes('S.PARQUE') || norm.includes('S. PARQUE')) return 'assets/clubs/socialparque.png';
+  if (norm.includes('DEFENSORES')) return 'assets/clubs/defensoresdelsud.png';
+  if (norm.includes('BELGRANO')) return 'assets/clubs/belgrano.png';
+  if (norm.includes('BOLIVAR')) return 'assets/clubs/bolivar.png';
+  if (norm.includes('COLON')) return 'assets/clubs/colon.png';
+  if (norm.includes('LIBERTAD')) return 'assets/clubs/libertad.png';
+  if (norm.includes('LUZ Y FUERZA')) return 'assets/clubs/luzyfuerza.png';
+  if (norm.includes('VELEZ') && !norm.includes('VELEZ A') && !norm.includes('VELEZ B')) return 'assets/clubs/velez.png';
 
   const slug = clubName.toLowerCase()
     .replace(/\b(cludad|cudad|cuidad)\b/g, 'ciudad')
@@ -165,14 +172,16 @@ function renderTeamBadge(clubName, externalLogoUrl = null) {
   return `<img src="${escapeHtml(finalUrl)}" class="team-crest-sm" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`;
 }
 
-// Check if a tournament is National (Liga Nacional or Argentino)
+// Check if a tournament is National (Liga Nacional, Liga Federal, or Argentino)
 function isNationalTournament(t) {
   const name = (t.name || '').toUpperCase();
   const cat = (t.category || '').toUpperCase();
   return (
     name.includes('LIGA NACIONAL') ||
+    name.includes('LIGA FEDERAL') ||
     name.includes('ARGENTINO') ||
     cat.includes('LIGA NACIONAL') ||
+    cat.includes('LIGA FEDERAL') ||
     cat.includes('ARGENTINO')
   );
 }
@@ -264,6 +273,7 @@ function populateCategories() {
     if (DOM.editionFilters) DOM.editionFilters.style.display = 'none';
 
     const ligas = [
+      { id: 'LIGA FEDERAL MAYORES FEMENINA', label: 'Liga Federal Fem', icon: 'trophy' },
       { id: 'LIGA NACIONAL MAYORES FEMENINA', label: 'Liga Nac. Mayores Fem', icon: 'trophy' },
       { id: 'LIGA NACIONAL PRIMERA MASCULINO', label: 'Liga Nac. Masc', icon: 'trophy' },
       { id: 'LIGA NACIONAL SUB 17', label: 'Liga Nac. Sub 17', icon: 'trophy' },
@@ -279,7 +289,7 @@ function populateCategories() {
 
     const allNacIds = [...ligas, ...argentinos].map((x) => x.id);
     if (!allNacIds.includes(state.selectedCategory)) {
-      state.selectedCategory = 'LIGA NACIONAL MAYORES FEMENINA';
+      state.selectedCategory = 'LIGA FEDERAL MAYORES FEMENINA';
     }
 
     const renderNacPill = (item) => `
@@ -445,6 +455,7 @@ function renderPhases(tournament) {
       else if (nameUpper.includes('PLATA')) icon = '🥈 ';
       else if (nameUpper.includes('BRONCE')) icon = '🥉 ';
       else if (nameUpper.includes('COPA')) icon = '🛡️ ';
+      else if (nameUpper.includes('POSICIONES FINALES')) icon = '🏅 ';
 
       return `
         <button class="phase-tab ${idx === state.selectedPhaseIndex ? 'active' : ''}" data-phase-idx="${idx}" role="tab">
@@ -1130,7 +1141,7 @@ function setupEventListeners() {
   DOM.scopeTabNacional.addEventListener('click', () => {
     if (state.currentScope === 'NACIONAL') return;
     state.currentScope = 'NACIONAL';
-    state.selectedCategory = 'LIGA NACIONAL MAYORES FEMENINA';
+    state.selectedCategory = 'LIGA FEDERAL MAYORES FEMENINA';
     state.selectedEdition = 'ALL';
     DOM.scopeTabNacional.classList.add('active');
     DOM.scopeTabNacional.setAttribute('aria-selected', 'true');
