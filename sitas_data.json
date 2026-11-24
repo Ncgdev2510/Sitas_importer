@@ -5098,7 +5098,7 @@
                       "name": "HACOAJ",
                       "clupik_id": 15878714,
                       "logo_url": "https://cdn.leverade.com/thumbnails/Aasy54zg7iRM.30x30.jpg",
-                      "is_winner": false
+                      "is_winner": true
                     },
                     "away_club": {
                       "name": "CIUDAD",
@@ -5107,7 +5107,7 @@
                       "is_winner": false
                     },
                     "is_series": true,
-                    "series_winner": null,
+                    "series_winner": "home",
                     "games": [
                       {
                         "match_id": 145706185,
@@ -5121,11 +5121,11 @@
                       {
                         "match_id": 145862742,
                         "game_number": 2,
-                        "home_score": null,
-                        "away_score": null,
-                        "home_winner": false,
+                        "home_score": 113,
+                        "away_score": 102,
+                        "home_winner": true,
                         "away_winner": false,
-                        "played": false
+                        "played": true
                       },
                       {
                         "match_id": 145862743,
@@ -5137,10 +5137,10 @@
                         "played": false
                       }
                     ],
-                    "home_score": 1,
+                    "home_score": 2,
                     "away_score": 0,
                     "played": true,
-                    "is_finished": false,
+                    "is_finished": true,
                     "scheduled_at": null,
                     "venue": null
                   }
@@ -5172,10 +5172,10 @@
                       {
                         "match_id": 145706221,
                         "game_number": 1,
-                        "home_score": 54,
-                        "away_score": 70,
-                        "home_winner": false,
-                        "away_winner": true,
+                        "home_score": 70,
+                        "away_score": 54,
+                        "home_winner": true,
+                        "away_winner": false,
                         "played": true
                       },
                       {
@@ -5197,8 +5197,8 @@
                         "played": false
                       }
                     ],
-                    "home_score": 0,
-                    "away_score": 1,
+                    "home_score": 1,
+                    "away_score": 0,
                     "played": true,
                     "is_finished": false,
                     "scheduled_at": null,
@@ -5219,13 +5219,13 @@
                 "name": "SOCIAL PARQUE"
               },
               "played": 6,
-              "won": 4,
+              "won": 5,
               "drawn": 0,
-              "lost": 2,
-              "points": 10,
-              "goals_for": 504,
-              "goals_against": 450,
-              "goal_diff": 54
+              "lost": 1,
+              "points": 11,
+              "goals_for": 520,
+              "goals_against": 434,
+              "goal_diff": 86
             },
             {
               "tournament_id": 1339117,
@@ -5233,17 +5233,17 @@
               "phase_name": "COPA DE ORO",
               "position": 2,
               "club": {
-                "clupik_id": 15878713,
-                "name": "AVELLANEDA"
+                "clupik_id": 15878714,
+                "name": "HACOAJ"
               },
-              "played": 4,
+              "played": 6,
               "won": 4,
               "drawn": 0,
-              "lost": 0,
-              "points": 8,
-              "goals_for": 352,
-              "goals_against": 258,
-              "goal_diff": 94
+              "lost": 2,
+              "points": 10,
+              "goals_for": 592,
+              "goals_against": 512,
+              "goal_diff": 80
             },
             {
               "tournament_id": 1339117,
@@ -5251,17 +5251,17 @@
               "phase_name": "COPA DE ORO",
               "position": 3,
               "club": {
-                "clupik_id": 15878714,
-                "name": "HACOAJ"
+                "clupik_id": 15878713,
+                "name": "AVELLANEDA"
               },
-              "played": 5,
+              "played": 4,
               "won": 3,
               "drawn": 0,
-              "lost": 2,
-              "points": 8,
-              "goals_for": 479,
-              "goals_against": 410,
-              "goal_diff": 69
+              "lost": 1,
+              "points": 7,
+              "goals_for": 336,
+              "goals_against": 274,
+              "goal_diff": 62
             },
             {
               "tournament_id": 1339117,
@@ -5272,14 +5272,14 @@
                 "clupik_id": 15878710,
                 "name": "CIUDAD"
               },
-              "played": 4,
+              "played": 5,
               "won": 1,
               "drawn": 0,
-              "lost": 3,
-              "points": 5,
-              "goals_for": 330,
-              "goals_against": 388,
-              "goal_diff": -58
+              "lost": 4,
+              "points": 6,
+              "goals_for": 432,
+              "goals_against": 501,
+              "goal_diff": -69
             },
             {
               "tournament_id": 1339117,
@@ -5748,8 +5748,8 @@
                 "clupik_id": 15878713,
                 "name": "AVELLANEDA"
               },
-              "home_score": 54,
-              "away_score": 70,
+              "home_score": 70,
+              "away_score": 54,
               "venue": null,
               "played": true
             },
@@ -5828,10 +5828,10 @@
                 "clupik_id": 15878710,
                 "name": "CIUDAD"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 113,
+              "away_score": 102,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145862743,
@@ -23847,23 +23847,41 @@
               "phase_name": "COPA DE PLATA",
               "position": 3,
               "club": {
-                "clupik_id": 15912242,
-                "name": "VELEZ"
+                "clupik_id": 15912239,
+                "name": "GEVP"
               },
-              "played": 1,
+              "played": 3,
               "won": 1,
               "drawn": 0,
-              "lost": 0,
-              "points": 2,
-              "goals_for": 94,
-              "goals_against": 64,
-              "goal_diff": 30
+              "lost": 2,
+              "points": 4,
+              "goals_for": 232,
+              "goals_against": 256,
+              "goal_diff": -24
             },
             {
               "tournament_id": 1341496,
               "phase_id": 3710491,
               "phase_name": "COPA DE PLATA",
               "position": 4,
+              "club": {
+                "clupik_id": 15912242,
+                "name": "VELEZ"
+              },
+              "played": 2,
+              "won": 1,
+              "drawn": 0,
+              "lost": 1,
+              "points": 3,
+              "goals_for": 156,
+              "goals_against": 142,
+              "goal_diff": 14
+            },
+            {
+              "tournament_id": 1341496,
+              "phase_id": 3710491,
+              "phase_name": "COPA DE PLATA",
+              "position": 5,
               "club": {
                 "clupik_id": 15912238,
                 "name": "HACOAJ"
@@ -23876,24 +23894,6 @@
               "goals_for": 140,
               "goals_against": 185,
               "goal_diff": -45
-            },
-            {
-              "tournament_id": 1341496,
-              "phase_id": 3710491,
-              "phase_name": "COPA DE PLATA",
-              "position": 5,
-              "club": {
-                "clupik_id": 15912239,
-                "name": "GEVP"
-              },
-              "played": 2,
-              "won": 0,
-              "drawn": 0,
-              "lost": 2,
-              "points": 2,
-              "goals_for": 154,
-              "goals_against": 194,
-              "goal_diff": -40
             }
           ],
           "club_standing": null,
@@ -24035,6 +24035,26 @@
               },
               "home_score": 96,
               "away_score": 104,
+              "venue": null,
+              "played": true
+            },
+            {
+              "clupik_id": 145781208,
+              "tournament_id": 1341496,
+              "phase_id": 3710491,
+              "phase_name": "COPA DE PLATA",
+              "round_name": "Jornada 3",
+              "scheduled_at": "2026-11-17 03:00:00",
+              "home_club": {
+                "clupik_id": null,
+                "name": "VELEZ"
+              },
+              "away_club": {
+                "clupik_id": null,
+                "name": "GEVP"
+              },
+              "home_score": 62,
+              "away_score": 78,
               "venue": null,
               "played": true
             }
@@ -29067,11 +29087,11 @@
                       {
                         "match_id": 145781406,
                         "game_number": 1,
-                        "home_score": null,
-                        "away_score": null,
-                        "home_winner": false,
+                        "home_score": 78,
+                        "away_score": 68,
+                        "home_winner": true,
                         "away_winner": false,
-                        "played": false
+                        "played": true
                       },
                       {
                         "match_id": 145804960,
@@ -29092,9 +29112,9 @@
                         "played": false
                       }
                     ],
-                    "home_score": null,
-                    "away_score": null,
-                    "played": false,
+                    "home_score": 1,
+                    "away_score": 0,
+                    "played": true,
                     "is_finished": false,
                     "scheduled_at": null,
                     "venue": null
@@ -29188,6 +29208,24 @@
               "phase_name": "COPA DE PLATA",
               "position": 2,
               "club": {
+                "clupik_id": 15912270,
+                "name": "HACOAJ"
+              },
+              "played": 4,
+              "won": 2,
+              "drawn": 0,
+              "lost": 2,
+              "points": 6,
+              "goals_for": 209,
+              "goals_against": 219,
+              "goal_diff": -10
+            },
+            {
+              "tournament_id": 1341498,
+              "phase_id": 3710501,
+              "phase_name": "COPA DE PLATA",
+              "position": 3,
+              "club": {
                 "clupik_id": 15912268,
                 "name": "AVELLANEDA"
               },
@@ -29204,37 +29242,19 @@
               "tournament_id": 1341498,
               "phase_id": 3710501,
               "phase_name": "COPA DE PLATA",
-              "position": 3,
-              "club": {
-                "clupik_id": 15912270,
-                "name": "HACOAJ"
-              },
-              "played": 3,
-              "won": 1,
-              "drawn": 0,
-              "lost": 2,
-              "points": 4,
-              "goals_for": 131,
-              "goals_against": 151,
-              "goal_diff": -20
-            },
-            {
-              "tournament_id": 1341498,
-              "phase_id": 3710501,
-              "phase_name": "COPA DE PLATA",
               "position": 4,
               "club": {
                 "clupik_id": 15912269,
                 "name": "APV"
               },
-              "played": 2,
+              "played": 3,
               "won": 0,
               "drawn": 0,
-              "lost": 2,
-              "points": 2,
-              "goals_for": 136,
-              "goals_against": 162,
-              "goal_diff": -26
+              "lost": 3,
+              "points": 3,
+              "goals_for": 204,
+              "goals_against": 240,
+              "goal_diff": -36
             }
           ],
           "club_standing": null,
@@ -29434,10 +29454,10 @@
                 "clupik_id": 15912269,
                 "name": "APV"
               },
-              "home_score": null,
-              "away_score": null,
+              "home_score": 78,
+              "away_score": 68,
               "venue": null,
-              "played": false
+              "played": true
             },
             {
               "clupik_id": 145804960,
